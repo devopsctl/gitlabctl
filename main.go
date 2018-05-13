@@ -20,7 +20,7 @@
 
 package main
 
-import "github.com/bzon/gitlab-cli/cmd"
+import "github.com/devopsctl/gitlabctl/cmd"
 
 func main() {
 	cmd.Execute()

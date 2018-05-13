@@ -1,0 +1,116 @@
+version: '3'
+
+volumes:
+  gitlab_postgresql:
+  gitlab_redis:
+  gitlab_data:
+  ldap_db:
+  ldap_static:
+
+networks:
+  adop:
+    driver: bridge
+
+services:
+  ldap:
+    restart: always
+    image: accenture/adop-ldap:0.1.2
+    networks:
+      - adop
+    ports:
+      - "389:389"
+    volumes:
+        - ldap_db:/var/lib/ldap
+        - ldap_static:/etc/ldap
+    environment:
+      INITIAL_ADMIN_USER: john.smith
+      INITIAL_ADMIN_PASSWORD: 123qwe123
+      JENKINS_PASSWORD: 123qwe123
+      GERRIT_PASSWORD: 123qwe123
+      SLAPD_PASSWORD: 123qwe123
+      SLAPD_DOMAIN: ldap.adop.com
+      SLAPD_FULL_DOMAIN: dc=ldap,dc=adop,dc=com
+
+  ldap-phpadmin:
+    restart: always
+    image: accenture/adop-ldap-phpadmin:0.1.0
+    networks:
+      - adop
+    ports:
+      - "8001:80"
+    environment:
+      LDAP_SERVER_NAME: "LDAP"
+      LDAP_SERVER_HOST: "ldap"
+      LDAP_SERVER_PORT: "389"
+      LDAP_SERVER_BIND_ID: "cn=admin,dc=ldap,dc=adop,dc=com"
+      LDAP_SERVER_BASE_DN: "dc=ldap,dc=adop,dc=com"
+
+  redis:
+    restart: always
+    image: sameersbn/redis:latest
+    command:
+    - --loglevel warning
+    volumes:
+    - gitlab_redis:/var/lib/redis:Z
+    networks:
+      - adop
+
+  postgresql:
+    restart: always
+    image: sameersbn/postgresql:9.6-2
+    volumes:
+    - gitlab_postgresql:/var/lib/postgresql:Z
+    environment:
+    - DB_USER=gitlab
+    - DB_PASS=password
+    - DB_NAME=gitlabhq_production
+    - DB_EXTENSION=pg_trgm
+    networks:
+      - adop
+
+  gitlab:
+    restart: always
+    image: sameersbn/gitlab:10.6.4
+    depends_on:
+    - redis
+    - postgresql
+    ports:
+    - "10080:80"
+    - "10022:22"
+    volumes:
+    - gitlab_data:/home/git/data:Z
+    networks:
+      - adop
+    environment:
+    - DEBUG=false
+    - DB_ADAPTER=postgresql
+    - DB_HOST=postgresql
+    - DB_PORT=5432
+    - DB_USER=gitlab
+    - DB_PASS=password
+    - DB_NAME=gitlabhq_production
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+    - GITLAB_HTTPS=false
+    - SSL_SELF_SIGNED=false
+    - GITLAB_HOST=localhost
+    - GITLAB_PORT=10080
+    - GITLAB_SSH_PORT=10022
+    - GITLAB_RELATIVE_URL_ROOT=
+    - GITLAB_ROOT_PASSWORD=123qwe123
+    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
+    - LDAP_ENABLED=true
+    - LDAP_LABEL=LDAP
+    - LDAP_HOST=ldap
+    - LDAP_PORT=389
+    - LDAP_UID=uid
+    - LDAP_METHOD=plain
+    - LDAP_BIND_DN=cn=admin,dc=ldap,dc=adop,dc=com
+    - LDAP_PASS=123qwe123
+    - LDAP_ACTIVE_DIRECTORY=false
+    - LDAP_ALLOW_USERNAME_OR_EMAIL_LOGIN=false
+    - LDAP_BLOCK_AUTO_CREATED_USERS=false
+    - LDAP_BASE=dc=ldap,dc=adop,dc=com
+
