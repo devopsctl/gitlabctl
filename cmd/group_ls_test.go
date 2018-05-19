@@ -1,7 +1,10 @@
 // Copyright © 2018 github.com/devopsctl authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
@@ -18,14 +21,18 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var groupCmd = &cobra.Command{
-	Use:   "group",
-	Short: "Control a gitlab group",
-}
-
-func init() {
-	rootCmd.AddCommand(groupCmd)
+// TODO standardized the test data for groups to use
+func TestGroupLsCmd(t *testing.T) {
+	setup()
+	_, err := executeCommand(rootCmd, "group", "ls")
+	// _, err := executeCommand(rootCmd, "group", "ls", "--json",
+	// 	"--all-available", "--search=administrators", "--order-by=name",
+	// 	"--sort=desc", "--owned", "--statistics",
+	// )
+	assert.Nil(t, err)
 }

@@ -64,26 +64,34 @@ Authenticate using environment variables.
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupService
 
-* [List all groups - `ls`](#list-all-groups---ls)
-* [List group's subgroup - `ls-subgroup`](#list-groups-subgroup---ls-subgroup)
-* [List group's projects - `ls-project`](#list-groups-projects---ls-projects)
-* [Delete a group - `rm`](#delete-a-group---delete)
-* [Create a group - `new`](#create-a-group---create)
-* [Edit a group - `edit`](#edit-a-group---edit)
-
 ### List all groups - `ls`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroups
 
-This sub command does not require a flag.
+| Flag          | Type   | Description                                                                                        | Required? | Default |
+| :----         | :---   | :----------                                                                                        | :-------- | :------ |
+| all-available | bool   | Show all the groups you have access to (defaults to false for authenticated users, true for admin) | no        |         |
+| order-by      | string | Order groups by name or path. Default is name                                                      | no        |         |
+| owned         | bool   | Limit to groups owned by the current user                                                          | no        |         |
+| search        | string | Return the list of authorized groups matching the search criteria                                  | no        |         |
+| sort          | string | Order groups in asc or desc order. Default is asc                                                  | no        |         |
+| statistics    | bool   | Include group statistics (admins only)                                                             | no        |         |
+| json          | bool   | Print the command output to json                                                                   | no        | false   |
 
 ### List all the subgroups of a group - `ls-subgroup`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListSubgroups
 
-| Flag  | Type   | Description                                                    | Required? | Default |
-| :---- | :---   | :----------                                                    | :-------- | :------ |
-| path  | string | the group name, id or full the path including the parent group | yes       |
+| Flag          | Type   | Description                                                                                        | Required? | Default |
+| :----         | :---   | :----------                                                                                        | :-------- | :------ |
+| path          | string | the group name, id or full the path including the parent group                                     | yes       |
+| all-available | bool   | Show all the groups you have access to (defaults to false for authenticated users, true for admin) | no        |         |
+| order-by      | string | Order groups by name or path. Default is name                                                      | no        |         |
+| owned         | bool   | Limit to groups owned by the current user                                                          | no        |         |
+| search        | string | Return the list of authorized groups matching the search criteria                                  | no        |         |
+| sort          | string | Order groups in asc or desc order. Default is asc                                                  | no        |         |
+| statistics    | bool   | Include group statistics (admins only)                                                             | no        |         |
+| json          | bool   | Print the command output to json                                                                   | no        | false   |
 
 ### List all the projects of a group - `ls-project`
 

@@ -1,11 +1,10 @@
-package main
+package gitlabctl
 
 import (
 	"fmt"
 
 	"github.com/xanzy/go-gitlab"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -39,7 +38,6 @@ func newOAuthClient(oAuthToken, apihttpURL string) (*gitlab.Client, error) {
 
 func newGitlabClient() (*gitlab.Client, error) {
 	if get("USERNAME") != "" && get("PASSWORD") != "" && get("HTTP_URL") != "" {
-		log.Println("basic auth login")
 		gitlabClient, err := newBasicAuthClient(get("USERNAME"),
 			get("PASSWORD"),
 			get("HTTP_URL"),
@@ -50,7 +48,6 @@ func newGitlabClient() (*gitlab.Client, error) {
 		return gitlabClient, nil
 	}
 	if get("PRIVATE_TOKEN") != "" && get("API_HTTP_URL") != "" {
-		log.Println("private token login")
 		gitlabClient, err := newClient(get("PRIVATE_TOKEN"), get("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
@@ -58,7 +55,6 @@ func newGitlabClient() (*gitlab.Client, error) {
 		return gitlabClient, nil
 	}
 	if get("OAUTH_TOKEN") != "" && get("API_HTTP_URL") != "" {
-		log.Println("oauth login")
 		gitlabClient, err := newOAuthClient(get("OAUTH_TOKEN"), get("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
