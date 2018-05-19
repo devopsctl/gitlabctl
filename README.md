@@ -1,4 +1,6 @@
-# Roadmap
+![](https://talks.golang.org/2012/waza/gophercomplex1.jpg)
+# Gitlab Control (Work in Progress)
+[![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 
 <!-- vim-markdown-toc GFM -->
 
@@ -54,12 +56,9 @@ This project may grow big in the future so the definition of done for every comm
 
 Authenticate using environment variables.
 
-| Variable                                    | Description                               |
-| :------:                                    | :---------:                               |
-| GITLAB_PRIVATE_TOKEN                        | Gitlab private token                      |
-| GITLAB_USER                                 | Gitlab username                           |
-| GITLAB_PASSWORD                             | Gitlab password                           |
-| GITLAB_ENDPOINT                             | Gitlab host url. e.g: http://localhost:80 |
+* Basic authentication - `GITLAB_USERNAME`, `GITLAB_PASSWORD` and `GITLAB_HTTP_URL`
+* Private token authentication - `GITLAB_PRIVATE_TOKEN` and `GITLAB_API_HTTP_URL`
+* OAuth2 token authentication - `GITLAB_OAUTH_TOKEN` and `GITLAB_API_HTTP_URL`
 
 ## Group Command - `group`
 
