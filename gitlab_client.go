@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"fmt"
@@ -40,36 +40,36 @@ func newOAuthClient(oAuthToken, apihttpURL string) (*gitlab.Client, error) {
 func newGitlabClient() (*gitlab.Client, error) {
 	if get("USERNAME") != "" && get("PASSWORD") != "" && get("HTTP_URL") != "" {
 		log.Println("basic auth login")
-		gitlab, err := newBasicAuthClient(get("USERNAME"),
+		gitlabClient, err := newBasicAuthClient(get("USERNAME"),
 			get("PASSWORD"),
 			get("HTTP_URL"),
 		)
 		if err != nil {
 			return nil, err
 		}
-		return gitlab, nil
+		return gitlabClient, nil
 	}
 	if get("PRIVATE_TOKEN") != "" && get("API_HTTP_URL") != "" {
 		log.Println("private token login")
-		gitlab, err := newClient(get("PRIVATE_TOKEN"), get("API_HTTP_URL"))
+		gitlabClient, err := newClient(get("PRIVATE_TOKEN"), get("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
-		return gitlab, nil
+		return gitlabClient, nil
 	}
 	if get("OAUTH_TOKEN") != "" && get("API_HTTP_URL") != "" {
 		log.Println("oauth login")
-		gitlab, err := newOAuthClient(get("OAUTH_TOKEN"), get("API_HTTP_URL"))
+		gitlabClient, err := newOAuthClient(get("OAUTH_TOKEN"), get("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
-		return gitlab, nil
+		return gitlabClient, nil
 	}
 	return nil, fmt.Errorf("No clients were created. GITLAB variables may not be set properly.")
 }
 
 func get(e string) string {
-	viper.SetEnvPrefix("gitlab") // will be automatically uppercased
-	viper.BindEnv(e)             // will be automatically uppercased
+	viper.SetEnvPrefix("GITLAB")
+	viper.BindEnv(e)
 	return viper.GetString(e)
 }
