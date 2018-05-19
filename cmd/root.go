@@ -1,4 +1,4 @@
-// Copyright © 2018 John Bryan Sazon <bryansazon@hotmail.com>
+// Copyright © 2018 github.com/devopsctl authors
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -81,7 +81,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".gitlab-cli" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".gitlab-cli")
+		viper.SetConfigName(".gitlabctl")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
