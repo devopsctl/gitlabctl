@@ -33,8 +33,8 @@ func addGroupLsFlags(cmd *cobra.Command) {
 	cmd.Flags().String("order-by", "name", "Order groups by name or path. Default is name")
 }
 
-// maps the cmd flags to gitlab.ListGroupsOptions struct
-// It ensures that the struct field that is associated with the command flag does not use the flag default value
+// getGroupLsCmdOpts maps the cmd flags to gitlab.ListGroupsOptions struct.
+// It also ensures that the struct field that is associated with the command flag does not use the flag default value.
 func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	var opts gitlab.ListGroupsOptions
 	if cmd.Flag("all-available").Changed {
