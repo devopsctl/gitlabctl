@@ -14,7 +14,9 @@ import (
 var groupLsCmd = &cobra.Command{
 	Use: "ls", Short: "List all groups",
 	Run: func(cmd *cobra.Command, args []string) {
-		runGroupLs(cmd)
+		if err := runGroupLs(cmd); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
@@ -59,13 +61,14 @@ func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 }
 
 // runGroupLs calls gitlabctl.GroupLs to return a group list
-func runGroupLs(cmd *cobra.Command) {
+func runGroupLs(cmd *cobra.Command) error {
 	opts := getGroupLsCmdOpts(cmd)
 	groups, err := gitlabctl.GroupLs(opts)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	printGroupLsOut(cmd, groups)
+	return err
 }
 
 func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {

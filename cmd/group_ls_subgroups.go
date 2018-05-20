@@ -12,7 +12,9 @@ var groupLsSubGroupCmd = &cobra.Command{
 	Use:   "ls-subgroup",
 	Short: "List all the projects of a group",
 	Run: func(cmd *cobra.Command, args []string) {
-		runGroupLsSubGroup(cmd)
+		if err := runGroupLsSubGroup(cmd); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
@@ -23,13 +25,14 @@ func init() {
 	addGroupLsFlags(groupLsSubGroupCmd)
 }
 
-func runGroupLsSubGroup(cmd *cobra.Command) {
+func runGroupLsSubGroup(cmd *cobra.Command) error {
 	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
 	opts := (*gitlab.ListSubgroupsOptions)(getGroupLsCmdOpts(cmd))
 	path := getFlagString(cmd, "path")
 	groups, err := gitlabctl.SubGroupLs(path, opts)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	printGroupLsOut(cmd, groups)
+	return nil
 }

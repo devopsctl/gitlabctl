@@ -23,8 +23,6 @@ package cmd
 import (
 	"bytes"
 	"os"
-	"strings"
-	"testing"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -57,11 +55,4 @@ func executeCommandC(root *cobra.Command, args ...string) (c *cobra.Command, out
 // helper functions from https://github.com/spf13/cobra/blob/master/command_test.go
 func resetCommandLineFlagSet() {
 	pflag.CommandLine = pflag.NewFlagSet(os.Args[0], pflag.ExitOnError)
-}
-
-// helper functions from https://github.com/spf13/cobra/blob/master/command_test.go
-func checkStringContains(t *testing.T, got, expected string) {
-	if !strings.Contains(got, expected) {
-		t.Errorf("Expected to contain: \n %v\nGot:\n %v\n", expected, got)
-	}
 }
