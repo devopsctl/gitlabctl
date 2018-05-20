@@ -1,6 +1,9 @@
 ![](https://talks.golang.org/2012/waza/gophercomplex1.jpg)
-# Gitlab Control (Work in Progress)
+
+[![CircleCI](https://circleci.com/gh/devopsctl/gitlabctl.svg?style=svg)](https://circleci.com/gh/devopsctl/gitlabctl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
+![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)
+# Gitlab Control (Work in Progress)
 
 <!-- vim-markdown-toc GFM -->
 
