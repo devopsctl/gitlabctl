@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/devopsctl/gitlabctl/gitlabctl"
+	gitlabctl "github.com/devopsctl/gitlabctl/gitlab"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"

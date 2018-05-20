@@ -3,7 +3,7 @@ package cmd
 import (
 	"log"
 
-	"github.com/devopsctl/gitlabctl/gitlabctl"
+	gitlabctl "github.com/devopsctl/gitlabctl/gitlab"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
