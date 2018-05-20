@@ -46,6 +46,8 @@ coverage: getdep
 
 getdep:
 	go get -v ./...
+	go get -v github.com/stretchr/testify
+	go get -v github.com/stretchr/testify/assert
 
 clean:
 	-rm -f ${TEST_REPORT}
