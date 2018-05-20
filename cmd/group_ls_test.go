@@ -21,38 +21,36 @@
 package cmd
 
 import (
-	"bytes"
-	"os"
-
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
+	"testing"
 )
 
-// TODO - standardized the test data to use for authentication
-func setup() {
-	os.Setenv("GITLAB_USERNAME", "root")
-	os.Setenv("GITLAB_PASSWORD", "123qwe123")
-	os.Setenv("GITLAB_HTTP_URL", "http://localhost:10080")
-}
+func TestGroupLsCmd(t *testing.T) {
+	setupGitlabEnvVars()
+	tt := []struct {
+		args map[string]string
+	}{
+		{
+			args: map[string]string{
+				"json": "true",
+			},
+		},
+		{
+			args: map[string]string{
+				"all-available": "true",
+				"owned":         "true",
+				"statistics":    "true",
+				"search":        " ",
+				"sort":          "desc",
+				"order-by":      "path",
+			},
+		},
+	}
 
-// helper functions from https://github.com/spf13/cobra/blob/master/command_test.go
-func executeCommand(root *cobra.Command, args ...string) (output string, err error) {
-	_, output, err = executeCommandC(root, args...)
-	return output, err
-}
-
-// helper functions from https://github.com/spf13/cobra/blob/master/command_test.go
-func executeCommandC(root *cobra.Command, args ...string) (c *cobra.Command, output string, err error) {
-	buf := new(bytes.Buffer)
-	root.SetOutput(buf)
-	root.SetArgs(args)
-
-	c, err = root.ExecuteC()
-
-	return c, buf.String(), err
-}
-
-// helper functions from https://github.com/spf13/cobra/blob/master/command_test.go
-func resetCommandLineFlagSet() {
-	pflag.CommandLine = pflag.NewFlagSet(os.Args[0], pflag.ExitOnError)
+	cmd := groupLsCmd
+	for _, tc := range tt {
+		t.Run(getSubTestNameFromFlagsMap(tc.args), func(t *testing.T) {
+			execT := execTestCmdFlags{t, cmd, tc.args}
+			execT.assertNilErr()
+		})
+	}
 }
