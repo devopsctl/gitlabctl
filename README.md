@@ -7,6 +7,9 @@
 
 <!-- vim-markdown-toc GFM -->
 
+* [Development Setup](#development-setup)
+	* [Requirements](#requirements)
+	* [Before Pushing your Commit](#before-pushing-your-commit)
 * [Custom Packages](#custom-packages)
 * [Test Driven Development](#test-driven-development)
 * [How the Commands Authenticate](#how-the-commands-authenticate)
@@ -45,6 +48,25 @@ It is worth noting that there are existing gitlab cli written in Go.
 * https://github.com/michaellihs/golab (most complete but code is complex - at least for me to understand..)
 * https://github.com/kyokomi/gitlab-cli (incomplete)
 * https://github.com/clns/gitlab-cli (incomplete)
+
+## Development Setup
+
+### Requirements
+
+* Install the latest stable version of go (1.10.1 as of this writing).
+* Install docker.
+* Install local gitlab instance using the [docker-compose](./docker-compose.yml) file. Run `docker-compose up -d`.
+* Setup the private api token for the `root` user. We must have a hardcoded private token soon.
+
+### Before Pushing your Commit
+
+* Ensure that you are working on an [Issue](https://github.com/devopsctl/gitlabctl/issues) and is visible in [Waffle Issue Tracker](https://waffle.io/devopsctl/gitlabctl).
+* Ensure to create a branch for your Issue.
+* Run `gometalinter -v ./...`. Ask for help with issues found that can't be solved.
+* Run `go test -v ./...`. Everything must pass the test. There will be an issue with private token testing, as this is unique on each developer installation.
+* Don't hesitate to ask questions! [Gophers Slack](https://gophers.slack.com) community may be able to answer your questions.
+* Ensure to have a Pull Request for your branch before asking for Code Review.
+* Ask for Code Review if your Issue is ready for Merging.
 
 ## Custom Packages
 
