@@ -1,3 +1,23 @@
+// Copyright © 2018 github.com/devopsctl authors
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 package cmd
 
 import (
@@ -27,16 +47,24 @@ func init() {
 }
 
 func addGroupLsFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("all-available", false, "Show all the groups you have access to (defaults to false for authenticated users, true for admin)")
-	cmd.Flags().Bool("owned", false, "Limit to groups owned by the current user")
-	cmd.Flags().Bool("statistics", false, "Include group statistics (admins only)")
-	cmd.Flags().String("sort", "asc", "Order groups in asc or desc order. Default is asc")
-	cmd.Flags().String("search", "", "Return the list of authorized groups matching the search criteria")
-	cmd.Flags().String("order-by", "name", "Order groups by name or path. Default is name")
+	cmd.Flags().Bool("all-available", false,
+		"Show all the groups you have access to"+
+			"(defaults to false for authenticated users, true for admin)")
+	cmd.Flags().Bool("owned", false,
+		"Limit to groups owned by the current user")
+	cmd.Flags().Bool("statistics", false,
+		"Include group statistics (admins only)")
+	cmd.Flags().String("sort", "asc",
+		"Order groups in asc or desc order. Default is asc")
+	cmd.Flags().String("search", "",
+		"Return the list of authorized groups matching the search criteria")
+	cmd.Flags().String("order-by", "name",
+		"Order groups by name or path. Default is name")
 }
 
 // getGroupLsCmdOpts maps the cmd flags to gitlab.ListGroupsOptions struct.
-// It also ensures that the struct field that is associated with the command flag does not use the flag default value.
+// It also ensures that the struct field that is associated with the command
+// flag does not use the flag default value.
 func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	var opts gitlab.ListGroupsOptions
 	if cmd.Flag("all-available").Changed {
@@ -72,20 +100,28 @@ func runGroupLs(cmd *cobra.Command) error {
 }
 
 func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {
-	if cmd.Flag("json").Changed {
+	if getFlagBool(cmd, "json") {
 		printJSON(groups)
 		return
 	}
+
 	table := tablewriter.NewWriter(os.Stdout)
-	header := []string{"ID", "NAME", "PATH", "VISIBILITY", "LFS ENABLED", "PARENT_ID"}
+	header := []string{
+		"ID", "NAME", "PATH", "VISIBILITY", "LFS ENABLED", "PARENT_ID",
+	}
 	if cmd.Flag("statistics").Changed {
-		header = append(header, "STORAGE SIZE", "REPO SIZE", "LFS SIZE", "JOB ARTIFACT SIZE")
+		header = append(header,
+			"STORAGE SIZE", "REPO SIZE", "LFS SIZE", "JOB ARTIFACT SIZE",
+		)
 	}
 	table.SetHeader(header)
+
 	for _, v := range groups {
-		row := []string{strconv.Itoa(v.ID), v.Name, v.Path, gitlab.Stringify(v.Visibility),
-			strconv.FormatBool(v.LFSEnabled), strconv.Itoa(v.ParentID)}
-		if cmd.Flag("statistics").Changed {
+		row := []string{
+			strconv.Itoa(v.ID), v.Name, v.Path, gitlab.Stringify(v.Visibility),
+			strconv.FormatBool(v.LFSEnabled), strconv.Itoa(v.ParentID),
+		}
+		if getFlagBool(cmd, "statistics") {
 			row = append(row, strconv.FormatInt(v.Statistics.StorageSize, 10),
 				strconv.FormatInt(v.Statistics.RepositorySize, 10),
 				strconv.FormatInt(v.Statistics.LfsObjectsSize, 10),
