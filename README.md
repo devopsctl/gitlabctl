@@ -1,6 +1,6 @@
 ![](https://talks.golang.org/2012/waza/gophercomplex1.jpg)
 
-[![CircleCI](https://circleci.com/gh/devopsctl/gitlabctl.svg?style=svg)](https://circleci.com/gh/devopsctl/gitlabctl)
+[![Build Status](https://travis-ci.org/devopsctl/gitlabctl.svg?branch=master)](https://travis-ci.org/devopsctl/gitlabctl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 [![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
 # Gitlab Control (Work in Progress)
