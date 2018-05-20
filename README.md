@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/devopsctl/gitlabctl.svg?style=svg)](https://circleci.com/gh/devopsctl/gitlabctl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
-![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)
+[![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
 # Gitlab Control (Work in Progress)
 
 <!-- vim-markdown-toc GFM -->
