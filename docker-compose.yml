@@ -12,38 +12,38 @@ networks:
     driver: bridge
 
 services:
-  ldap:
-    restart: always
-    image: accenture/adop-ldap:0.1.2
-    networks:
-      - adop
-    ports:
-      - "389:389"
-    volumes:
-        - ldap_db:/var/lib/ldap
-        - ldap_static:/etc/ldap
-    environment:
-      INITIAL_ADMIN_USER: john.smith
-      INITIAL_ADMIN_PASSWORD: 123qwe123
-      JENKINS_PASSWORD: 123qwe123
-      GERRIT_PASSWORD: 123qwe123
-      SLAPD_PASSWORD: 123qwe123
-      SLAPD_DOMAIN: ldap.adop.com
-      SLAPD_FULL_DOMAIN: dc=ldap,dc=adop,dc=com
+  # ldap:
+  #   restart: always
+  #   image: accenture/adop-ldap:0.1.2
+  #   networks:
+  #     - adop
+  #   ports:
+  #     - "389:389"
+  #   volumes:
+  #       - ldap_db:/var/lib/ldap
+  #       - ldap_static:/etc/ldap
+  #   environment:
+  #     INITIAL_ADMIN_USER: john.smith
+  #     INITIAL_ADMIN_PASSWORD: 123qwe123
+  #     JENKINS_PASSWORD: 123qwe123
+  #     GERRIT_PASSWORD: 123qwe123
+  #     SLAPD_PASSWORD: 123qwe123
+  #     SLAPD_DOMAIN: ldap.adop.com
+  #     SLAPD_FULL_DOMAIN: dc=ldap,dc=adop,dc=com
 
-  ldap-phpadmin:
-    restart: always
-    image: accenture/adop-ldap-phpadmin:0.1.0
-    networks:
-      - adop
-    ports:
-      - "8001:80"
-    environment:
-      LDAP_SERVER_NAME: "LDAP"
-      LDAP_SERVER_HOST: "ldap"
-      LDAP_SERVER_PORT: "389"
-      LDAP_SERVER_BIND_ID: "cn=admin,dc=ldap,dc=adop,dc=com"
-      LDAP_SERVER_BASE_DN: "dc=ldap,dc=adop,dc=com"
+  # ldap-phpadmin:
+  #   restart: always
+  #   image: accenture/adop-ldap-phpadmin:0.1.0
+  #   networks:
+  #     - adop
+  #   ports:
+  #     - "8001:80"
+  #   environment:
+  #     LDAP_SERVER_NAME: "LDAP"
+  #     LDAP_SERVER_HOST: "ldap"
+  #     LDAP_SERVER_PORT: "389"
+  #     LDAP_SERVER_BIND_ID: "cn=admin,dc=ldap,dc=adop,dc=com"
+  #     LDAP_SERVER_BASE_DN: "dc=ldap,dc=adop,dc=com"
 
   redis:
     restart: always
