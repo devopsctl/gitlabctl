@@ -19,7 +19,7 @@ var groupLsSubGroupCmd = &cobra.Command{
 func init() {
 	groupCmd.AddCommand(groupLsSubGroupCmd)
 	addPathFlag(groupLsSubGroupCmd)
-	addJsonFlag(groupLsSubGroupCmd)
+	addJSONFlag(groupLsSubGroupCmd)
 	addGroupLsFlags(groupLsSubGroupCmd)
 }
 

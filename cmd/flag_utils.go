@@ -12,16 +12,18 @@ import (
 // addPathFlag adds the --path flag
 func addPathFlag(cmd *cobra.Command) {
 	cmd.Flags().String("path", "", "the group name, id or full the path including the parent group (path/to/group)")
-	cmd.MarkFlagRequired("path")
+	if err := cmd.MarkFlagRequired("path"); err != nil {
+		panic(err)
+	}
 }
 
-// addJsonFlag adds the --json flag for printing output to Json to a command
-func addJsonFlag(cmd *cobra.Command) {
+// addJSONFlag adds the --json flag for printing output to Json to a command
+func addJSONFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("json", false, "print the command output to json")
 }
 
-// printJson prints the gitlab struct output to json format
-func printJson(v interface{}) {
+// printJSON prints the gitlab struct output to json format
+func printJSON(v interface{}) {
 	b, err := json.MarshalIndent(v, "", " ")
 	if err != nil {
 		glog.Fatalf("error marshalling on printJson: %v", err)

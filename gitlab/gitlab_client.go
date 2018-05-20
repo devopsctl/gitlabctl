@@ -61,11 +61,13 @@ func newGitlabClient() (*gitlab.Client, error) {
 		}
 		return gitlabClient, nil
 	}
-	return nil, fmt.Errorf("No clients were created. GITLAB variables may not be set properly.")
+	return nil, fmt.Errorf("no clients were created. GITLAB variables may not be set properly")
 }
 
 func get(e string) string {
 	viper.SetEnvPrefix("GITLAB")
-	viper.BindEnv(e)
+	if err := viper.BindEnv(e); err != nil {
+		panic(err)
+	}
 	return viper.GetString(e)
 }

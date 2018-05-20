@@ -4,6 +4,7 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
+// GroupLs returns a gitlab.Group. This is used by the commmand `group ls`.
 func GroupLs(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
@@ -16,6 +17,7 @@ func GroupLs(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 	return g, nil
 }
 
+// SubGroupLs returns a gitlab.Group. This is used by the command `group ls-subgroup`.
 func SubGroupLs(gid interface{}, opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {

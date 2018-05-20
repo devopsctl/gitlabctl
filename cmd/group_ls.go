@@ -20,7 +20,7 @@ var groupLsCmd = &cobra.Command{
 
 func init() {
 	groupCmd.AddCommand(groupLsCmd)
-	addJsonFlag(groupLsCmd)
+	addJSONFlag(groupLsCmd)
 	addGroupLsFlags(groupLsCmd)
 }
 
@@ -70,7 +70,7 @@ func runGroupLs(cmd *cobra.Command) {
 
 func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {
 	if cmd.Flag("json").Changed {
-		printJson(groups)
+		printJSON(groups)
 		return
 	}
 	table := tablewriter.NewWriter(os.Stdout)
