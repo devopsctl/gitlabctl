@@ -8,7 +8,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-func newBasicAuthClient(username, password, basehttpURL string) (*gitlab.Client, error) {
+func newBasicAuthClient(username, password,
+	basehttpURL string) (*gitlab.Client, error) {
 	gitlabClient, err := gitlab.NewBasicAuthClient(nil,
 		basehttpURL,
 		username,

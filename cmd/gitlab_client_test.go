@@ -16,12 +16,58 @@ const (
 )
 
 var testingToken = os.Getenv("GITLAB_PRIVATE_TOKEN")
+var testingOAuthToken = os.Getenv("GITLAB_OAUTH_TOKEN")
 
 // The values here should be what is set in the docker-compose.yml file
 func setupGitlabEnvVars() {
 	setEnv("GITLAB_USERNAME", testingUser)
 	setEnv("GITLAB_PASSWORD", testingPassword)
 	setEnv("GITLAB_HTTP_URL", testingHTTPURL)
+}
+
+func TestEnvVariablesNotMetErr(t *testing.T) {
+	unsetEnv("GITLAB_HTTP_URL", "GITLAB_API_HTTP_URL")
+	_, err := newGitlabClient()
+	assert.NotNil(t, err)
+}
+
+func TestOAuthClient(t *testing.T) {
+	tt := []struct {
+		name, oAuthToken, apiURL string
+		negativeTest             bool
+	}{
+		{
+			name:         "CORRECT_TOKEN_OK",
+			oAuthToken:   testingOAuthToken,
+			apiURL:       testingAPIURL,
+			negativeTest: false,
+		},
+		{
+			name:         "INVALID_TOKEN_FAILS",
+			oAuthToken:   "xxxx-token-xxxx",
+			apiURL:       testingAPIURL,
+			negativeTest: true,
+		},
+	}
+	for _, tc := range tt {
+		t.Run("["+tc.name+"][WITH_TOKEN="+tc.oAuthToken+"]", func(t *testing.T) {
+			// Ensure that oAuth authentication is used by
+			// setting the required env variables
+			// for other authentication type to blank
+			unsetEnv("GITLAB_USERNAME", "GITLAB_PRIVATE_TOKEN")
+			setEnv("GITLAB_OAUTH_TOKEN", tc.oAuthToken)
+			setEnv("GITLAB_API_HTTP_URL", tc.apiURL)
+			gitClient, err := newGitlabClient()
+			assert.Nil(t, err)
+			// test quick api call
+			_, _, err = gitClient.Users.ListUsers(nil)
+			if tc.negativeTest {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
 
 func TestNewBasicAuthClient(t *testing.T) {
@@ -53,21 +99,21 @@ func TestNewBasicAuthClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 		})
-		t.Run("[CLIENT_USING_BASICAUTH]["+tc.name+
-			"[WITH_USER="+tc.user+",WITH_PASS="+tc.pass+"]", func(t *testing.T) {
-			// setup environment variables
-			setEnv("GITLAB_USERNAME", tc.user)
-			setEnv("GITLAB_PASSWORD", tc.pass)
-			setEnv("GITLAB_HTTP_URL", tc.url)
+		t.Run("["+tc.name+"][WITH_USER="+tc.user+",WITH_PASS="+tc.pass+"]",
+			func(t *testing.T) {
+				// setup environment variables
+				setEnv("GITLAB_USERNAME", tc.user)
+				setEnv("GITLAB_PASSWORD", tc.pass)
+				setEnv("GITLAB_HTTP_URL", tc.url)
 
-			// login using the environment variables
-			_, err := newGitlabClient()
-			if tc.negativeTest {
-				assert.NotNil(t, err)
-			} else {
-				assert.Nil(t, err)
-			}
-		})
+				// login using the environment variables
+				_, err := newGitlabClient()
+				if tc.negativeTest {
+					assert.NotNil(t, err)
+				} else {
+					assert.Nil(t, err)
+				}
+			})
 	}
 }
 
@@ -108,7 +154,7 @@ func TestNewClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 		})
-		t.Run("[CLIENT_USING_PRIVATE_TOKEN]["+tc.name+
+		t.Run("["+tc.name+
 			"][WITH_TOKEN="+tc.privateToken+"]",
 			func(t *testing.T) {
 				unsetEnv("GITLAB_USERNAME", "GITLAB_PASSWORD", "GITLAB_HTTP_URL")
