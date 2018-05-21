@@ -39,7 +39,7 @@ func TestGroupLs(t *testing.T) {
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
-				"search":        " ",
+				"search":        "DevOps",
 				"sort":          "desc",
 				"order-by":      "path",
 			},

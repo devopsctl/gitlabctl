@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -115,7 +114,6 @@ func TestNewClient(t *testing.T) {
 				unsetEnv("GITLAB_USERNAME", "GITLAB_PASSWORD", "GITLAB_HTTP_URL")
 				setEnv("GITLAB_PRIVATE_TOKEN", tc.privateToken)
 				setEnv("GITLAB_API_HTTP_URL", tc.apiURL)
-				fmt.Println("USING", os.Getenv("GITLAB_PRIVATE_TOKEN"))
 
 				gitClient, err := newGitlabClient()
 				assert.Nil(t, err)
