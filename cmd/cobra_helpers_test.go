@@ -65,12 +65,14 @@ func setFlags(cmd *cobra.Command, flagsMap map[string]string) error {
 // default value. This can be used for test teardown to ensure that the used
 // flag goes back to its default value.
 func resetFlagsFromMap(cmd *cobra.Command, flagsMap map[string]string) error {
-	for k, _ := range flagsMap {
+	for k := range flagsMap {
 		if err := checkFlagExistsInCmd(cmd, k); err != nil {
 			return err
 		}
 		defValue := cmd.Flag(k).DefValue
-		cmd.Flags().Set(k, defValue)
+		if err := cmd.Flags().Set(k, defValue); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -118,7 +120,7 @@ func executeCommand(root *cobra.Command,
 func executeCommandC(root *cobra.Command,
 	args ...string) (c *cobra.Command, output string, err error) {
 	buf := new(bytes.Buffer)
-
+	// TODO: not capturing stdout
 	root.SetOutput(buf)
 	root.SetArgs(args)
 
