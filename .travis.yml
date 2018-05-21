@@ -40,6 +40,7 @@ before_install:
 script:
   - |
     cat token.txt
+    export GITLAB_OAUTH_TOKEN=$(./testdata/get_oauth_token.sh)
     export GITLAB_PRIVATE_TOKEN=$(cat token.txt)
     make coverage
 
