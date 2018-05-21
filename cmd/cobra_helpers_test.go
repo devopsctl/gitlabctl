@@ -45,13 +45,6 @@ func unsetEnv(k ...string) {
 	}
 }
 
-// The values here should be what is set in the docker-compose.yml file
-func setupGitlabEnvVars() {
-	setEnv("GITLAB_USERNAME", "root")
-	setEnv("GITLAB_PASSWORD", "123qwe123")
-	setEnv("GITLAB_HTTP_URL", "http://localhost:10080")
-}
-
 // checkFlagExistsInCmd ensures that the command contains the flag that is
 // passed from the test suite. The test suite should always be the source of
 // truth with regards to which flags must exists in the command.

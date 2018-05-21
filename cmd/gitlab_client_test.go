@@ -1,10 +1,29 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+// TEST DATA
+const (
+	testingUser     = "root"
+	testingPassword = "123qwe123"
+	testingHTTPURL  = "http://localhost:10080"
+	testingAPIURL   = "http://localhost:10080/api/v4"
+)
+
+var testingToken = os.Getenv("GITLAB_PRIVATE_TOKEN")
+
+// The values here should be what is set in the docker-compose.yml file
+func setupGitlabEnvVars() {
+	setEnv("GITLAB_USERNAME", testingUser)
+	setEnv("GITLAB_PASSWORD", testingPassword)
+	setEnv("GITLAB_HTTP_URL", testingHTTPURL)
+}
 
 func TestNewBasicAuthClient(t *testing.T) {
 	tt := []struct {
@@ -12,17 +31,17 @@ func TestNewBasicAuthClient(t *testing.T) {
 		negativeTest          bool
 	}{
 		{
-			name:         "success basic auth login",
-			user:         "root",
-			pass:         "123qwe123",
-			url:          "http://localhost:10080",
+			name:         "CORRECT_CREDENTIALS_OK",
+			user:         testingUser,
+			pass:         testingPassword,
+			url:          testingHTTPURL,
 			negativeTest: false,
 		},
 		{
-			name:         "401 basic auth login",
+			name:         "INVALID_CREDENTIALS_FAILS",
 			user:         "unknown",
 			pass:         "11111",
-			url:          "http://localhost:10080",
+			url:          testingHTTPURL,
 			negativeTest: true,
 		},
 	}
@@ -35,7 +54,8 @@ func TestNewBasicAuthClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 		})
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run("[CLIENT_USING_BASICAUTH]["+tc.name+
+			"[WITH_USER="+tc.user+",WITH_PASS="+tc.pass+"]", func(t *testing.T) {
 			// setup environment variables
 			setEnv("GITLAB_USERNAME", tc.user)
 			setEnv("GITLAB_PASSWORD", tc.pass)
@@ -57,27 +77,22 @@ func TestNewClient(t *testing.T) {
 		name, privateToken, apiURL string
 		negativeTest               bool
 	}{
-
-		// TODO - use private token for testing
-		// but if we enable this, we should also have travisci or other devs use the same token
-		// we need to come up first with a strategy how to properly test this
-
-		// {
-		// 	name:         "success private token",
-		// 	privateToken: "d1eQSbsjsXzfBuUhEVt1",
-		// 	apiURL:       "http://localhost:10080/api/v4",
-		// 	negativeTest: false,
-		// },
 		{
-			name:         "token is wrong",
+			name:         "CORRECT_TOKEN_OK",
+			privateToken: testingToken,
+			apiURL:       testingAPIURL,
+			negativeTest: false,
+		},
+		{
+			name:         "INVALID_TOKEN_FAILS",
 			privateToken: "invalidTokenxxxHehe",
-			apiURL:       "http://localhost:10080/api/v4",
+			apiURL:       testingAPIURL,
 			negativeTest: true,
 		},
 		{
-			name:         "api url is wrong",
-			privateToken: "d1eQSbsjsXzfBuUhEVt1",
-			apiURL:       "http://localhost:10080",
+			name:         "INVALID_API_URL_FAILS",
+			privateToken: testingToken,
+			apiURL:       testingHTTPURL,
 			negativeTest: true,
 		},
 	}
@@ -94,20 +109,23 @@ func TestNewClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 		})
-		t.Run("gitlab new client test "+tc.name, func(t *testing.T) {
-			unsetEnv("GITLAB_USERNAME", "GITLAB_PASSWORD")
-			setEnv("GITLAB_PRIVATE_TOKEN", tc.privateToken)
-			setEnv("GITLAB_API_HTTP_URL", tc.apiURL)
+		t.Run("[CLIENT_USING_PRIVATE_TOKEN]["+tc.name+
+			"][WITH_TOKEN="+tc.privateToken+"]",
+			func(t *testing.T) {
+				unsetEnv("GITLAB_USERNAME", "GITLAB_PASSWORD", "GITLAB_HTTP_URL")
+				setEnv("GITLAB_PRIVATE_TOKEN", tc.privateToken)
+				setEnv("GITLAB_API_HTTP_URL", tc.apiURL)
+				fmt.Println("USING", os.Getenv("GITLAB_PRIVATE_TOKEN"))
 
-			gitClient, err := newGitlabClient()
-			assert.Nil(t, err)
-			// test a quick api call
-			_, _, err = gitClient.Users.ListUsers(nil)
-			if tc.negativeTest {
-				assert.NotNil(t, err)
-			} else {
+				gitClient, err := newGitlabClient()
 				assert.Nil(t, err)
-			}
-		})
+				// test a quick api call
+				_, _, err = gitClient.Users.ListUsers(nil)
+				if tc.negativeTest {
+					assert.NotNil(t, err)
+				} else {
+					assert.Nil(t, err)
+				}
+			})
 	}
 }
