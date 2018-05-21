@@ -17,6 +17,7 @@
 * [Test Driven Development](#test-driven-development)
 * [How the Commands Authenticate](#how-the-commands-authenticate)
 * [Group Command - `group`](#group-command---group)
+	* [Get details of a group - `get`](#get-details-of-a-group---get)
 	* [List all groups - `ls`](#list-all-groups---ls)
 	* [List all the subgroups of a group - `ls-subgroup`](#list-all-the-subgroups-of-a-group---ls-subgroup)
 	* [List all the projects of a group - `ls-project`](#list-all-the-projects-of-a-group---ls-project)
@@ -106,6 +107,15 @@ Authenticate using environment variables.
 ## Group Command - `group`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupService
+
+### Get details of a group - `get`
+
+API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.GetGroup
+
+| Flag  | Type   | Description                                                    | Required? | Default |
+| :---- | :---   | :----------                                                    | :-------- | :------ |
+| path  | string | the group name, id or full the path including the parent group | yes       |
+| json  | bool   | Print the command output to json                               | no        | false   |
 
 ### List all groups - `ls`
 

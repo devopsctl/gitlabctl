@@ -23,6 +23,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"testing"
 
@@ -30,11 +31,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setEnv(name, value string) {
+	if err := os.Setenv(name, value); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func unsetEnv(k ...string) {
+	for _, v := range k {
+		if err := os.Unsetenv(v); err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
 // The values here should be what is set in the docker-compose.yml file
 func setupGitlabEnvVars() {
-	os.Setenv("GITLAB_USERNAME", "root")
-	os.Setenv("GITLAB_PASSWORD", "123qwe123")
-	os.Setenv("GITLAB_HTTP_URL", "http://localhost:10080")
+	setEnv("GITLAB_USERNAME", "root")
+	setEnv("GITLAB_PASSWORD", "123qwe123")
+	setEnv("GITLAB_HTTP_URL", "http://localhost:10080")
 }
 
 // checkFlagExistsInCmd ensures that the command contains the flag that is
@@ -80,8 +95,10 @@ func resetFlagsFromMap(cmd *cobra.Command, flagsMap map[string]string) error {
 // getSubTestNameFromFlagsMap creates a informative string according to the
 // flags map that is passed. This is used to name subtests and provide a nice
 // visual output of the flags and their values when running the test suite.
-func getSubTestNameFromFlagsMap(flagsMap map[string]string) string {
-	name := "WITH_FLAGS:::>"
+func getSubTestNameFromFlagsMap(cmd *cobra.Command,
+	flagsMap map[string]string) string {
+	name := "COMMAND:::>" + cmd.Parent().Name() +
+		" " + cmd.Name() + ":::>WITH_FLAGS:::>"
 	for k, v := range flagsMap {
 		name += fmt.Sprintf("[--%s=%v]", k, v)
 	}

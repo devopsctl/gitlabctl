@@ -13,7 +13,8 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
@@ -22,36 +23,49 @@ package cmd
 import (
 	"log"
 
-	gitlabctl "github.com/devopsctl/gitlabctl/gitlab"
 	"github.com/spf13/cobra"
-	gitlab "github.com/xanzy/go-gitlab"
+	"github.com/xanzy/go-gitlab"
 )
 
-var groupLsSubGroupCmd = &cobra.Command{
+var groupListSubgroupsCmd = &cobra.Command{
 	Use:   "ls-subgroup",
 	Short: "List all the projects of a group",
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := runGroupLsSubGroup(cmd); err != nil {
+		if err := runListSubgroups(cmd); err != nil {
 			log.Fatal(err)
 		}
 	},
 }
 
 func init() {
-	groupCmd.AddCommand(groupLsSubGroupCmd)
-	addPathFlag(groupLsSubGroupCmd)
-	addJSONFlag(groupLsSubGroupCmd)
-	addGroupLsFlags(groupLsSubGroupCmd)
+	groupCmd.AddCommand(groupListSubgroupsCmd)
+	addPathFlag(groupListSubgroupsCmd)
+	addJSONFlag(groupListSubgroupsCmd)
+	addGroupLsFlags(groupListSubgroupsCmd)
 }
 
-func runGroupLsSubGroup(cmd *cobra.Command) error {
+func runListSubgroups(cmd *cobra.Command) error {
+	// to reuse the same opts mapping from groupLsCmd for groupLsSubGroup
 	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
 	opts := (*gitlab.ListSubgroupsOptions)(getGroupLsCmdOpts(cmd))
 	path := getFlagString(cmd, "path")
-	groups, err := gitlabctl.SubGroupLs(path, opts)
+	groups, err := listSubgroups(path, opts)
 	if err != nil {
 		return err
 	}
 	printGroupLsOut(cmd, groups)
 	return nil
+}
+
+func listSubgroups(gid interface{},
+	opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return nil, err
+	}
+	g, _, err := git.Groups.ListSubgroups(gid, opts)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
 }

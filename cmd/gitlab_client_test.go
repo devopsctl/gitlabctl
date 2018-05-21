@@ -1,7 +1,6 @@
-package gitlabctl
+package cmd
 
 import (
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,9 +37,9 @@ func TestNewBasicAuthClient(t *testing.T) {
 		})
 		t.Run(tc.name, func(t *testing.T) {
 			// setup environment variables
-			os.Setenv("GITLAB_USERNAME", tc.user)
-			os.Setenv("GITLAB_PASSWORD", tc.pass)
-			os.Setenv("GITLAB_HTTP_URL", tc.url)
+			setEnv("GITLAB_USERNAME", tc.user)
+			setEnv("GITLAB_PASSWORD", tc.pass)
+			setEnv("GITLAB_HTTP_URL", tc.url)
 
 			// login using the environment variables
 			_, err := newGitlabClient()
@@ -96,11 +95,9 @@ func TestNewClient(t *testing.T) {
 			}
 		})
 		t.Run("gitlab new client test "+tc.name, func(t *testing.T) {
-			// setup environment variables
-			os.Unsetenv("GITLAB_USERNAME")
-			os.Unsetenv("GITLAB_PASSWORD")
-			os.Setenv("GITLAB_PRIVATE_TOKEN", tc.privateToken)
-			os.Setenv("GITLAB_API_HTTP_URL", tc.apiURL)
+			unsetEnv("GITLAB_USERNAME", "GITLAB_PASSWORD")
+			setEnv("GITLAB_PRIVATE_TOKEN", tc.privateToken)
+			setEnv("GITLAB_API_HTTP_URL", tc.apiURL)
 
 			gitClient, err := newGitlabClient()
 			assert.Nil(t, err)

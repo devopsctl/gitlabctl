@@ -25,13 +25,12 @@ import (
 	"os"
 	"strconv"
 
-	gitlabctl "github.com/devopsctl/gitlabctl/gitlab"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var groupLsCmd = &cobra.Command{
+var groupListCmd = &cobra.Command{
 	Use: "ls", Short: "List all groups",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGroupLs(cmd); err != nil {
@@ -41,9 +40,9 @@ var groupLsCmd = &cobra.Command{
 }
 
 func init() {
-	groupCmd.AddCommand(groupLsCmd)
-	addJSONFlag(groupLsCmd)
-	addGroupLsFlags(groupLsCmd)
+	groupCmd.AddCommand(groupListCmd)
+	addJSONFlag(groupListCmd)
+	addGroupLsFlags(groupListCmd)
 }
 
 func addGroupLsFlags(cmd *cobra.Command) {
@@ -88,15 +87,26 @@ func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	return &opts
 }
 
-// runGroupLs calls gitlabctl.GroupLs to return a group list
 func runGroupLs(cmd *cobra.Command) error {
 	opts := getGroupLsCmdOpts(cmd)
-	groups, err := gitlabctl.GroupLs(opts)
+	groups, err := listGroups(opts)
 	if err != nil {
 		return err
 	}
 	printGroupLsOut(cmd, groups)
 	return err
+}
+
+func listGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return nil, err
+	}
+	g, _, err := git.Groups.ListGroups(opts)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
 }
 
 func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {

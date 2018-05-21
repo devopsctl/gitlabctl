@@ -1,4 +1,4 @@
-package gitlabctl
+package cmd
 
 import (
 	"fmt"

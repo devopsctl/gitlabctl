@@ -24,7 +24,7 @@ import (
 	"testing"
 )
 
-func TestGroupLsCmd(t *testing.T) {
+func TestGroupLs(t *testing.T) {
 	setupGitlabEnvVars()
 	tt := []struct {
 		args map[string]string
@@ -46,9 +46,9 @@ func TestGroupLsCmd(t *testing.T) {
 		},
 	}
 
-	cmd := groupLsCmd
+	cmd := groupListCmd
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(tc.args), func(t *testing.T) {
+		t.Run(getSubTestNameFromFlagsMap(cmd, tc.args), func(t *testing.T) {
 			execT := execTestCmdFlags{t, cmd, tc.args}
 			execT.assertNilErr()
 		})
