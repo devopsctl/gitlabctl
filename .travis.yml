@@ -11,6 +11,7 @@ services:
 before_install:
   - docker-compose up -d
   - |
+    jq --version
     ctr=0
     max_retries=30
     while [ $(curl -I -u "root:123qwe123" localhost:10080/users/sign_in | head -1 | grep 200 | wc -l | tr -d ' ') -ne 1 ]; do
@@ -22,9 +23,20 @@ before_install:
         exit 1
       fi
     done
+    echo "============   installing jq     =============="
+    # mv ./testdata/jq-linux64 /usr/local/bin/jq 
+    # export PATH=$PATH:/usr/local/bin
+    # jq --version
+    echo "============ setting up test data ============="
+    ./testdata/get_token.sh # creates the token.txt
+    ./testdata/seeder.sh # reads the token.txt
+    echo "============ test data completed  ============="
 
 script:
-  - make coverage
+  - |
+    cat token.txt
+    export GITLAB_PRIVATE_TOKEN=$(cat token.txt)
+    make coverage
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) # Set CODECOV_TOKEN in your environment variables.

@@ -90,11 +90,12 @@ func resetFlagsFromMap(cmd *cobra.Command, flagsMap map[string]string) error {
 // visual output of the flags and their values when running the test suite.
 func getSubTestNameFromFlagsMap(cmd *cobra.Command,
 	flagsMap map[string]string) string {
-	name := "COMMAND:::>" + cmd.Parent().Name() +
-		" " + cmd.Name() + ":::>WITH_FLAGS:::>"
+	name := "[COMMAND=" + cmd.Parent().Name() +
+		" " + cmd.Name() + "][WITH_FLAGS="
 	for k, v := range flagsMap {
-		name += fmt.Sprintf("[--%s=%v]", k, v)
+		name += fmt.Sprintf("(--%s=%v)", k, v)
 	}
+	name += "]"
 	return name
 }
 

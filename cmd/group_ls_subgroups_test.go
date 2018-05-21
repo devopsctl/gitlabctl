@@ -11,17 +11,17 @@ func TestGroupLsSubgroup(t *testing.T) {
 	}{
 		{
 			args: map[string]string{
-				"path": "boom",
+				"path": "DevOps",
 				"json": "true",
 			},
 		},
 		{
 			args: map[string]string{
-				"path":          "boom",
+				"path":          "DevOps",
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
-				"search":        " ",
+				"search":        "SecOps",
 				"sort":          "desc",
 				"order-by":      "path",
 			},
