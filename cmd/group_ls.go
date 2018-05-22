@@ -21,7 +21,6 @@
 package cmd
 
 import (
-	"log"
 	"os"
 	"strconv"
 
@@ -31,10 +30,11 @@ import (
 )
 
 var groupListCmd = &cobra.Command{
-	Use: "ls", Short: "List all groups",
+	Use:   "ls",
+	Short: "List all groups",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGroupLs(cmd); err != nil {
-			log.Fatal(err)
+			er(err)
 		}
 	},
 }
@@ -93,7 +93,7 @@ func runGroupLs(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupLsOut(cmd, groups)
+	printGroupLsOut(cmd, groups...)
 	return err
 }
 
@@ -109,7 +109,7 @@ func listGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 	return g, nil
 }
 
-func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {
+func printGroupLsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	if getFlagBool(cmd, "json") {
 		printJSON(groups)
 		return
@@ -119,10 +119,13 @@ func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {
 	header := []string{
 		"ID", "NAME", "PATH", "VISIBILITY", "LFS ENABLED", "PARENT_ID",
 	}
-	if cmd.Flag("statistics").Changed {
-		header = append(header,
-			"STORAGE SIZE", "REPO SIZE", "LFS SIZE", "JOB ARTIFACT SIZE",
-		)
+	statsFlag := cmd.Flag("statistics")
+	if statsFlag != nil {
+		if cmd.Flag("statistics").Changed {
+			header = append(header,
+				"STORAGE SIZE", "REPO SIZE", "LFS SIZE", "JOB ARTIFACT SIZE",
+			)
+		}
 	}
 	table.SetHeader(header)
 
@@ -131,11 +134,13 @@ func printGroupLsOut(cmd *cobra.Command, groups []*gitlab.Group) {
 			strconv.Itoa(v.ID), v.Name, v.Path, gitlab.Stringify(v.Visibility),
 			strconv.FormatBool(v.LFSEnabled), strconv.Itoa(v.ParentID),
 		}
-		if getFlagBool(cmd, "statistics") {
-			row = append(row, strconv.FormatInt(v.Statistics.StorageSize, 10),
-				strconv.FormatInt(v.Statistics.RepositorySize, 10),
-				strconv.FormatInt(v.Statistics.LfsObjectsSize, 10),
-				strconv.FormatInt(v.Statistics.JobArtifactsSize, 10))
+		if statsFlag != nil {
+			if getFlagBool(cmd, "statistics") {
+				row = append(row, strconv.FormatInt(v.Statistics.StorageSize, 10),
+					strconv.FormatInt(v.Statistics.RepositorySize, 10),
+					strconv.FormatInt(v.Statistics.LfsObjectsSize, 10),
+					strconv.FormatInt(v.Statistics.JobArtifactsSize, 10))
+			}
 		}
 		table.Append(row)
 	}

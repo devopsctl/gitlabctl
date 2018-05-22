@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 	"github.com/xanzy/go-gitlab"
 )
@@ -32,7 +30,7 @@ var groupListSubgroupsCmd = &cobra.Command{
 	Short: "List all the projects of a group",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runListSubgroups(cmd); err != nil {
-			log.Fatal(err)
+			er(err)
 		}
 	},
 }
@@ -53,7 +51,7 @@ func runListSubgroups(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupLsOut(cmd, groups)
+	printGroupLsOut(cmd, groups...)
 	return nil
 }
 
