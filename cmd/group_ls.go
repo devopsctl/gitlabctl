@@ -23,6 +23,7 @@ package cmd
 import (
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
@@ -117,7 +118,8 @@ func printGroupLsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 
 	table := tablewriter.NewWriter(os.Stdout)
 	header := []string{
-		"ID", "NAME", "PATH", "VISIBILITY", "LFS ENABLED", "PARENT_ID",
+		"ID", "NAME", "PATH", "PARENT_ID", "VISIBILITY",
+		"REQUEST ACCESS ENABLED", "LFS ENABLED",
 	}
 	statsFlag := cmd.Flag("statistics")
 	if statsFlag != nil {
@@ -131,8 +133,11 @@ func printGroupLsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 
 	for _, v := range groups {
 		row := []string{
-			strconv.Itoa(v.ID), v.Name, v.Path, gitlab.Stringify(v.Visibility),
-			strconv.FormatBool(v.LFSEnabled), strconv.Itoa(v.ParentID),
+			strconv.Itoa(v.ID), v.Name, v.FullPath,
+			strconv.Itoa(v.ParentID),
+			strings.Replace(gitlab.Stringify(v.Visibility), `"`, "", -1),
+			strconv.FormatBool(v.RequestAccessEnabled),
+			strconv.FormatBool(v.LFSEnabled),
 		}
 		if statsFlag != nil {
 			if getFlagBool(cmd, "statistics") {
