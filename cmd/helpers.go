@@ -38,7 +38,7 @@ func er(msg interface{}) {
 // addPathFlag adds the --path flag
 func addPathFlag(cmd *cobra.Command) {
 	cmd.Flags().String("path", "",
-		"the group name, id or full the path"+
+		"the group name, id or full the path "+
 			"including the parent group (path/to/group)")
 	if err := cmd.MarkFlagRequired("path"); err != nil {
 		panic(err)

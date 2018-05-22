@@ -21,13 +21,8 @@
 package cmd
 
 import (
-	"os"
-	"strconv"
-	"strings"
-
-	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"github.com/xanzy/go-gitlab"
+	gitlab "github.com/xanzy/go-gitlab"
 )
 
 var groupListCmd = &cobra.Command{
@@ -46,55 +41,13 @@ func init() {
 	addGroupLsFlags(groupListCmd)
 }
 
-func addGroupLsFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("all-available", false,
-		"Show all the groups you have access to"+
-			"(defaults to false for authenticated users, true for admin)")
-	cmd.Flags().Bool("owned", false,
-		"Limit to groups owned by the current user")
-	cmd.Flags().Bool("statistics", false,
-		"Include group statistics (admins only)")
-	cmd.Flags().String("sort", "asc",
-		"Order groups in asc or desc order. Default is asc")
-	cmd.Flags().String("search", "",
-		"Return the list of authorized groups matching the search criteria")
-	cmd.Flags().String("order-by", "name",
-		"Order groups by name or path. Default is name")
-}
-
-// getGroupLsCmdOpts maps the cmd flags to gitlab.ListGroupsOptions struct.
-// It also ensures that the struct field that is associated with the command
-// flag does not use the flag default value.
-func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
-	var opts gitlab.ListGroupsOptions
-	if cmd.Flag("all-available").Changed {
-		opts.AllAvailable = gitlab.Bool(getFlagBool(cmd, "all-available"))
-	}
-	if cmd.Flag("owned").Changed {
-		opts.Owned = gitlab.Bool(getFlagBool(cmd, "owned"))
-	}
-	if cmd.Flag("statistics").Changed {
-		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "statistics"))
-	}
-	if cmd.Flag("sort").Changed {
-		opts.Sort = gitlab.String(getFlagString(cmd, "sort"))
-	}
-	if cmd.Flag("search").Changed {
-		opts.Search = gitlab.String(getFlagString(cmd, "search"))
-	}
-	if cmd.Flag("order-by").Changed {
-		opts.OrderBy = gitlab.String(getFlagString(cmd, "order-by"))
-	}
-	return &opts
-}
-
 func runGroupLs(cmd *cobra.Command) error {
 	opts := getGroupLsCmdOpts(cmd)
 	groups, err := listGroups(opts)
 	if err != nil {
 		return err
 	}
-	printGroupLsOut(cmd, groups...)
+	printGroupsOut(cmd, groups...)
 	return err
 }
 
@@ -108,46 +61,4 @@ func listGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 		return nil, err
 	}
 	return g, nil
-}
-
-func printGroupLsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
-	if getFlagBool(cmd, "json") {
-		printJSON(groups)
-		return
-	}
-
-	table := tablewriter.NewWriter(os.Stdout)
-	header := []string{
-		"ID", "NAME", "PATH", "PARENT_ID", "VISIBILITY",
-		"REQUEST ACCESS ENABLED", "LFS ENABLED",
-	}
-	statsFlag := cmd.Flag("statistics")
-	if statsFlag != nil {
-		if cmd.Flag("statistics").Changed {
-			header = append(header,
-				"STORAGE SIZE", "REPO SIZE", "LFS SIZE", "JOB ARTIFACT SIZE",
-			)
-		}
-	}
-	table.SetHeader(header)
-
-	for _, v := range groups {
-		row := []string{
-			strconv.Itoa(v.ID), v.Name, v.FullPath,
-			strconv.Itoa(v.ParentID),
-			strings.Replace(gitlab.Stringify(v.Visibility), `"`, "", -1),
-			strconv.FormatBool(v.RequestAccessEnabled),
-			strconv.FormatBool(v.LFSEnabled),
-		}
-		if statsFlag != nil {
-			if getFlagBool(cmd, "statistics") {
-				row = append(row, strconv.FormatInt(v.Statistics.StorageSize, 10),
-					strconv.FormatInt(v.Statistics.RepositorySize, 10),
-					strconv.FormatInt(v.Statistics.LfsObjectsSize, 10),
-					strconv.FormatInt(v.Statistics.JobArtifactsSize, 10))
-			}
-		}
-		table.Append(row)
-	}
-	table.Render()
 }
