@@ -38,25 +38,25 @@ func newOAuthClient(oAuthToken, apihttpURL string) (*gitlab.Client, error) {
 }
 
 func newGitlabClient() (*gitlab.Client, error) {
-	if get("USERNAME") != "" && get("PASSWORD") != "" && get("HTTP_URL") != "" {
-		gitlabClient, err := newBasicAuthClient(get("USERNAME"),
-			get("PASSWORD"),
-			get("HTTP_URL"),
+	if getE("USERNAME") != "" && getE("PASSWORD") != "" && getE("HTTP_URL") != "" {
+		gitlabClient, err := newBasicAuthClient(getE("USERNAME"),
+			getE("PASSWORD"),
+			getE("HTTP_URL"),
 		)
 		if err != nil {
 			return nil, err
 		}
 		return gitlabClient, nil
 	}
-	if get("PRIVATE_TOKEN") != "" && get("API_HTTP_URL") != "" {
-		gitlabClient, err := newClient(get("PRIVATE_TOKEN"), get("API_HTTP_URL"))
+	if getE("PRIVATE_TOKEN") != "" && getE("API_HTTP_URL") != "" {
+		gitlabClient, err := newClient(getE("PRIVATE_TOKEN"), getE("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
 		return gitlabClient, nil
 	}
-	if get("OAUTH_TOKEN") != "" && get("API_HTTP_URL") != "" {
-		gitlabClient, err := newOAuthClient(get("OAUTH_TOKEN"), get("API_HTTP_URL"))
+	if getE("OAUTH_TOKEN") != "" && getE("API_HTTP_URL") != "" {
+		gitlabClient, err := newOAuthClient(getE("OAUTH_TOKEN"), getE("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +65,7 @@ func newGitlabClient() (*gitlab.Client, error) {
 	return nil, fmt.Errorf("no clients were created. GITLAB variables may not be set properly")
 }
 
-func get(e string) string {
+func getE(e string) string {
 	viper.SetEnvPrefix("GITLAB")
 	if err := viper.BindEnv(e); err != nil {
 		panic(err)

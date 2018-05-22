@@ -10,6 +10,7 @@
 
 * [Development Setup](#development-setup)
 	* [Requirements](#requirements)
+	* [Environment Variables and Test Data](#environment-variables-and-test-data)
 	* [Branching](#branching)
 	* [Issue Tracker](#issue-tracker)
 	* [Before Pushing your Commit](#before-pushing-your-commit)
@@ -57,8 +58,24 @@ gitlab client package https://godoc.org/github.com/xanzy/go-gitlab.
 * Install docker.
 * Install local gitlab instance using the [docker-compose](./docker-compose.yml) 
 file. Run `docker-compose up -d`.
-* Setup the private api token for the `root` user. 
-We must have a hardcoded private token soon.
+
+### Environment Variables and Test Data
+
+To be in the same local environment setup, all developers including Travis CI 
+must have the same Gitlab credentials.
+
+To set the environment variables as credentials:
+
+```bash
+source testdata/credentials.sh # set the environment variables
+env | grep GITLAB # check GITLAB variables
+```
+
+To seed your local gitlab instance:
+
+```bash
+testdata/seeder.sh
+```
 
 ### Branching 
 

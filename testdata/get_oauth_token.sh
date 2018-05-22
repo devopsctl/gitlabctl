@@ -1,4 +1,4 @@
 #!/bin/bash -x
 
-curl -X POST "http://localhost:10080/oauth/token?grant_type=password&username=root&password=123qwe123" | jq '.access_token' | tr -d '"'
+curl -X POST "${GITLAB_HTTP_URL}/oauth/token?grant_type=password&username=${GITLAB_USERNAME}&password=${GITLAB_PASSWORD}" | jq '.access_token' | tr -d '"'
 

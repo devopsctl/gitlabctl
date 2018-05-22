@@ -25,7 +25,7 @@ import (
 )
 
 func TestGroupLs(t *testing.T) {
-	setupGitlabEnvVars()
+	setBasicAuthEnvs()
 	tt := []struct {
 		args map[string]string
 	}{

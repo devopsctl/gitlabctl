@@ -31,13 +31,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setEnv(name, value string) {
-	if err := os.Setenv(name, value); err != nil {
+func setE(k, v string) {
+	if err := os.Setenv(k, v); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("SETTING ENVIRONMENT %s = %s\n", k, v)
 }
 
-func unsetEnv(k ...string) {
+func unsetE(k ...string) {
 	for _, v := range k {
 		if err := os.Unsetenv(v); err != nil {
 			log.Fatal(err)
