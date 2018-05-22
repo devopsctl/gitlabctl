@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/xanzy/go-gitlab"
+	gitlab "github.com/xanzy/go-gitlab"
 
 	"github.com/spf13/viper"
 )

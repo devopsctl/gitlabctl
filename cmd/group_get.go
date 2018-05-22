@@ -22,7 +22,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/xanzy/go-gitlab"
+	gitlab "github.com/xanzy/go-gitlab"
 )
 
 var groupGetCmd = &cobra.Command{
@@ -47,7 +47,7 @@ func runGroupGet(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupLsOut(cmd, g)
+	printGroupsOut(cmd, g)
 	return err
 }
 

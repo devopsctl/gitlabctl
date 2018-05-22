@@ -22,7 +22,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/xanzy/go-gitlab"
+	gitlab "github.com/xanzy/go-gitlab"
 )
 
 var groupListSubgroupsCmd = &cobra.Command{
@@ -51,7 +51,7 @@ func runListSubgroups(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupLsOut(cmd, groups...)
+	printGroupsOut(cmd, groups...)
 	return nil
 }
 
