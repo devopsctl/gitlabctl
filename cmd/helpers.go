@@ -23,11 +23,17 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/golang/glog"
 
 	"github.com/spf13/cobra"
 )
+
+func er(msg interface{}) {
+	fmt.Println("Error:", msg)
+	os.Exit(1)
+}
 
 // addPathFlag adds the --path flag
 func addPathFlag(cmd *cobra.Command) {
