@@ -74,7 +74,7 @@ env | grep GITLAB # check GITLAB variables
 To seed your local gitlab instance:
 
 ```bash
-testdata/seeder.sh
+testdata/seeder.sh $GITLAB_HTTP_URL $GITLAB_USERNAME $GITLAB_PASSWORD
 ```
 
 ### Branching 
