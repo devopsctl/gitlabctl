@@ -32,7 +32,7 @@ before_install:
       fi
     done
     echo "============ setting up test data ============="
-    ./testdata/seeder.sh 
+    ./testdata/seeder.sh $GITLAB_HTTP_URL $GITLAB_USERNAME $GITLAB_PASSWORD 
     echo "============ test data completed  ============="
 
 script:
