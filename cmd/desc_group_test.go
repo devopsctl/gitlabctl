@@ -22,7 +22,7 @@ package cmd
 
 import "testing"
 
-func TestGroupGet(t *testing.T) {
+func TestDescGroup(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
 		args map[string]string
@@ -47,9 +47,9 @@ func TestGroupGet(t *testing.T) {
 	}
 
 	for _, tc := range tt {
-		testName := getSubTestNameFromFlagsMap(groupGetCmd, tc.args)
+		testName := getSubTestNameFromFlagsMap(descGroupCmd, tc.args)
 		t.Run(testName, func(t *testing.T) {
-			execT := execTestCmdFlags{t, groupGetCmd, tc.args}
+			execT := execTestCmdFlags{t, descGroupCmd, tc.args}
 			execT.assertNilErr()
 		})
 	}

@@ -5,8 +5,8 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-// addGroupLsFlags adds common flags for listing groups and subgroups commands
-func addGroupLsFlags(cmd *cobra.Command) {
+// addGetGroupsFlags adds common flags for listing groups and subgroups commands
+func addGetGroupsFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("all-available", false,
 		"Show all the groups you have access to "+
 			"(defaults to false for authenticated users, true for admin)")
@@ -22,10 +22,10 @@ func addGroupLsFlags(cmd *cobra.Command) {
 		"Order groups by name or path. Default is name")
 }
 
-// getGroupLsCmdOpts maps the cmd flags to gitlab.ListGroupsOptions struct.
+// getListGroupsOptions maps the cmd flags to gitlab.ListGroupsOptions struct.
 // It also ensures that the struct field that is associated with the command
 // flag does not use the flag default value.
-func getGroupLsCmdOpts(cmd *cobra.Command) *gitlab.ListGroupsOptions {
+func getListGroupsOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	var opts gitlab.ListGroupsOptions
 	if cmd.Flag("all-available").Changed {
 		opts.AllAvailable = gitlab.Bool(getFlagBool(cmd, "all-available"))

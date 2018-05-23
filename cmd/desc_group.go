@@ -25,38 +25,39 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var groupListCmd = &cobra.Command{
-	Use:   "ls",
-	Short: "List all groups",
+var descGroupCmd = &cobra.Command{
+	Use:     "group",
+	Aliases: []string{"g"},
+	Short:   "Describe a group",
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := runGroupLs(cmd); err != nil {
+		if err := runDescGroup(cmd); err != nil {
 			er(err)
 		}
 	},
 }
 
 func init() {
-	groupCmd.AddCommand(groupListCmd)
-	addJSONFlag(groupListCmd)
-	addGroupLsFlags(groupListCmd)
+	descCmd.AddCommand(descGroupCmd)
+	addJSONFlag(descGroupCmd)
+	addPathFlag(descGroupCmd)
 }
 
-func runGroupLs(cmd *cobra.Command) error {
-	opts := getGroupLsCmdOpts(cmd)
-	groups, err := listGroups(opts)
+func runDescGroup(cmd *cobra.Command) error {
+	path := getFlagString(cmd, "path")
+	g, err := descGroup(path)
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, groups...)
-	return nil
+	printGroupsOut(cmd, g)
+	return err
 }
 
-func listGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
+func descGroup(path string) (*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.ListGroups(opts)
+	g, _, err := git.Groups.GetGroup(path)
 	if err != nil {
 		return nil, err
 	}

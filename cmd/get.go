@@ -22,48 +22,16 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var groupListSubgroupsCmd = &cobra.Command{
-	Use:   "ls-subgroup",
-	Short: "List all the projects of a group",
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := runListSubgroups(cmd); err != nil {
-			er(err)
-		}
-	},
+var getCmd = &cobra.Command{
+	Use:     "get",
+	Aliases: []string{"fetch"},
+	Short:   "Get all items of a gitlab resource",
+	Long: "All gitlab resources " +
+		"can be found here https://docs.gitlab.com/ce/api/#resources",
 }
 
 func init() {
-	groupCmd.AddCommand(groupListSubgroupsCmd)
-	addPathFlag(groupListSubgroupsCmd)
-	addJSONFlag(groupListSubgroupsCmd)
-	addGroupLsFlags(groupListSubgroupsCmd)
-}
-
-func runListSubgroups(cmd *cobra.Command) error {
-	// to reuse the same opts mapping from groupLsCmd for groupLsSubGroup
-	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
-	opts := (*gitlab.ListSubgroupsOptions)(getGroupLsCmdOpts(cmd))
-	path := getFlagString(cmd, "path")
-	groups, err := listSubgroups(path, opts)
-	if err != nil {
-		return err
-	}
-	printGroupsOut(cmd, groups...)
-	return nil
-}
-
-func listSubgroups(gid interface{},
-	opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return nil, err
-	}
-	g, _, err := git.Groups.ListSubgroups(gid, opts)
-	if err != nil {
-		return nil, err
-	}
-	return g, nil
+	rootCmd.AddCommand(getCmd)
 }

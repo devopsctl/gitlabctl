@@ -17,32 +17,33 @@
 * [Custom Packages](#custom-packages)
 * [Test Driven Development](#test-driven-development)
 * [How the Commands Authenticate](#how-the-commands-authenticate)
-* [Group Command - `group`](#group-command---group)
-	* [Get details of a group - `get`](#get-details-of-a-group---get)
-	* [List all groups - `ls`](#list-all-groups---ls)
-	* [List all the subgroups of a group - `ls-subgroup`](#list-all-the-subgroups-of-a-group---ls-subgroup)
-	* [List all the projects of a group - `ls-project`](#list-all-the-projects-of-a-group---ls-project)
-	* [Delete a group - `rm`](#delete-a-group---rm)
-	* [Create a group - `new`](#create-a-group---new)
-	* [Edit a group - `edit`](#edit-a-group---edit)
-	* [List all members of a group - `ls-member`](#list-all-members-of-a-group---ls-member)
-	* [Remove a group member - `rm-member`](#remove-a-group-member---rm-member)
-	* [Add a group member - `new-member`](#add-a-group-member---new-member)
-	* [Remove all group members - `rm-all-member`](#remove-all-group-members---rm-all-member)
-* [Project Service Command - `project`](#project-service-command---project)
-	* [List all projects - `ls`](#list-all-projects---ls)
-	* [Delete a project - `rm`](#delete-a-project---rm)
-	* [Create a project - `new`](#create-a-project---new)
-	* [Edit a project - `edit`](#edit-a-project---edit)
-	* [List all members of a project - `ls-member`](#list-all-members-of-a-project---ls-member)
-	* [Remove a project member - `rm-member`](#remove-a-project-member---rm-member)
-	* [Add a project member - `new-member`](#add-a-project-member---new-member)
-	* [Remove all project members - `rm-all-member`](#remove-all-project-members---rm-all-member)
-	* [List all hooks of a project - `ls-hooks`](#list-all-hooks-of-a-project---ls-hooks)
-	* [Add a project hook - `new-hook`](#add-a-project-hook---new-hook)
-	* [Edit a project hook - `edit-hook`](#edit-a-project-hook---edit-hook)
-	* [Delete a project hook - `rm-hook`](#delete-a-project-hook---rm-hook)
-	* [Delete all hooks in a project - `rm-all-hook`](#delete-all-hooks-in-a-project---rm-all-hook)
+* [Commands Pattern](#commands-pattern)
+* [Group Commands](#group-commands)
+	* [Get details of a group - `desc group`](#get-details-of-a-group---desc-group)
+	* [Get all groups - `get groups`](#get-all-groups---get-groups)
+	* [List all the subgroups of a group - `get subgroups`](#list-all-the-subgroups-of-a-group---get-subgroups)
+	* [Get all the projects of a group - `get projects`](#get-all-the-projects-of-a-group---get-projects)
+	* [Remove a group - `remove group`](#remove-a-group---remove-group)
+	* [Add a new group - `new group`](#add-a-new-group---new-group)
+	* [Edit a group - `edit group`](#edit-a-group---edit-group)
+	* [List all members of a group - `get group-members`](#list-all-members-of-a-group---get-group-members)
+	* [Remove a group member - `remove group-member`](#remove-a-group-member---remove-group-member)
+	* [Add a group member - `new member`](#add-a-group-member---new-member)
+	* [Remove all group members - `remove all-members`](#remove-all-group-members---remove-all-members)
+* [Project Commands](#project-commands)
+	* [List all projects - `get projects`](#list-all-projects---get-projects)
+	* [Delete a project - `remove project`](#delete-a-project---remove-project)
+	* [Create a project - `new project`](#create-a-project---new-project)
+	* [Edit a project - `edit project`](#edit-a-project---edit-project)
+	* [Get all members of a project - `get project-members`](#get-all-members-of-a-project---get-project-members)
+	* [Remove a project member - `remove project-member`](#remove-a-project-member---remove-project-member)
+	* [Add a project member - `new project-member`](#add-a-project-member---new-project-member)
+	* [Remove all project members - `remove all-project-members`](#remove-all-project-members---remove-all-project-members)
+	* [List all hooks of a project - `get project-hooks`](#list-all-hooks-of-a-project---get-project-hooks)
+	* [Add a project hook - `new project-hook`](#add-a-project-hook---new-project-hook)
+	* [Edit a project hook - `edit project-hook`](#edit-a-project-hook---edit-project-hook)
+	* [Delete a project hook - `remove project-hook`](#delete-a-project-hook---remove-project-hook)
+	* [Delete all hooks in a project - `remove all-project-hooks`](#delete-all-hooks-in-a-project---remove-all-project-hooks)
 
 <!-- vim-markdown-toc -->
 
@@ -121,11 +122,49 @@ Authenticate using environment variables.
 * Private token authentication - `GITLAB_PRIVATE_TOKEN` and `GITLAB_API_HTTP_URL`
 * OAuth2 token authentication - `GITLAB_OAUTH_TOKEN` and `GITLAB_API_HTTP_URL`
 
-## Group Command - `group`
+## Commands Pattern
+
+The command chain format is inspired from `kubectl` or `oc` Verb -> Subject -> Flags.
+
+* get/fetch
+	* groups
+	* subgroups
+	* group-members
+	* projects
+	* project-members
+	* project-hooks 
+	* users
+* desc/describe
+	* group
+	* group-member
+	* project
+	* project-member
+	* user
+* new
+	* group
+	* group-member
+	* project
+	* project-member
+	* user
+	* project-hook
+* edit/patch
+	* group
+	* project
+	* user
+	* project-hook
+* remove
+	* group
+	* group-member
+	* project
+	* project-member
+	* user
+	* project-hook
+
+## Group Commands
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupService
 
-### Get details of a group - `get`
+### Get details of a group - `desc group`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.GetGroup
 
@@ -134,7 +173,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.GetGroup
 | path  | string | the group name, id or full the path including the parent group | yes       |
 | json  | bool   | Print the command output to json                               | no        | false   |
 
-### List all groups - `ls`
+### Get all groups - `get groups`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroups
 
@@ -148,7 +187,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroups
 | statistics    | bool   | Include group statistics (admins only)                                                             | no        |         |
 | json          | bool   | Print the command output to json                                                                   | no        | false   |
 
-### List all the subgroups of a group - `ls-subgroup`
+### List all the subgroups of a group - `get subgroups`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListSubgroups
 
@@ -163,7 +202,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListSubgroup
 | statistics    | bool   | Include group statistics (admins only)                                                             | no        |         |
 | json          | bool   | Print the command output to json                                                                   | no        | false   |
 
-### List all the projects of a group - `ls-project`
+### Get all the projects of a group - `get projects`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroupProjects
 
@@ -171,7 +210,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroupPro
 | :---- | :---   | :----------                                                    | :-------- | :------ |
 | path  | string | the group name, id or full the path including the parent group | yes       |
 
-### Delete a group - `rm`
+### Remove a group - `remove group`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.DeleteGroup
 
@@ -179,7 +218,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.DeleteGroup
 | :---- | :---   | :----------                                                    | :-------- |
 | path  | string | the group name, id or full the path including the parent group | yes       |
 
-### Create a group - `new`
+### Add a new group - `new group`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.CreateGroup
 
@@ -195,16 +234,16 @@ Custom flag validation:
 
 * If optional or non-required flags are not set, do not use or ignore the default value.
 
-### Edit a group - `edit`
+### Edit a group - `edit group`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.UpdateGroup
 
-| Flag                   | Type   | Description                   | Required? | Default |
-| :----                  | :---   | :----------                   | :-------- | :------ |
-| path  | string | the group name, id or full the path including the parent group | yes       |
-| visibility             | string | public, internal or private   | no        |
-| lfs-enabled            | bool   | Enable LFS                    | no        |
-| request-access-enabled | bool   | Enable Request Access         | no        |
+| Flag                   | Type   | Description                                                    | Required? | Default |
+| :----                  | :---   | :----------                                                    | :-------- | :------ |
+| path                   | string | the group name, id or full the path including the parent group | yes       |         |
+| visibility             | string | public, internal or private                                    | no        |         |
+| lfs-enabled            | bool   | Enable LFS                                                     | no        |         |
+| request-access-enabled | bool   | Enable Request Access                                          | no        |         |
 
 Custom flag validation:
 
@@ -213,7 +252,7 @@ Custom flag validation:
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupMembersService
 
-### List all members of a group - `ls-member` 
+### List all members of a group - `get group-members`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroupMembers
 
@@ -221,7 +260,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupsService.ListGroupMem
 | :---- | :---   | :----------                                                    | :-------- | :------ |
 | path  | string | the group name, id or full the path including the parent group | yes       |         |
 
-### Remove a group member - `rm-member`
+### Remove a group member - `remove group-member`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupMembersService.RemoveGroupMember
 
@@ -230,7 +269,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupMembersService.Remove
 | path     | string | the group name, id or full the path including the parent group | yes       |         |
 | username | string | username to remove                                             | yes       |         |
 
-### Add a group member - `new-member`
+### Add a group member - `new member`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupMembersService.AddGroupMember
 
@@ -240,7 +279,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#GroupMembersService.AddGro
 | username     | string | username to add                                                                                                       | yes       |         |
 | access-level | int    | member group access level (0, 10, 20, 30, 40, 50). Reference: https://docs.gitlab.com/ce/permissions/permissions.html | no        | 10      |
 
-### Remove all group members - `rm-all-member`
+### Remove all group members - `remove all-members`
 
 A wrapper of listing all group members and deleting them all.
 
@@ -249,14 +288,11 @@ A wrapper of listing all group members and deleting them all.
 | path         | string | the group name, id or full the path including the parent group                                                        | yes       |         |
 | username     | string | username to add                                                                                                       | yes       |         |
 
-## Project Service Command - `project`
+## Project Commands
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService
 
-| Flag  | Type | Description | Required? | Default |
-| :---- | :--- | :---------- | :-------- | :------ |
-
-### List all projects - `ls`
+### List all projects - `get projects`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.ListProjects
 
@@ -264,7 +300,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.ListProjec
 | :---- | :---   | :----------                                                                          | :-------- | :------ |
 | path  | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### Delete a project - `rm`
+### Delete a project - `remove project`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.DeleteProject
 
@@ -272,7 +308,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.DeleteProj
 | :---- | :---   | :----------                                                                          | :-------- | :------ |
 | path  | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### Create a project - `new`
+### Create a project - `new project`
 
 | Flag                                        | Type   | Description                                                                                     | Required? | Default |
 | :----                                       | :---   | :----------                                                                                     | :-------- | :------ |
@@ -302,7 +338,7 @@ Custom flag validation:
 
 * If optional or non-required flags are not set, do not use or ignore the default value.
 
-### Edit a project - `edit`
+### Edit a project - `edit project`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.EditProject
 
@@ -334,7 +370,7 @@ Custom flag validation:
 * If optional or non-required flags are not set, do not use or ignore the default value.
 * Command requires at least 1 optional flag to be set.
 
-### List all members of a project - `ls-member`
+### Get all members of a project - `get project-members`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.ListProjectMembers
 
@@ -342,7 +378,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.List
 | :---- | :---   | :----------                                                                          | :-------- | :------ |
 | path  | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### Remove a project member - `rm-member`
+### Remove a project member - `remove project-member`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.AddProjectMember
 
@@ -351,7 +387,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.AddP
 | path     | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 | username | string | the new member username                                                              | yes       |         |
 
-### Add a project member - `new-member`
+### Add a project member - `new project-member`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.AddProjectMember
 
@@ -361,7 +397,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectMembersService.AddP
 | username     | string | the new member username                                                                                               | yes       |         |
 | access-level | int    | member group access level (0, 10, 20, 30, 40, 50). Reference: https://docs.gitlab.com/ce/permissions/permissions.html | no        | 10      |
 
-### Remove all project members - `rm-all-member`
+### Remove all project members - `remove all-project-members`
 
 A wrapper of listing all project members and removing them all.
 
@@ -369,7 +405,7 @@ A wrapper of listing all project members and removing them all.
 | :----    | :---   | :----------                                                                          | :-------- | :------ |
 | path     | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### List all hooks of a project - `ls-hooks`
+### List all hooks of a project - `get project-hooks`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.ListProjectHooks
 
@@ -377,31 +413,31 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.ListProjec
 | :---- | :---   | :----------                                                                          | :-------- | :------ |
 | path  | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### Add a project hook - `new-hook`
+### Add a project hook - `new project-hook`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.AddProjectHook
 
 | Flag                       | Type   | Description                                                                          | Required? | Default |
 | :----                      | :---   | :----------                                                                          | :-------- | :------ |
 | path                       | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
-| url                        | string | The hook URL                                                                         | yes       |
-| push-events                | bool   | Trigger hook on push events                                                          |           |
-| issues-events              | bool   | Trigger hook on issues events                                                        |           |
-| confidential-issues-events | bool   | Trigger hook on confidential issues events                                           |           |
-| merge-requests-events      | bool   | Trigger hook on merge requests events                                                |           |
-| tag-push-events            | bool   | Trigger hook on tag push events                                                      |           |
-| note-events                | bool   | Trigger hook on note events                                                          |           |
-| job-events                 | bool   | Trigger hook on wiki events                                                          |           |
-| pipeline-events            | bool   | Trigger hook on pipeline events                                                      |           |
-| wiki-page-events           | bool   | Trigger hook on wiki events                                                          |           |
-| enable-ssl-verification    | bool   | Do SSL verification when triggering the hook                                         |           |
-| token                      | string | Secret token to validate received payloads                                           |           |
+| url                        | string | The hook URL                                                                         | yes       |         |
+| push-events                | bool   | Trigger hook on push events                                                          |           |         |
+| issues-events              | bool   | Trigger hook on issues events                                                        |           |         |
+| confidential-issues-events | bool   | Trigger hook on confidential issues events                                           |           |         |
+| merge-requests-events      | bool   | Trigger hook on merge requests events                                                |           |         |
+| tag-push-events            | bool   | Trigger hook on tag push events                                                      |           |         |
+| note-events                | bool   | Trigger hook on note events                                                          |           |         |
+| job-events                 | bool   | Trigger hook on wiki events                                                          |           |         |
+| pipeline-events            | bool   | Trigger hook on pipeline events                                                      |           |         |
+| wiki-page-events           | bool   | Trigger hook on wiki events                                                          |           |         |
+| enable-ssl-verification    | bool   | Do SSL verification when triggering the hook                                         |           |         |
+| token                      | string | Secret token to validate received payloads                                           |           |         |
 
 Custom flag validation:
 
 * If optional or non-required flags are not set, do not use or ignore the default value.
 
-### Edit a project hook - `edit-hook`
+### Edit a project hook - `edit project-hook`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.EditProjectHook
 
@@ -409,25 +445,25 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.EditProjec
 | :----                      | :---   | :----------                                                                          | :-------- | :------ |
 | id                         | int    | hook id                                                                              | yes       |         |
 | path                       | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
-| url                        | string | The hook URL                                                                         | yes       |
-| push-events                | bool   | Trigger hook on push events                                                          |           |
-| issues-events              | bool   | Trigger hook on issues events                                                        |           |
-| confidential-issues-events | bool   | Trigger hook on confidential issues events                                           |           |
-| merge-requests-events      | bool   | Trigger hook on merge requests events                                                |           |
-| tag-push-events            | bool   | Trigger hook on tag push events                                                      |           |
-| note-events                | bool   | Trigger hook on note events                                                          |           |
-| job-events                 | bool   | Trigger hook on wiki events                                                          |           |
-| pipeline-events            | bool   | Trigger hook on pipeline events                                                      |           |
-| wiki-page-events           | bool   | Trigger hook on wiki events                                                          |           |
-| enable-ssl-verification    | bool   | Do SSL verification when triggering the hook                                         |           |
-| token                      | string | Secret token to validate received payloads                                           |           |
+| url                        | string | The hook URL                                                                         | yes       |         |
+| push-events                | bool   | Trigger hook on push events                                                          |           |         |
+| issues-events              | bool   | Trigger hook on issues events                                                        |           |         |
+| confidential-issues-events | bool   | Trigger hook on confidential issues events                                           |           |         |
+| merge-requests-events      | bool   | Trigger hook on merge requests events                                                |           |         |
+| tag-push-events            | bool   | Trigger hook on tag push events                                                      |           |         |
+| note-events                | bool   | Trigger hook on note events                                                          |           |         |
+| job-events                 | bool   | Trigger hook on wiki events                                                          |           |         |
+| pipeline-events            | bool   | Trigger hook on pipeline events                                                      |           |         |
+| wiki-page-events           | bool   | Trigger hook on wiki events                                                          |           |         |
+| enable-ssl-verification    | bool   | Do SSL verification when triggering the hook                                         |           |         |
+| token                      | string | Secret token to validate received payloads                                           |           |         |
 
 Custom flag validation:
 
 * If optional or non-required flags are not set, do not use or ignore the default value.
 * Command requires at least 1 optional flag to be set.
 
-### Delete a project hook - `rm-hook`
+### Delete a project hook - `remove project-hook`
 
 API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.DeleteProjectHook
 
@@ -436,7 +472,7 @@ API doc: https://godoc.org/github.com/xanzy/go-gitlab#ProjectsService.DeleteProj
 | id    | int    | hook id                                                                              | yes       |         |
 | path  | string | the project name, id or full the path including the parent group - (path/to/project) | yes       |         |
 
-### Delete all hooks in a project - `rm-all-hook`
+### Delete all hooks in a project - `remove all-project-hooks`
 
 A wrapper of listing all project hooks and deleting all of them.
 

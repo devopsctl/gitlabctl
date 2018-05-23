@@ -24,9 +24,10 @@ import (
 	"testing"
 )
 
-func TestGroupLs(t *testing.T) {
+func TestLsGroups(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
+		name string
 		args map[string]string
 	}{
 		{
@@ -47,8 +48,8 @@ func TestGroupLs(t *testing.T) {
 	}
 
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(groupListCmd, tc.args), func(t *testing.T) {
-			execT := execTestCmdFlags{t, groupListCmd, tc.args}
+		t.Run(getSubTestNameFromFlagsMap(getGroupsCmd, tc.args), func(t *testing.T) {
+			execT := execTestCmdFlags{t, getGroupsCmd, tc.args}
 			execT.assertNilErr()
 		})
 	}
