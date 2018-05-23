@@ -37,45 +37,44 @@ curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups/${pgroup2_id}/members?access_toke
 
 # create subgroup
 echo "Creating a subgroup"
-pgroup1_sgroup1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=ParentGroup1SubGroup1&path=ParentGroup1SubGroup1&parent_id=${pgroup1_id}" | jq '.id')
-pgroup1_sgroup2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=ParentGroup1SubGroup2&path=ParentGroup1SubGroup2&parent_id=${pgroup1_id}" | jq '.id')
-pgroup2_sgroup1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=ParentGroup2SubGroup1&path=ParentGroup2SubGroup1&parent_id=${pgroup2_id}" | jq '.id')
-pgroup2_sgroup2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=ParentGroup2SubGroup2&path=ParentGroup2SubGroup2&parent_id=${pgroup2_id}" | jq '.id')
+sgroup1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup1&path=SubGroup1&parent_id=${pgroup1_id}" | jq '.id')
+sgroup2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup2&path=SubGroup2&parent_id=${pgroup1_id}" | jq '.id')
+sgroup3_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup3&path=SubGroup3&parent_id=${pgroup2_id}" | jq '.id')
+sgroup4_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup4&path=SubGroup4&parent_id=${pgroup2_id}" | jq '.id')
 
 # create group project
 echo "Creating a project in group/subgroup"
 curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup1_id}"
 curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup1_id}"
 curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup1_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup1_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup1_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup1_sgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup1_sgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup1_sgroup2_id}"
-
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup2_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup2_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup2_sgroup1_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project1&namespace_id=${pgroup2_sgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project2&namespace_id=${pgroup2_sgroup2_id}"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project3&namespace_id=${pgroup2_sgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project4&namespace_id=${sgroup1_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project5&namespace_id=${sgroup1_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project6&namespace_id=${sgroup1_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project7&namespace_id=${sgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project8&namespace_id=${sgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project9&namespace_id=${sgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project10&namespace_id=${pgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project11&namespace_id=${pgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project12&namespace_id=${pgroup2_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project13&namespace_id=${sgroup3_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project14&namespace_id=${sgroup3_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project15&namespace_id=${sgroup3_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project16&namespace_id=${sgroup4_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project17&namespace_id=${sgroup4_id}"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects?access_token=${access_token}&name=Project18&namespace_id=${sgroup4_id}"
 
 # create user project
 echo "Creating users project"
-project1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user7_id}?access_token=${access_token}&name=User7Project" | jq '.id')
-project2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user8_id}?access_token=${access_token}&name=User8Project" | jq '.id')
-project3_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user9_id}?access_token=${access_token}&name=User9Project" | jq '.id')
-project4_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user10_id}?access_token=${access_token}&name=User10Project" | jq '.id')
-project5_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user11_id}?access_token=${access_token}&name=User11Project" | jq '.id')
+project1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user7_id}?access_token=${access_token}&name=Project19" | jq '.id')
+project2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user8_id}?access_token=${access_token}&name=Project20" | jq '.id')
+project3_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user9_id}?access_token=${access_token}&name=Project21" | jq '.id')
+project4_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user10_id}?access_token=${access_token}&name=Project22" | jq '.id')
+project5_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/user/${user11_id}?access_token=${access_token}&name=Project23" | jq '.id')
 
 # create hooks for projects
 echo "Creating hooks for projects"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project1_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample.com%2F"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project2_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample.com%2F"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project3_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample.com%2F"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project4_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample.com%2F"
-curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project5_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample.com%2F"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project1_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample1.com%2F"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project2_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample2.com%2F"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project3_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample3.com%2F"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project4_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample4.com%2F"
+curl -X POST "${GITLAB_HTTP_URL}/api/v4/projects/${project5_id}/hooks?access_token=${access_token}&url=http%3A%2F%2Fwww.sample5.com%2F"
