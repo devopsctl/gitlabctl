@@ -24,11 +24,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var groupCmd = &cobra.Command{
-	Use:   "group",
-	Short: "Control a gitlab group",
+var descCmd = &cobra.Command{
+	Use:     "describe",
+	Aliases: []string{"desc"},
+	Short:   "Describe a gitlab resource",
+	Long: "All gitlab resources " +
+		"can be found here https://docs.gitlab.com/ce/api/#resources",
 }
 
 func init() {
-	rootCmd.AddCommand(groupCmd)
+	rootCmd.AddCommand(descCmd)
 }
