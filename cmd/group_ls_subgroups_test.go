@@ -11,28 +11,28 @@ func TestGroupLsSubgroup(t *testing.T) {
 	}{
 		{
 			args: map[string]string{
-				"path": "DevOps",
+				"path": "Group2",
 				"json": "true",
 			},
 		},
 		{
 			args: map[string]string{
-				"path":          "DevOps",
+				"path":          "Group2",
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
-				"search":        "SecOps",
+				"search":        "ParentGroup2SubGroup2",
 				"sort":          "desc",
 				"order-by":      "path",
 			},
 		},
 	}
 
-	cmd := groupListSubgroupsCmd
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(cmd, tc.args), func(t *testing.T) {
-			execT := &execTestCmdFlags{t, cmd, tc.args}
-			execT.assertNilErr()
-		})
+		t.Run(getSubTestNameFromFlagsMap(groupListSubgroupsCmd, tc.args),
+			func(t *testing.T) {
+				execT := &execTestCmdFlags{t, groupListSubgroupsCmd, tc.args}
+				execT.assertNilErr()
+			})
 	}
 }

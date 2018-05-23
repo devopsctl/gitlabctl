@@ -29,13 +29,13 @@ func TestGroupGet(t *testing.T) {
 	}{
 		{
 			args: map[string]string{
-				"path": "DevOps",
+				"path": "Group1",
 				"json": "true",
 			},
 		},
 		{
 			args: map[string]string{
-				"path": "DevOps/SecOps",
+				"path": "Group2/ParentGroup2SubGroup2",
 			},
 		},
 		// TODO: add negative testing
