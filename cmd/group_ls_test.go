@@ -39,17 +39,16 @@ func TestGroupLs(t *testing.T) {
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
-				"search":        "DevOps",
+				"search":        "Group1",
 				"sort":          "desc",
 				"order-by":      "path",
 			},
 		},
 	}
 
-	cmd := groupListCmd
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(cmd, tc.args), func(t *testing.T) {
-			execT := execTestCmdFlags{t, cmd, tc.args}
+		t.Run(getSubTestNameFromFlagsMap(groupListCmd, tc.args), func(t *testing.T) {
+			execT := execTestCmdFlags{t, groupListCmd, tc.args}
 			execT.assertNilErr()
 		})
 	}
