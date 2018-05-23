@@ -82,6 +82,10 @@ func resetFlagsFromMap(cmd *cobra.Command, flagsMap map[string]string) error {
 		if err := cmd.Flags().Set(k, defValue); err != nil {
 			return err
 		}
+		// NOTE(@bzon): force the Changed state of the flag to be false.
+		// Because even if the flag is set to its default value,
+		// it is still technically "Changed".
+		cmd.Flag(k).Changed = false
 	}
 	return nil
 }
