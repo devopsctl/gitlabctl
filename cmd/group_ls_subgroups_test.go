@@ -21,7 +21,7 @@ func TestGroupLsSubgroup(t *testing.T) {
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
-				"search":        "ParentGroup2SubGroup2",
+				"search":        "SubGroup3",
 				"sort":          "desc",
 				"order-by":      "path",
 			},

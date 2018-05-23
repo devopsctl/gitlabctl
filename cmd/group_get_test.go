@@ -35,7 +35,7 @@ func TestGroupGet(t *testing.T) {
 		},
 		{
 			args: map[string]string{
-				"path": "Group2/ParentGroup2SubGroup2",
+				"path": "Group2/SubGroup3",
 			},
 		},
 		// TODO: add negative testing
