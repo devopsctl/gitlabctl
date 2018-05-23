@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewGroup(t *testing.T) {
@@ -13,7 +15,7 @@ func TestNewGroup(t *testing.T) {
 		args map[string]string
 	}{
 		{
-			name: "All flags are used",
+			name: "Use group name as namespace",
 			args: map[string]string{
 				"name":                   "Test_New_Group_Under_Group1",
 				"namespace":              "Group1",
@@ -24,7 +26,7 @@ func TestNewGroup(t *testing.T) {
 			},
 		},
 		{
-			name: "Without namespace flag",
+			name: "Use without namespace flag",
 			args: map[string]string{
 				"name":                   "Test_New_Group_Without_Namespace",
 				"visibility":             "private",
@@ -33,10 +35,10 @@ func TestNewGroup(t *testing.T) {
 			},
 		},
 		{
-			name: "Using an existing id as namespace",
+			name: "Use group ID as namespace",
 			args: map[string]string{
 				"name":                   "Test_New_Group_Using_Namespace",
-				"namespace":              "13",
+				"namespace":              "13", // is Group1
 				"visibility":             "private",
 				"lfs-enabled":            "false",
 				"request-access-enabled": "false",
@@ -52,7 +54,12 @@ func TestNewGroup(t *testing.T) {
 			execT.assertNilErr()
 		})
 		// TODO(@bzon): delete created group
-		// deleteGroup(tc.name)
-		// deleteGroup("Group1/" + tc.name)
+		group := tc.args["name"]
+		if _, ok := tc.args["namespace"]; ok {
+			group = "Group1/" + tc.args["name"]
+		}
+		if err := deleteGroup(group); err != nil {
+			assert.Nil(t, err)
+		}
 	}
 }
