@@ -71,7 +71,7 @@ func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 			opts.ParentID = &id
 		}
 		// find the group as string and get it's id
-		opts.ParentID = getGroupID(getFlagString(cmd, "namespace"))
+		opts.ParentID = gitlab.Int(getGroupID(getFlagString(cmd, "namespace")))
 	}
 	if cmd.Flag("visibility").Changed {
 		v, err := getFlagVisibility(cmd)
@@ -92,12 +92,12 @@ func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 
 // get the groupID of a group
 // exits with error if group does not exist
-func getGroupID(path string) *int {
+func getGroupID(path string) int {
 	g, err := descGroup(path)
 	if err != nil {
 		er(err)
 	}
-	return gitlab.Int(g.ID)
+	return g.ID
 }
 
 // printGroupsOut prints the group list/get commands to a table view or json
