@@ -48,7 +48,7 @@ func runGroupLs(cmd *cobra.Command) error {
 		return err
 	}
 	printGroupsOut(cmd, groups...)
-	return err
+	return nil
 }
 
 func listGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
