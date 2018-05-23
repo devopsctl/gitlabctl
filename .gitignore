@@ -7,6 +7,7 @@
 coverage.txt
 token.txt
 cookies.txt
+gitlabctl
 
 # Test binary, build with `go test -c`
 *.test
