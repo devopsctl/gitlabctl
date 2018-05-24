@@ -31,25 +31,31 @@ import (
 
 var cfgFile string
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "gitlabctl",
-	Short: "Control gitlab in the command line.",
-	Long: `Set the following environment variables for authentication
+var authDoc = `
+Set the following environment variables to authenticate the command-line client to Gitlab.
 
-* Basic Authentication (if using username and password)
+* Basic Authentication (if using a username and password)
     - GITLAB_USERNAME
     - GITLAB_PASSWORD
     - GITLAB_HTTP_URL
 
-* Private Token (if using private token) 
+* Private Token (if using a private token)
     - GITLAB_PRIVATE_TOKEN
     - GITLAB_API_HTTP_URL
 
-* OAuth Token (if using oauth token)
+* OAuth Token (if using an oauth token)
     - GITLAB_OAUTH_TOKEN
     - GITLAB_API_HTTP_URL
-`,
+`
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "gitlabctl",
+	Short: "Gitlab command-line interface",
+	Long: `gitlabctl is a Gitlab client for the command-line.
+
+This client helps you view, update, create, and delete Gitlab resources from the 
+command-line interface.` + "\n" + authDoc,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

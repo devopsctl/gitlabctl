@@ -62,7 +62,7 @@ func newGitlabClient() (*gitlab.Client, error) {
 		}
 		return gitlabClient, nil
 	}
-	return nil, fmt.Errorf("no clients were created. GITLAB variables may not be set properly")
+	return nil, fmt.Errorf("no client was created. GITLAB variables may not be set properly. \n %s", authDoc)
 }
 
 func getE(e string) string {
