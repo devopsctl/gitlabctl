@@ -30,6 +30,54 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
+// getListProjectsOptions maps the cmd flags to gitlab.ListProjectsOptions struct.
+// It also ensures that the struct field that is associated with the command
+// flag does not use the flag default value.
+func getListProjectsOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
+	var opts gitlab.ListProjectsOptions
+	if cmd.Flag("archived").Changed {
+		opts.Archived = gitlab.Bool(getFlagBool(cmd, "archived"))
+	}
+	if cmd.Flag("order-by").Changed {
+		opts.OrderBy = gitlab.String(getFlagString(cmd, "order-by"))
+	}
+	if cmd.Flag("sort").Changed {
+		opts.Sort = gitlab.String(getFlagString(cmd, "sort"))
+	}
+	if cmd.Flag("search").Changed {
+		opts.Search = gitlab.String(getFlagString(cmd, "search"))
+	}
+	if cmd.Flag("simple").Changed {
+		opts.Simple = gitlab.Bool(getFlagBool(cmd, "simple"))
+	}
+	if cmd.Flag("owned").Changed {
+		opts.Owned = gitlab.Bool(getFlagBool(cmd, "owned"))
+	}
+	if cmd.Flag("membership").Changed {
+		opts.Membership = gitlab.Bool(getFlagBool(cmd, "membership"))
+	}
+	if cmd.Flag("starred").Changed {
+		opts.Starred = gitlab.Bool(getFlagBool(cmd, "starred"))
+	}
+	if cmd.Flag("statistics").Changed {
+		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "statistics"))
+	}
+	if cmd.Flag("visibility").Changed {
+		v, err := getFlagVisibility(cmd)
+		if err != nil {
+			er(err)
+		}
+		opts.Visibility = v
+	}
+	if cmd.Flag("with-issues-enabled").Changed {
+		opts.WithIssuesEnabled = gitlab.Bool(getFlagBool(cmd, "with-issues-enabled"))
+	}
+	if cmd.Flag("with-merge-requests-enabled").Changed {
+		opts.WithMergeRequestsEnabled = gitlab.Bool(getFlagBool(cmd, "with-merge-requests-enabled"))
+	}
+	return &opts
+}
+
 // printProjectsOut prints the project list/get commands to a table view or json
 func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 	if getFlagBool(cmd, "json") {
