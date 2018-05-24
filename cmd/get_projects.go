@@ -29,6 +29,12 @@ var getProjectsCmd = &cobra.Command{
 	Use:     "projects",
 	Aliases: []string{"project", "p"},
 	Short:   "List all projects",
+	Example: "\n# simple view" +
+		"\ngitlabctl get projects --simple\n" +
+		"\n# display projects only with issues enabled" +
+		"\ngitlabctl get projects --with-issues-enabled\n" +
+		"\n# display private projects only" +
+		"\ngitlabctl get projects --visibility private",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGetProjects(cmd); err != nil {
 			er(err)

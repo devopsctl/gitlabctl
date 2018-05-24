@@ -24,18 +24,20 @@ import (
 	"testing"
 )
 
-func TestLsProjects(t *testing.T) {
+func TestGetProjects(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
 		name string
 		args map[string]string
 	}{
 		{
+			name: "Use with json flag",
 			args: map[string]string{
 				"json": "true",
 			},
 		},
 		{
+			name: "Use without json flag",
 			args: map[string]string{
 				"archived":                    "true",
 				"search":                      "project",

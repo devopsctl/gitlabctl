@@ -10,6 +10,20 @@ List all projects
 gitlabctl get projects [flags]
 ```
 
+### Examples
+
+```
+
+# simple view
+gitlabctl get projects --simple
+
+# display projects only with issues enabled
+gitlabctl get projects --with-issues-enabled
+
+# display private projects only
+gitlabctl get projects --visibility private
+```
+
 ### Options
 
 ```
