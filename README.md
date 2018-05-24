@@ -8,6 +8,7 @@
 
 <!-- vim-markdown-toc GFM -->
 
+* [Completed Commands Documentation](#completed-commands-documentation)
 * [Development Setup](#development-setup)
 	* [Requirements](#requirements)
 	* [Environment Variables and Test Data](#environment-variables-and-test-data)
@@ -55,6 +56,11 @@
 Our goal is to create a gitlab cli written in Go that is simple to use and
 easy to maintain. The code must be simple and flags must be patterned with the
 gitlab client package https://godoc.org/github.com/xanzy/go-gitlab.
+
+## Completed Commands Documentation
+
+Please read the [commands documentation](./docs/gitlabctl.md). 
+This is auto-generated using `gitlabctl gendocs`.
 
 ## Development Setup
 
