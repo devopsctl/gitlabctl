@@ -25,12 +25,20 @@ import "testing"
 func TestGetGroupProject(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
+		name string
 		args map[string]string
 	}{
 		{
+			name: "Use with json flag",
 			args: map[string]string{
 				"path": "Group1",
 				"json": "true",
+			},
+		},
+		{
+			name: "Use without json flag",
+			args: map[string]string{
+				"path": "Group1",
 			},
 		},
 	}
