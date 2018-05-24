@@ -42,7 +42,6 @@ func init() {
 }
 
 func runListProjects(cmd *cobra.Command) error {
-	//opts := (*gitlab.ListGroupProjectsOptions)(getGroupProjectsLsCmdOpts(cmd))
 	path := getFlagString(cmd, "path")
 	projects, err := listProjects(path, nil)
 	if err != nil {
