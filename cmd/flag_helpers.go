@@ -45,6 +45,34 @@ func addGetGroupsFlags(cmd *cobra.Command) {
 		"Order groups by name or path. Default is name")
 }
 
+// addGetProjectsFlags adds common flags for `get projects` commands
+func addGetProjectsFlags(cmd *cobra.Command) {
+	cmd.Flags().Bool("archived", false,
+		"Limit by archived status")
+	cmd.Flags().String("order-by", "created_at",
+		"Return projects ordered by id, name, path, created_at, updated_at, or last_activity_at fields. Default is created_at")
+	cmd.Flags().String("sort", "desc",
+		"Return projects sorted in asc or desc order. Default is desc")
+	cmd.Flags().String("search", "",
+		"Return list of projects matching the search criteria")
+	cmd.Flags().Bool("simple", false,
+		"Return only the ID, URL, name, and path of each project")
+	cmd.Flags().Bool("owned", false,
+		"Limit by projects owned by the current user")
+	cmd.Flags().Bool("membership", false,
+		"Limit by projects that the current user is a member of")
+	cmd.Flags().Bool("starred", false,
+		"Limit by projects starred by the current user")
+	cmd.Flags().Bool("statistics", false,
+		"Include project statistics")
+	cmd.Flags().String("visibility", "private",
+		"Limit by visibility public, internal, or private")
+	cmd.Flags().Bool("with_issues_enabled", false,
+		"Limit by enabled issues feature")
+	cmd.Flags().Bool("with_merge_requests_enabled", false,
+		"Limit by enabled merge requests feature")
+}
+
 // addNewGroupFlags adds common flags for `new group` or `edit group` commands
 func addNewGroupFlags(cmd *cobra.Command) {
 	addNameFlag(cmd)
