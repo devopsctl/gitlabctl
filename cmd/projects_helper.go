@@ -21,44 +21,37 @@
 package cmd
 
 import (
+	"os"
+	"strconv"
+	"strings"
+
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var getGroupProjectsCmd = &cobra.Command{
-	Use:   "group-projects",
-	Short: "List all the projects of a group",
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := runGetGroupProjects(cmd); err != nil {
-			er(err)
+// printProjectsOut prints the project list/get commands to a table view or json
+func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
+	if getFlagBool(cmd, "json") {
+		printJSON(projects)
+		return
+	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	header := []string{
+		"ID", "NAME", "PATH", "URL", "VISIBILITY",
+		"REQUEST ACCESS ENABLED", "LFS ENABLED",
+	}
+	table.SetHeader(header)
+
+	for _, v := range projects {
+		row := []string{
+			strconv.Itoa(v.ID), v.Name, v.PathWithNamespace, v.WebURL,
+			strings.Replace(gitlab.Stringify(v.Visibility), `"`, "", -1),
+			strconv.FormatBool(v.RequestAccessEnabled),
+			strconv.FormatBool(v.LFSEnabled),
 		}
-	},
-}
-
-func init() {
-	getCmd.AddCommand(getGroupProjectsCmd)
-	addPathFlag(getGroupProjectsCmd)
-	addJSONFlag(getGroupProjectsCmd)
-}
-
-func runGetGroupProjects(cmd *cobra.Command) error {
-	path := getFlagString(cmd, "path")
-	projects, err := getGroupProjects(path, nil)
-	if err != nil {
-		return err
+		table.Append(row)
 	}
-	printProjectsOut(cmd, projects...)
-	return nil
-}
-
-func getGroupProjects(path string, opts *gitlab.ListGroupProjectsOptions) ([]*gitlab.Project, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return nil, err
-	}
-	p, _, err := git.Groups.ListGroupProjects(path, opts)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
+	table.Render()
 }
