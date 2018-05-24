@@ -142,29 +142,3 @@ func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	}
 	table.Render()
 }
-
-// printGroupProjectsOut prints the group project list/get commands to a table view or json
-func printGroupProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
-	if getFlagBool(cmd, "json") {
-		printJSON(projects)
-		return
-	}
-
-	table := tablewriter.NewWriter(os.Stdout)
-	header := []string{
-		"ID", "NAME", "PATH", "URL", "VISIBILITY",
-		"REQUEST ACCESS ENABLED", "LFS ENABLED",
-	}
-	table.SetHeader(header)
-
-	for _, v := range projects {
-		row := []string{
-			strconv.Itoa(v.ID), v.Name, v.PathWithNamespace, v.WebURL,
-			strings.Replace(gitlab.Stringify(v.Visibility), `"`, "", -1),
-			strconv.FormatBool(v.RequestAccessEnabled),
-			strconv.FormatBool(v.LFSEnabled),
-		}
-		table.Append(row)
-	}
-	table.Render()
-}
