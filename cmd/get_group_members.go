@@ -50,7 +50,7 @@ func runGetGroupMembers(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, groupsMembers)
+	printGroupMembersOut(cmd, groupsMembers...)
 	return err
 }
 

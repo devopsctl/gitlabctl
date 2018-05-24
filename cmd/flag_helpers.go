@@ -93,6 +93,17 @@ func addPathFlag(cmd *cobra.Command) {
 	}
 }
 
+//
+// TODO(@migueltanada) Update Desciprtion of username for all commands
+//
+func addUsernameFlag(cmd *cobra.Command) {
+	cmd.Flags().String("username", "",
+		"username of user/member")
+	if err := cmd.MarkFlagRequired("username"); err != nil {
+		panic(err)
+	}
+}
+
 func addJSONFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("json", false, "print the command output to json")
 }
