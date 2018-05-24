@@ -37,26 +37,27 @@ func TestLsProjects(t *testing.T) {
 		},
 		{
 			args: map[string]string{
-				"archived": "true",
-				"search": "project",
-				"simple": "false",
-				"owned" : "true",
-				"sort": "desc",
-				"order-by": "name",
-				"membership": "false",
-				"starred": "false",
-				"statistics": "false",
-				"visibility": "private",
-				"with_issues_enabled": "false",
-				"with_merge_requests_enabled": "false",
+				"archived":                    "true",
+				"search":                      "project",
+				"simple":                      "false",
+				"owned":                       "true",
+				"sort":                        "desc",
+				"order-by":                    "name",
+				"membership":                  "false",
+				"starred":                     "false",
+				"statistics":                  "false",
+				"visibility":                  "private",
+				"with-issues-enabled":         "false",
+				"with-merge-requests-enabled": "false",
 			},
 		},
 	}
 
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(getProjectsCmd, tc.args), func(t *testing.T) {
-			execT := execTestCmdFlags{t, getProjectsCmd, tc.args}
-			execT.assertNilErr()
-		})
+		t.Run(getSubTestNameFromFlagsMap(getProjectsCmd, tc.args),
+			func(t *testing.T) {
+				execT := execTestCmdFlags{t, getProjectsCmd, tc.args}
+				execT.assertNilErr()
+			})
 	}
 }

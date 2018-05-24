@@ -50,7 +50,8 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("archived", false,
 		"Limit by archived status")
 	cmd.Flags().String("order-by", "created_at",
-		"Return projects ordered by id, name, path, created_at, updated_at, or last_activity_at fields. Default is created_at")
+		"Return projects ordered by id, name, path, created_at, updated_at, "+
+			"or last_activity_at fields. Default is created_at")
 	cmd.Flags().String("sort", "desc",
 		"Return projects sorted in asc or desc order. Default is desc")
 	cmd.Flags().String("search", "",
@@ -67,9 +68,9 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 		"Include project statistics")
 	cmd.Flags().String("visibility", "private",
 		"Limit by visibility public, internal, or private")
-	cmd.Flags().Bool("with_issues_enabled", false,
+	cmd.Flags().Bool("with-issues-enabled", false,
 		"Limit by enabled issues feature")
-	cmd.Flags().Bool("with_merge_requests_enabled", false,
+	cmd.Flags().Bool("with-merge-requests-enabled", false,
 		"Limit by enabled merge requests feature")
 }
 

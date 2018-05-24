@@ -25,8 +25,8 @@ gitlabctl get projects [flags]
       --starred                       Limit by projects starred by the current user
       --statistics                    Include project statistics
       --visibility string             Limit by visibility public, internal, or private (default "private")
-      --with_issues_enabled           Limit by enabled issues feature
-      --with_merge_requests_enabled   Limit by enabled merge requests feature
+      --with-issues-enabled           Limit by enabled issues feature
+      --with-merge-requests-enabled   Limit by enabled merge requests feature
 ```
 
 ### Options inherited from parent commands

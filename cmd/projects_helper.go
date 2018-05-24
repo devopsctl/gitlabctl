@@ -69,11 +69,11 @@ func getListProjectsOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 		}
 		opts.Visibility = v
 	}
-	if cmd.Flag("with_issues_enabled").Changed {
-		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "with_issues_enabled"))
+	if cmd.Flag("with-issues-enabled").Changed {
+		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "with-issues-enabled"))
 	}
-	if cmd.Flag("with_merge_requests_enabled").Changed {
-		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "with_merge_requests_enabled"))
+	if cmd.Flag("with-merge-requests-enabled").Changed {
+		opts.Statistics = gitlab.Bool(getFlagBool(cmd, "with-merge-requests-enabled"))
 	}
 	return &opts
 }
