@@ -50,9 +50,9 @@ func TestDescGroupMember(t *testing.T) {
 	}
 
 	for _, tc := range tt {
-		testName := getSubTestNameFromFlagsMap(descGroupMembersCmd, tc.args)
+		testName := getSubTestNameFromFlagsMap(descGroupMemberCmd, tc.args)
 		t.Run(testName, func(t *testing.T) {
-			execT := execTestCmdFlags{t, descGroupMembersCmd, tc.args}
+			execT := execTestCmdFlags{t, descGroupMemberCmd, tc.args}
 			execT.assertNilErr()
 		})
 	}

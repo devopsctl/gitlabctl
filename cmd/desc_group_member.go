@@ -8,7 +8,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-var descGroupMembersCmd = &cobra.Command{
+var descGroupMemberCmd = &cobra.Command{
 	Use:     "group-member",
 	Aliases: []string{"group-members"},
 	Short:   "Describe a group member",
@@ -20,10 +20,10 @@ var descGroupMembersCmd = &cobra.Command{
 }
 
 func init() {
-	descCmd.AddCommand(descGroupMembersCmd)
-	addPathFlag(descGroupMembersCmd)
-	addUsernameFlag(descGroupMembersCmd)
-	addJSONFlag(descGroupMembersCmd)
+	descCmd.AddCommand(descGroupMemberCmd)
+	addPathFlag(descGroupMemberCmd)
+	addUsernameFlag(descGroupMemberCmd)
+	addJSONFlag(descGroupMemberCmd)
 }
 
 func runDescGroupMembers(cmd *cobra.Command) error {
