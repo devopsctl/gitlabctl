@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 	"github.com/xanzy/go-gitlab"
 )
@@ -33,7 +31,7 @@ var getGroupMembersCmd = &cobra.Command{
 	Short:   "List all members of a group",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGetGroupMembers(cmd); err != nil {
-			log.Fatal(err)
+			er(err)
 		}
 	},
 }
@@ -41,20 +39,20 @@ var getGroupMembersCmd = &cobra.Command{
 func init() {
 	getCmd.AddCommand(getGroupMembersCmd)
 	addPathFlag(getGroupMembersCmd)
-	addJSONFlag(getGroupMembersCmd)
 }
 
 func runGetGroupMembers(cmd *cobra.Command) error {
 	path := getFlagString(cmd, "path")
-	groupsMembers, err := listGroupsMembers(path, nil)
+	members, err := listGroupsMembers(path, nil)
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, groupsMembers)
+	printGroupMembersOut(cmd, members...)
 	return err
 }
 
-func listGroupsMembers(gid interface{}, opts *gitlab.ListGroupMembersOptions) ([]*gitlab.GroupMember, error) {
+func listGroupsMembers(gid interface{},
+	opts *gitlab.ListGroupMembersOptions) ([]*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err

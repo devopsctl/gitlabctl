@@ -23,6 +23,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
+
+	"github.com/ghodss/yaml"
+	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cobra"
+	gitlab "github.com/xanzy/go-gitlab"
 )
 
 func er(msg interface{}) {
@@ -30,11 +37,90 @@ func er(msg interface{}) {
 	os.Exit(1)
 }
 
-// printJSON prints the gitlab struct output to a json format
+func removeQuotes(s string) string {
+	return strings.Replace(s, `"`, "", -1)
+}
+
 func printJSON(v interface{}) {
 	b, err := json.MarshalIndent(v, "", " ")
 	if err != nil {
-		er(err)
+		er(fmt.Sprintf("failed printing to json: %v", err))
 	}
 	fmt.Println(string(b))
+}
+
+func printYAML(v interface{}) {
+	b, err := yaml.Marshal(v)
+	if err != nil {
+		er(fmt.Sprintf("failed printing to yaml: %v", err))
+	}
+	fmt.Println(string(b))
+}
+
+func printTable(header []string, rows [][]string) {
+	if len(header) > 5 {
+		panic("maximum allowed length of a table header is only 5.")
+	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader(header)
+	for _, row := range rows {
+		table.Append(row)
+	}
+	table.SetCaption(true,
+		"Note: Use --out=json or --out=yaml to get more resource details.")
+	table.Render()
+}
+
+func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
+	switch getFlagString(cmd, "out") {
+	case "json":
+		printJSON(groups)
+	case "yaml":
+		printYAML(groups)
+	default:
+		header := []string{"ID", "PATH", "URL", "PARENT ID", "PROJECTS COUNT"}
+		var rows [][]string
+		for _, v := range groups {
+			rows = append(rows, []string{strconv.Itoa(v.ID), v.FullPath,
+				v.WebURL, strconv.Itoa(v.ParentID),
+				strconv.Itoa(len(v.Projects))})
+		}
+		printTable(header, rows)
+	}
+}
+
+func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
+	switch getFlagString(cmd, "out") {
+	case "json":
+		printJSON(projects)
+	case "yaml":
+		printYAML(projects)
+	default:
+		header := []string{"ID", "PATH", "URL", "ISSUES COUNT", "TAGS"}
+		var rows [][]string
+		for _, v := range projects {
+			rows = append(rows, []string{strconv.Itoa(v.ID),
+				v.PathWithNamespace, v.HTTPURLToRepo,
+				strconv.Itoa(v.OpenIssuesCount),
+				strings.Join(v.TagList, ",")})
+		}
+		printTable(header, rows)
+	}
+}
+
+func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
+	switch getFlagString(cmd, "out") {
+	case "json":
+		printJSON(members)
+	case "yaml":
+		printYAML(members)
+	default:
+		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
+		var rows [][]string
+		for _, v := range members {
+			rows = append(rows, []string{strconv.Itoa(v.ID),
+				v.Username, v.Email, gitlab.Stringify(v.AccessLevel)})
+		}
+		printTable(header, rows)
+	}
 }

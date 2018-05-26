@@ -27,11 +27,13 @@ import (
 var getCmd = &cobra.Command{
 	Use:     "get",
 	Aliases: []string{"fetch"},
-	Short:   "Get all items of a gitlab resource",
-	Long: "All gitlab resources " +
-		"can be found here https://docs.gitlab.com/ce/api/#resources",
+	Short:   "Get Gitlab resources",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		validateOutFlagValue(cmd)
+	},
 }
 
 func init() {
 	rootCmd.AddCommand(getCmd)
+	addOutFlag(getCmd)
 }

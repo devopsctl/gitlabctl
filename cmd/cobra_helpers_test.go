@@ -23,19 +23,31 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"testing"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"github.com/stretchr/testify/assert"
+)
+
+type testResult string
+
+const (
+	pass testResult = "PASS"
+	fail testResult = "FAIL"
 )
 
 func setE(k, v string) {
+	tInfo(fmt.Sprintf("setting env '%s' to '%s'", k, v))
 	if err := os.Setenv(k, v); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("SETTING ENVIRONMENT %s = %s\n", k, v)
+}
+
+func tInfo(msg string) {
+	fmt.Println("--- INFO:", msg)
 }
 
 func unsetE(k ...string) {
@@ -51,21 +63,8 @@ func unsetE(k ...string) {
 // truth with regards to which flags must exists in the command.
 func checkFlagExistsInCmd(cmd *cobra.Command, flag string) error {
 	if cmdFlag := cmd.Flag(flag); cmdFlag == nil {
-		return fmt.Errorf("(%s) flag is not defined in (%s %s) command",
+		return fmt.Errorf("Unknown flag `%s` for `%s %s`",
 			flag, cmd.Parent().Name(), cmd.Name())
-	}
-	return nil
-}
-
-// setFlags assign the flag -> value from a flags map to the command
-func setFlags(cmd *cobra.Command, flagsMap map[string]string) error {
-	for k, v := range flagsMap {
-		if err := checkFlagExistsInCmd(cmd, k); err != nil {
-			return err
-		}
-		if err := cmd.Flags().Set(k, v); err != nil {
-			return fmt.Errorf("failed setting flag %s -> %s: %v", k, v, err)
-		}
 	}
 	return nil
 }
@@ -90,57 +89,98 @@ func resetFlagsFromMap(cmd *cobra.Command, flagsMap map[string]string) error {
 	return nil
 }
 
-// getSubTestNameFromFlagsMap creates a informative string according to the
-// flags map that is passed. This is used to name subtests and provide a nice
-// visual output of the flags and their values when running the test suite.
-func getSubTestNameFromFlagsMap(cmd *cobra.Command,
-	flagsMap map[string]string) string {
-	name := "[COMMAND=" + cmd.Parent().Name() +
-		" " + cmd.Name() + "][WITH_FLAGS="
-	for k, v := range flagsMap {
-		name += fmt.Sprintf("(--%s=%v)", k, v)
-	}
-	name += "]"
-	return name
-}
-
 type execTestCmdFlags struct {
 	t        *testing.T
 	cmd      *cobra.Command
 	flagsMap map[string]string
 }
 
-// assertNilErr asserts that errors are 'nil'
-// after setting the command's flags and executing it.
-func (execT *execTestCmdFlags) assertNilErr() {
-	err := setFlags(execT.cmd, execT.flagsMap)
-	assert.Nil(execT.t, err)
-	_, err = executeCommand(rootCmd,
-		execT.cmd.Parent().Name(),
-		execT.cmd.Name())
-	assert.Nil(execT.t, err)
-	assert.Nil(execT.t, resetFlagsFromMap(execT.cmd, execT.flagsMap))
+func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
+	// build up the command args and flags value
+	args := []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
+	for k, v := range execT.flagsMap {
+		arg := fmt.Sprintf("--%s=%s", k, v)
+		args = append(args, arg)
+	}
+
+	// NOTE: program exits with error should be captured here
+	stdout, err := executeCommand(rootCmd, args...)
+	if err != nil {
+		// any errors from the executeCommand should go here
+		// and not exit the program with error!
+		return err.Error(), fail
+	}
+
+	// flags must be set back to their default value
+	if err := resetFlagsFromMap(execT.cmd, execT.flagsMap); err != nil {
+		return err.Error(), fail
+	}
+	tInfo(string(pass))
+	return stdout, pass
 }
 
 // A helper to ignore os.Exit(1) errors when running a cobra Command
 // This was copied from https://github.com/spf13/cobra/blob/master/command_test.go
 func executeCommand(root *cobra.Command,
-	args ...string) (output string, err error) {
-
-	_, output, err = executeCommandC(root, args...)
-	return output, err
+	args ...string) (stdout string, err error) {
+	for _, arg := range args {
+		tInfo(arg)
+	}
+	// programs can exit with error here..
+	stdout, _, err = executeCommandC(root, args...)
+	tInfo("The command successfully returned values for assertion.")
+	return stdout, err
 }
 
 // A helper to ignore os.Exit(1) errors when running a cobra Command
 // This was copied from https://github.com/spf13/cobra/blob/master/command_test.go
 func executeCommandC(root *cobra.Command,
-	args ...string) (c *cobra.Command, output string, err error) {
+	args ...string) (stdout string, output string, err error) {
 	buf := new(bytes.Buffer)
-	// TODO: not capturing stdout
-	root.SetOutput(buf)
+	root.SetOutput(buf) // this only redirects stderr, not stdout!
 	root.SetArgs(args)
 
-	c, err = root.ExecuteC()
+	// for capturing stdout, see https://stackoverflow.com/questions/10473800/in-go-how-do-i-capture-stdout-of-a-function-into-a-string
+	old := os.Stdout // keep backup of the real stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
 
-	return c, buf.String(), err
+	_, err = root.ExecuteC()
+
+	outC := make(chan string)
+	// copy the output in a separate goroutine so printing can't block indefinitely
+	go func() {
+		var buf bytes.Buffer
+		io.Copy(&buf, r)
+		outC <- buf.String()
+	}()
+
+	// back to normal state
+	w.Close()
+	os.Stdout = old // restoring the real stdout
+	stdout = <-outC
+
+	return stdout, buf.String(), err
+}
+
+func printFlagsTable(flagsMap map[string]string, c string) string {
+	buff := new(bytes.Buffer)
+	header := []string{"FLAGS", "VALUE"}
+	table := tablewriter.NewWriter(buff)
+	table.SetHeader(header)
+	for k, v := range flagsMap {
+		table.Append([]string{k, v})
+	}
+
+	headerColor := tablewriter.Colors{
+		tablewriter.Bold, tablewriter.BgGreenColor}
+	table.SetHeaderColor(headerColor, headerColor)
+	table.SetColumnColor(tablewriter.Colors{
+		tablewriter.Bold, tablewriter.FgHiRedColor},
+		tablewriter.Colors{
+			tablewriter.Bold, tablewriter.FgHiBlackColor})
+
+	table.SetCaption(true, c)
+	table.Render()
+	return buff.String()
 }

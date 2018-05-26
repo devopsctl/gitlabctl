@@ -29,6 +29,10 @@ var getSubgroupsCmd = &cobra.Command{
 	Use:     "subgroups",
 	Aliases: []string{"subgroup", "sg"},
 	Short:   "List all the projects of a group",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		validateGroupOrderByFlagValue(cmd)
+		validateSortFlagValue(cmd)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGetSubgroups(cmd); err != nil {
 			er(err)
@@ -39,7 +43,6 @@ var getSubgroupsCmd = &cobra.Command{
 func init() {
 	getCmd.AddCommand(getSubgroupsCmd)
 	addPathFlag(getSubgroupsCmd)
-	addJSONFlag(getSubgroupsCmd)
 	addGetGroupsFlags(getSubgroupsCmd)
 }
 

@@ -22,35 +22,69 @@ package cmd
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-func TestLsGroups(t *testing.T) {
+func TestGetGroups(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
-		name string
-		args map[string]string
+		name     string
+		flagsMap map[string]string
+		result   testResult
 	}{
 		{
-			args: map[string]string{
-				"json": "true",
+			name: "print in yaml",
+			flagsMap: map[string]string{
+				"out": "yaml",
 			},
+			result: pass,
 		},
 		{
-			args: map[string]string{
+			name: "print in json and use all flags",
+			flagsMap: map[string]string{
 				"all-available": "true",
 				"owned":         "true",
 				"statistics":    "true",
 				"search":        "Group1",
-				"sort":          "desc",
+				"sort":          "asc",
 				"order-by":      "path",
+				"out":           "json",
 			},
+			result: pass,
 		},
+		{
+			name:   "print in simple view with no flags",
+			result: pass,
+		},
+		// TODO: test if flags are validated properly
+		// if the progam exits with error, you must put a validator
+		// on this command's or its parent a Command.PersistentPreRun
+		// {
+		// 	name: "invalid sort value returns an error",
+		// 	flagsMap: map[string]string{
+		// 		"sort": "xxx",
+		// 	},
+		// 	result: fail,
+		// },
+		// {
+		// 	name: "invalid order-by value returns an error",
+		// 	flagsMap: map[string]string{
+		// 		"order-by": "name",
+		// 	},
+		// 	result: fail,
+		// },
 	}
 
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(getGroupsCmd, tc.args), func(t *testing.T) {
-			execT := execTestCmdFlags{t, getGroupsCmd, tc.args}
-			execT.assertNilErr()
+		t.Run(tc.name, func(t *testing.T) {
+			execT := execTestCmdFlags{t, getGroupsCmd, tc.flagsMap}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, tc.result, execResult,
+				printFlagsTable(tc.flagsMap, stdout))
+			// TODO : validate the output of the command
+			// fmt.Println(stdout)
+			_ = stdout
 		})
 	}
 }

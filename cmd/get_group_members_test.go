@@ -21,37 +21,48 @@ package cmd
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetGroupMembers(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
-		name string
-		args map[string]string
+		name            string
+		parentCmdFlagKV map[string]string
+		flagsMap        map[string]string
 	}{
 		{
-			args: map[string]string{
+			name: "print in yaml",
+			flagsMap: map[string]string{
 				"path": "Group1",
+				"out":  "yaml",
 			},
 		},
 		{
-			args: map[string]string{
+			name: "print in json and use all flags",
+			flagsMap: map[string]string{
 				"path": "Group2",
-				"json": "false",
+				"out":  "json",
 			},
 		},
 		{
-			args: map[string]string{
+			name: "print simple table with no flags",
+			flagsMap: map[string]string{
 				"path": "Group1",
-				"json": "true",
 			},
 		},
 	}
 
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(getGroupMembersCmd, tc.args), func(t *testing.T) {
-			execT := execTestCmdFlags{t, getGroupMembersCmd, tc.args}
-			execT.assertNilErr()
+		t.Run(tc.name, func(t *testing.T) {
+			execT := execTestCmdFlags{t, getGroupMembersCmd, tc.flagsMap}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, pass, execResult,
+				printFlagsTable(tc.flagsMap, stdout))
+			// TODO : validate the output of the command
+			// fmt.Println(stdout)
+			_ = stdout
 		})
 	}
 }

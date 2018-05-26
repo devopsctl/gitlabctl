@@ -2,21 +2,26 @@ package cmd
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-func TestLsSubgroups(t *testing.T) {
+func TestGetSubgroups(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
-		args map[string]string
+		name     string
+		flagsMap map[string]string
 	}{
 		{
-			args: map[string]string{
+			name: "print in yaml",
+			flagsMap: map[string]string{
 				"path": "Group2",
-				"json": "true",
+				"out":  "yaml",
 			},
 		},
 		{
-			args: map[string]string{
+			name: "print in json and use all flags",
+			flagsMap: map[string]string{
 				"path":          "Group2",
 				"all-available": "true",
 				"owned":         "true",
@@ -24,15 +29,26 @@ func TestLsSubgroups(t *testing.T) {
 				"search":        "SubGroup3",
 				"sort":          "desc",
 				"order-by":      "path",
+				"out":           "json",
+			},
+		},
+		{
+			name: "print in simple view",
+			flagsMap: map[string]string{
+				"path": "Group2",
 			},
 		},
 	}
 
 	for _, tc := range tt {
-		t.Run(getSubTestNameFromFlagsMap(getSubgroupsCmd, tc.args),
-			func(t *testing.T) {
-				execT := &execTestCmdFlags{t, getSubgroupsCmd, tc.args}
-				execT.assertNilErr()
-			})
+		t.Run(tc.name, func(t *testing.T) {
+			execT := &execTestCmdFlags{t, getSubgroupsCmd, tc.flagsMap}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, execResult, pass,
+				printFlagsTable(tc.flagsMap, stdout))
+			// TODO : validate the output of the command
+			// fmt.Println(stdout)
+			_ = stdout
+		})
 	}
 }

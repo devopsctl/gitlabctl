@@ -38,7 +38,7 @@ var descGroupCmd = &cobra.Command{
 
 func init() {
 	descCmd.AddCommand(descGroupCmd)
-	addJSONFlag(descGroupCmd)
+	addOutFlag(descGroupCmd)
 	addPathFlag(descGroupCmd)
 }
 

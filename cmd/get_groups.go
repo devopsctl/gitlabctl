@@ -29,6 +29,10 @@ var getGroupsCmd = &cobra.Command{
 	Use:     "groups",
 	Aliases: []string{"group", "g"},
 	Short:   "List all groups",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		validateGroupOrderByFlagValue(cmd)
+		validateSortFlagValue(cmd)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runGetGroups(cmd); err != nil {
 			er(err)
@@ -38,7 +42,6 @@ var getGroupsCmd = &cobra.Command{
 
 func init() {
 	getCmd.AddCommand(getGroupsCmd)
-	addJSONFlag(getGroupsCmd)
 	addGetGroupsFlags(getGroupsCmd)
 }
 

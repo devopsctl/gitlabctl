@@ -8,6 +8,9 @@ import (
 var newGroupCmd = &cobra.Command{
 	Use:   "group",
 	Short: "Create a new group",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		validateVisibilityFlagValue(cmd)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := runNewGroup(cmd); err != nil {
 			er(err)

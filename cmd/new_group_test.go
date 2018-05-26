@@ -4,41 +4,42 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewGroup(t *testing.T) {
 	setBasicAuthEnvs()
 
 	tt := []struct {
-		name string
-		args map[string]string
+		name     string
+		flagsMap map[string]string
 	}{
 		{
-			name: "Use group name as namespace",
-			args: map[string]string{
+			name: "create group and print in yaml",
+			flagsMap: map[string]string{
 				"name":                   "Test_New_Group_Under_Group1",
-				"namespace":              "Group1",
+				"namespace":              "Group2",
 				"visibility":             "private",
 				"lfs-enabled":            "false",
 				"request-access-enabled": "false",
-				"json": "true",
+				"out": "yaml",
 			},
 		},
 		{
-			name: "Use without namespace flag",
-			args: map[string]string{
+			name: "create group and print in json with no namespace",
+			flagsMap: map[string]string{
 				"name":                   "Test_New_Group_Without_Namespace",
 				"visibility":             "private",
 				"lfs-enabled":            "false",
 				"request-access-enabled": "false",
+				"out": "json",
 			},
 		},
 		{
-			name: "Use group ID as namespace",
-			args: map[string]string{
+			name: "create group using id in namespace",
+			flagsMap: map[string]string{
 				"name":                   "Test_New_Group_Using_Namespace",
-				"namespace":              "13", // is Group1
+				"namespace":              "14", // is Group2
 				"visibility":             "private",
 				"lfs-enabled":            "false",
 				"request-access-enabled": "false",
@@ -47,19 +48,24 @@ func TestNewGroup(t *testing.T) {
 	}
 
 	for _, tc := range tt {
-		testName := getSubTestNameFromFlagsMap(newGroupCmd, tc.args)
-		testName = fmt.Sprintf("[%s]%s", tc.name, testName)
-		t.Run(testName, func(t *testing.T) {
-			execT := execTestCmdFlags{t, newGroupCmd, tc.args}
-			execT.assertNilErr()
+		t.Run(tc.name, func(t *testing.T) {
+			execT := execTestCmdFlags{t, newGroupCmd, tc.flagsMap}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, execResult, pass,
+				printFlagsTable(tc.flagsMap, stdout))
+			// TODO : validate the output of the command
+			// fmt.Println(stdout)
+			_ = stdout
 		})
-		// TODO(@bzon): delete created group
-		group := tc.args["name"]
-		if _, ok := tc.args["namespace"]; ok {
-			group = "Group1/" + tc.args["name"]
+
+		// Delete created group
+		group := tc.flagsMap["name"]
+		if _, ok := tc.flagsMap["namespace"]; ok {
+			group = "Group2/" + tc.flagsMap["name"]
 		}
 		if err := deleteGroup(group); err != nil {
-			assert.Nil(t, err)
+			tInfo(fmt.Sprintf("failed deleting group %s, got error: %v",
+				group, err))
 		}
 	}
 }
