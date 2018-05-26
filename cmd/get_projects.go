@@ -29,23 +29,42 @@ var getProjectsCmd = &cobra.Command{
 	Use:     "projects",
 	Aliases: []string{"project", "p"},
 	Short:   "List all projects",
+	// SilenceUsage:  true,
+	// SilenceErrors: true,
 	Example: `
-# get projects with full details in JSON format
+# get all projects with full details in JSON format
 gitlabctl get projects --json
 
-# get projects with simple details in JSON format
+# get all projects from a group
+gitlabctl get projects --from-group=Group1
+
+# get all projects with simple details in JSON format
 gitlabctl get projects --simple --json
 
-# get projects with issues enabled only in Table format
+# get all projects with issues enabled only in Table format
 gitlabctl get projects --with-issues-enabled
 
 # get private projects in Table format
 gitlabctl get projects --visibility private`,
-	PreRun: func(cmd *cobra.Command, args []string) {
-		validateProjectOrderByFlagValue(cmd)
-		validateVisibilityFlagValue(cmd)
+	// We use PreRunE instead of PreRun to test validation of flags in testing
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := validateSortFlagValue(cmd); err != nil {
+			return err
+		}
+		if err := validateProjectOrderByFlagValue(cmd); err != nil {
+			return err
+		}
+		if err := validateVisibilityFlagValue(cmd); err != nil {
+			return err
+		}
+		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		if getFlagString(cmd, "from-group") != "" {
+			if err := runGetProjectsFromGroup(cmd); err != nil {
+				er(err)
+			}
+		}
 		if err := runGetProjects(cmd); err != nil {
 			er(err)
 		}
@@ -77,4 +96,31 @@ func getProjects(opts *gitlab.ListProjectsOptions) ([]*gitlab.Project, error) {
 		return nil, err
 	}
 	return g, nil
+}
+
+// TODO:
+// list group project opts is currently not supported by the go-gitlab client
+// https://github.com/xanzy/go-gitlab/issues/407
+func runGetProjectsFromGroup(cmd *cobra.Command) error {
+	group := getFlagString(cmd, "from-group")
+	// opts := getListProjectsOptions(cmd)
+	projects, err := getProjectsFromGroup(group, nil)
+	if err != nil {
+		return err
+	}
+	printProjectsOut(cmd, projects...)
+	return nil
+}
+
+func getProjectsFromGroup(group string,
+	opts *gitlab.ListGroupProjectsOptions) ([]*gitlab.Project, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return nil, err
+	}
+	p, _, err := git.Groups.ListGroupProjects(group, opts)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }

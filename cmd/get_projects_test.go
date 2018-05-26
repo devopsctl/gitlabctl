@@ -31,6 +31,7 @@ func TestGetProjects(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
+		expect   testResult
 	}{
 		{
 			name: "print in yaml",
@@ -38,6 +39,7 @@ func TestGetProjects(t *testing.T) {
 				"out":        "yaml",
 				"statistics": "true",
 			},
+			expect: pass,
 		},
 		{
 			name: "print in json and use all flags",
@@ -56,9 +58,39 @@ func TestGetProjects(t *testing.T) {
 				"with-issues-enabled":         "false",
 				"with-merge-requests-enabled": "false",
 			},
+			expect: pass,
 		},
 		{
-			name: "print simple view with no flags",
+			name:   "print simple view with no flags",
+			expect: pass,
+		},
+		{
+			name: "use from-group",
+			flagsMap: map[string]string{
+				"from-group": "Group1",
+			},
+			expect: pass,
+		},
+		{
+			name: "invalid sort flag value must fail",
+			flagsMap: map[string]string{
+				"sort": "xxx",
+			},
+			expect: fail,
+		},
+		{
+			name: "invalid order-by flag value must fail",
+			flagsMap: map[string]string{
+				"order-by": "xxx",
+			},
+			expect: fail,
+		},
+		{
+			name: "invalid visibility value must fail",
+			flagsMap: map[string]string{
+				"visibility": "xxx",
+			},
+			expect: fail,
 		},
 	}
 
@@ -66,7 +98,7 @@ func TestGetProjects(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{t, getProjectsCmd, tc.flagsMap}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, execResult, pass,
+			require.Equal(t, execResult, tc.expect,
 				printFlagsTable(tc.flagsMap, stdout))
 			// TODO : validate the output of the command
 			// fmt.Println(stdout)
