@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
@@ -36,6 +37,10 @@ var gendocCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		err := doc.GenMarkdownTree(rootCmd, docsDir)
 		if err != nil {
+			er(err)
+		}
+		if err := os.Rename(docsDir+"/"+rootCmd.Name()+".md",
+			docsDir+"/index.md"); err != nil {
 			er(err)
 		}
 		fmt.Printf("The documentations have been created in %s directory.\n", docsDir)
