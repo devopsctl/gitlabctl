@@ -20,37 +20,40 @@
 
 package cmd
 
-import (
-	"os"
-	"strconv"
+import "testing"
 
-	"github.com/olekukonko/tablewriter"
-	"github.com/spf13/cobra"
-	gitlab "github.com/xanzy/go-gitlab"
-)
-
-// printGroupMembersOut prints the group members list/get commands to a table view or json
-func printGroupMembersOut(cmd *cobra.Command, groupMembers ...*gitlab.GroupMember) {
-	if getFlagBool(cmd, "json") {
-		printJSON(groupMembers)
-		return
+func TestDescGroupMember(t *testing.T) {
+	setBasicAuthEnvs()
+	tt := []struct {
+		args map[string]string
+	}{
+		{
+			args: map[string]string{
+				"path":     "Group1",
+				"username": "john.doe",
+			},
+		},
+		{
+			args: map[string]string{
+				"path":     "Group2",
+				"json":     "false",
+				"username": "amelia.walsh",
+			},
+		},
+		{
+			args: map[string]string{
+				"path":     "Group1",
+				"json":     "true",
+				"username": "matt.hunter",
+			},
+		},
 	}
 
-	table := tablewriter.NewWriter(os.Stdout)
-	header := []string{
-		"ID", "USERNAME", "EMAIL", "NAME", "STATE", "CREATED_AT",
-		"ACCESS_LEVEL", "EXPIRES_AT",
+	for _, tc := range tt {
+		testName := getSubTestNameFromFlagsMap(descGroupMemberCmd, tc.args)
+		t.Run(testName, func(t *testing.T) {
+			execT := execTestCmdFlags{t, descGroupMemberCmd, tc.args}
+			execT.assertNilErr()
+		})
 	}
-
-	table.SetHeader(header)
-
-	for _, v := range groupMembers {
-		row := []string{
-			strconv.Itoa(v.ID), v.Username, v.Email, v.Name, v.State,
-			gitlab.Stringify(v.CreatedAt), gitlab.Stringify(v.AccessLevel), gitlab.Stringify(v.ExpiresAt),
-		}
-
-		table.Append(row)
-	}
-	table.Render()
 }
