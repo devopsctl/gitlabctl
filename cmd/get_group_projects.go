@@ -38,7 +38,6 @@ var getGroupProjectsCmd = &cobra.Command{
 func init() {
 	getCmd.AddCommand(getGroupProjectsCmd)
 	addPathFlag(getGroupProjectsCmd)
-	addJSONFlag(getGroupProjectsCmd)
 }
 
 func runGetGroupProjects(cmd *cobra.Command) error {
@@ -51,7 +50,8 @@ func runGetGroupProjects(cmd *cobra.Command) error {
 	return nil
 }
 
-func getGroupProjects(path string, opts *gitlab.ListGroupProjectsOptions) ([]*gitlab.Project, error) {
+func getGroupProjects(path string,
+	opts *gitlab.ListGroupProjectsOptions) ([]*gitlab.Project, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err

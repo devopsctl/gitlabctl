@@ -20,37 +20,48 @@
 
 package cmd
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
 
 func TestDescGroup(t *testing.T) {
 	setBasicAuthEnvs()
 	tt := []struct {
-		args map[string]string
+		name     string
+		flagsMap map[string]string
 	}{
 		{
-			args: map[string]string{
+			name: "print in yaml",
+			flagsMap: map[string]string{
 				"path": "Group1",
-				"json": "true",
+				"out":  "yaml",
 			},
 		},
 		{
-			args: map[string]string{
+			name: "print in json",
+			flagsMap: map[string]string{
 				"path": "Group2/SubGroup3",
+				"out":  "json",
 			},
 		},
-		// TODO: add negative testing
-		// {
-		// 	args: map[string]string{
-		// 		"path": "NonExistentGroup",
-		// 	},
-		// },
+		{
+			name: "print simple view without flags",
+			flagsMap: map[string]string{
+				"path": "Group1",
+			},
+		},
 	}
 
 	for _, tc := range tt {
-		testName := getSubTestNameFromFlagsMap(descGroupCmd, tc.args)
-		t.Run(testName, func(t *testing.T) {
-			execT := execTestCmdFlags{t, descGroupCmd, tc.args}
-			execT.assertNilErr()
+		t.Run(tc.name, func(t *testing.T) {
+			execT := execTestCmdFlags{t, descGroupCmd, tc.flagsMap}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, execResult, pass, printFlagsTable(tc.flagsMap, stdout))
+			// TODO : validate the output of the command
+			// fmt.Println(stdout)
+			_ = stdout
 		})
 	}
 }

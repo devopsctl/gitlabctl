@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -30,19 +31,34 @@ import (
 
 // addGetGroupsFlags adds common flags for `get groups` and `get subgroups` commands
 func addGetGroupsFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("all-available", false,
-		"Show all the groups you have access to "+
-			"(defaults to false for authenticated users, true for admin)")
-	cmd.Flags().Bool("owned", false,
-		"Limit to groups owned by the current user")
-	cmd.Flags().Bool("statistics", false,
-		"Include group statistics (admins only)")
-	cmd.Flags().String("sort", "asc",
-		"Order groups in asc or desc order. Default is asc")
-	cmd.Flags().String("search", "",
-		"Return the list of authorized groups matching the search criteria")
-	cmd.Flags().String("order-by", "name",
-		"Order groups by name or path. Default is name")
+	addAllAvailableFlag(cmd)
+	addGroupOrderByFlag(cmd)
+	addOwnedFlag(cmd)
+	addSortFlag(cmd)
+	addStatisticsFlag(cmd)
+	addSearchFlag(cmd)
+}
+
+// addGetProjectsFlags adds common flags for `get projects` commands
+func addGetProjectsFlags(cmd *cobra.Command) {
+	cmd.Flags().Bool("archived", false,
+		"Limit by archived status")
+	addProjectOrderByFlag(cmd)
+	addSortFlag(cmd)
+	addSearchFlag(cmd)
+	cmd.Flags().Bool("simple", false,
+		"Return only the ID, URL, name, and path of each project")
+	addOwnedFlag(cmd)
+	cmd.Flags().Bool("membership", false,
+		"Limit by projects that the current user is a member of")
+	cmd.Flags().Bool("starred", false,
+		"Limit by projects starred by the current user")
+	addStatisticsFlag(cmd)
+	addVisibilityFlag(cmd)
+	cmd.Flags().Bool("with-issues-enabled", false,
+		"Limit by enabled issues feature")
+	cmd.Flags().Bool("with-merge-requests-enabled", false,
+		"Limit by enabled merge requests feature")
 }
 
 // addNewGroupFlags adds common flags for `new group` or `edit group` commands
@@ -50,12 +66,61 @@ func addNewGroupFlags(cmd *cobra.Command) {
 	addNameFlag(cmd)
 	addNamespaceFlag(cmd)
 	addLFSenabled(cmd)
-	addRequestsAccessenabledFlag(cmd)
+	addRequestAccessEnabledFlag(cmd)
 	addVisibilityFlag(cmd)
-	addJSONFlag(cmd)
 	if err := cmd.MarkFlagRequired("name"); err != nil {
 		er(err)
 	}
+}
+
+func addAllAvailableFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("all-available", false,
+		"Show all the groups you have access to "+
+			"(defaults to false for authenticated users, true for admin)")
+}
+
+func addOwnedFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("owned", false,
+		"Limit to resources owned by the current user")
+}
+
+func addGroupOrderByFlag(cmd *cobra.Command) {
+	cmd.Flags().String("order-by", "name",
+		"Order groups by name or path. Default is name")
+}
+
+func validateGroupOrderByFlagValue(cmd *cobra.Command) {
+	validateFlagStringValue([]string{"path", "name"}, cmd, "order-by")
+}
+
+func addSearchFlag(cmd *cobra.Command) {
+	cmd.Flags().String("search", "",
+		"Return the list of resources matching the search criteria")
+}
+
+func addStatisticsFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("statistics", false,
+		"Include resource statistics (admins only)")
+}
+
+func addSortFlag(cmd *cobra.Command) {
+	cmd.Flags().String("sort", "asc",
+		"Order resources in asc or desc order. Default is asc")
+}
+
+func validateSortFlagValue(cmd *cobra.Command) {
+	validateFlagStringValue([]string{"asc", "desc"}, cmd, "sort")
+}
+
+func addProjectOrderByFlag(cmd *cobra.Command) {
+	cmd.Flags().String("order-by", "created_at",
+		"Return projects ordered by id, name, path, created_at, updated_at, "+
+			"or last_activity_at fields. Default is created_at")
+}
+
+func validateProjectOrderByFlagValue(cmd *cobra.Command) {
+	validateFlagStringValue([]string{"id", "name", "path",
+		"created_at", "updated_at", "last_activity_at"}, cmd, "order-by")
 }
 
 //
@@ -73,10 +138,15 @@ func addNamespaceFlag(cmd *cobra.Command) {
 }
 
 func addVisibilityFlag(cmd *cobra.Command) {
-	cmd.Flags().String("visibility", "", "public, internal or private")
+	cmd.Flags().String("visibility", "private", "public, internal or private")
 }
 
-func addRequestsAccessenabledFlag(cmd *cobra.Command) {
+func validateVisibilityFlagValue(cmd *cobra.Command) {
+	validateFlagStringValue([]string{"public", "private", "internal"},
+		cmd, "visibility")
+}
+
+func addRequestAccessEnabledFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("request-access-enabled", false, "enable request access")
 }
 
@@ -85,7 +155,7 @@ func addLFSenabled(cmd *cobra.Command) {
 }
 
 func addPathFlag(cmd *cobra.Command) {
-	cmd.Flags().String("path", "",
+	cmd.Flags().StringP("path", "p", "",
 		"the group name, id or full the path "+
 			"including the parent group (path/to/group)")
 	if err := cmd.MarkFlagRequired("path"); err != nil {
@@ -93,13 +163,40 @@ func addPathFlag(cmd *cobra.Command) {
 	}
 }
 
-func addJSONFlag(cmd *cobra.Command) {
-	cmd.Flags().Bool("json", false, "print the command output to json")
+func addOutFlag(cmd *cobra.Command) {
+	cmd.PersistentFlags().StringP("out", "o", "simple",
+		"Print the command output to the "+
+			"desired format. (json, yaml, simple)")
+}
+
+func validateOutFlagValue(cmd *cobra.Command) {
+	validateFlagStringValue([]string{"json", "yaml", "simple"},
+		cmd, "out")
+}
+
+func validateFlagStringValue(stringSlice []string,
+	cmd *cobra.Command, fName string) {
+	fValue := getFlagString(cmd, fName)
+	for _, v := range stringSlice {
+		if fValue == v {
+			return
+		}
+	}
+	er(fmt.Sprintf("'%s' is not a recognized value of '%s' flag. "+
+		"Please choose from: [%s]\n",
+		fValue, fName, strings.Join(stringSlice, ", ")))
 }
 
 //
 // NOTE(@bzon): All getFlag* helpers should be added below
 //
+
+// getFlagVisibility converts the string flag visiblity to gitlab.VisibilityValue.
+func getFlagVisibility(cmd *cobra.Command) *gitlab.VisibilityValue {
+	// TODO(@bzon): can this be improved?
+	v := getFlagString(cmd, "visibility")
+	return gitlab.Visibility(gitlab.VisibilityValue(v))
+}
 
 func getFlagString(cmd *cobra.Command, flag string) string {
 	s, err := cmd.Flags().GetString(flag)
@@ -119,30 +216,12 @@ func getFlagBool(cmd *cobra.Command, flag string) bool {
 	return b
 }
 
-func getFlagInt(cmd *cobra.Command, flag string) int {
-	i, err := cmd.Flags().GetInt(flag)
-	if err != nil {
-		glog.Fatalf("error accessing flag %s for command %s: %v",
-			flag, cmd.Name(), err)
-	}
-	return i
-}
-
-// getFlagVisibility converts the string flag visiblity to gitlab.VisibilityValue.
-// It will exit with error if the vibility flag given by the user is not valid.
-func getFlagVisibility(cmd *cobra.Command) (*gitlab.VisibilityValue, error) {
-	// TODO(@bzon): can this be improved?
-	v := getFlagString(cmd, "visibility")
-	gv := gitlab.VisibilityValue(v)
-	switch gv {
-	case gitlab.PrivateVisibility:
-		return gitlab.Visibility(gv), nil
-	case gitlab.PublicVisibility:
-		return gitlab.Visibility(gv), nil
-	case gitlab.InternalVisibility:
-		return gitlab.Visibility(gv), nil
-	default:
-		// user error
-		return nil, fmt.Errorf("visibility valid values are only (public, private, internal)")
-	}
-}
+// TODO - to be used soon
+// func getFlagInt(cmd *cobra.Command, flag string) int {
+// 	i, err := cmd.Flags().GetInt(flag)
+// 	if err != nil {
+// 		glog.Fatalf("error accessing flag %s for command %s: %v",
+// 			flag, cmd.Name(), err)
+// 	}
+// 	return i
+// }

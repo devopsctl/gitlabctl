@@ -26,11 +26,13 @@ import (
 
 var newCmd = &cobra.Command{
 	Use:   "new",
-	Short: "Create a new gitlab resource",
-	Long: "All gitlab resources " +
-		"can be found here https://docs.gitlab.com/ce/api/#resources",
+	Short: "Create Gitlab resources",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		validateOutFlagValue(cmd)
+	},
 }
 
 func init() {
 	rootCmd.AddCommand(newCmd)
+	addOutFlag(newCmd)
 }
