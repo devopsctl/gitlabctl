@@ -39,8 +39,11 @@ var gendocCmd = &cobra.Command{
 		if err != nil {
 			er(err)
 		}
-		if err := os.Rename(docsDir+"/"+rootCmd.Name()+".md",
-			docsDir+"/index.md"); err != nil {
+		f, err := os.Create(docsDir + "/index.md")
+		if err != nil {
+			er(err)
+		}
+		if err = doc.GenMarkdown(rootCmd, f); err != nil {
 			er(err)
 		}
 		fmt.Printf("The documentations have been created in %s directory.\n", docsDir)
