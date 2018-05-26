@@ -1,14 +1,15 @@
-![](https://talks.golang.org/2012/waza/gophercomplex1.jpg)
+[![](https://talks.golang.org/2012/waza/gophercomplex1.jpg)](https://devopsctl.github.io/gitlabctl/)
 
 [![Build Status](https://travis-ci.org/devopsctl/gitlabctl.svg?branch=master)](https://travis-ci.org/devopsctl/gitlabctl)
 [![codecov](https://codecov.io/gh/devopsctl/gitlabctl/branch/master/graph/badge.svg)](https://codecov.io/gh/devopsctl/gitlabctl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 [![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
-# Gitlab Control (Work in Progress)
+# `gitlabctl` (Work in Progress)
+
+Completed Features are documented in the [Github site](https://devopsctl.github.io/gitlabctl/).
 
 <!-- vim-markdown-toc GFM -->
 
-* [Completed Commands Documentation](#completed-commands-documentation)
 * [Development Setup](#development-setup)
 	* [Requirements](#requirements)
 	* [Environment Variables and Test Data](#environment-variables-and-test-data)
@@ -56,11 +57,6 @@
 Our goal is to create a gitlab cli written in Go that is simple to use and
 easy to maintain. The code must be simple and flags must be patterned with the
 gitlab client package https://godoc.org/github.com/xanzy/go-gitlab.
-
-## Completed Commands Documentation
-
-Please read the [commands documentation](./docs/gitlabctl.md). 
-This is auto-generated using `gitlabctl gendocs`.
 
 ## Development Setup
 
