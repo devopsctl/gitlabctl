@@ -41,20 +41,21 @@ func addGetGroupsFlags(cmd *cobra.Command) {
 
 // addGetProjectsFlags adds common flags for `get projects` commands
 func addGetProjectsFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("archived", false,
-		"Limit by archived status")
+	addFromGroupFlag(cmd)
 	addProjectOrderByFlag(cmd)
 	addSortFlag(cmd)
 	addSearchFlag(cmd)
+	addStatisticsFlag(cmd)
+	addVisibilityFlag(cmd)
+	addOwnedFlag(cmd)
+	cmd.Flags().Bool("archived", false,
+		"Limit by archived status")
 	cmd.Flags().Bool("simple", false,
 		"Return only the ID, URL, name, and path of each project")
-	addOwnedFlag(cmd)
 	cmd.Flags().Bool("membership", false,
 		"Limit by projects that the current user is a member of")
 	cmd.Flags().Bool("starred", false,
 		"Limit by projects starred by the current user")
-	addStatisticsFlag(cmd)
-	addVisibilityFlag(cmd)
 	cmd.Flags().Bool("with-issues-enabled", false,
 		"Limit by enabled issues feature")
 	cmd.Flags().Bool("with-merge-requests-enabled", false,
@@ -73,6 +74,11 @@ func addNewGroupFlags(cmd *cobra.Command) {
 	}
 }
 
+func addFromGroupFlag(cmd *cobra.Command) {
+	cmd.Flags().String("from-group", "",
+		"Use a group as the target namespace when performing the command")
+}
+
 func addAllAvailableFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("all-available", false,
 		"Show all the groups you have access to "+
@@ -89,8 +95,12 @@ func addGroupOrderByFlag(cmd *cobra.Command) {
 		"Order groups by name or path. Default is name")
 }
 
-func validateGroupOrderByFlagValue(cmd *cobra.Command) {
-	validateFlagStringValue([]string{"path", "name"}, cmd, "order-by")
+func validateGroupOrderByFlagValue(cmd *cobra.Command) error {
+	if err := validateFlagStringValue([]string{"path", "name"},
+		cmd, "order-by"); err != nil {
+		return err
+	}
+	return nil
 }
 
 func addSearchFlag(cmd *cobra.Command) {
@@ -108,8 +118,12 @@ func addSortFlag(cmd *cobra.Command) {
 		"Order resources in asc or desc order. Default is asc")
 }
 
-func validateSortFlagValue(cmd *cobra.Command) {
-	validateFlagStringValue([]string{"asc", "desc"}, cmd, "sort")
+func validateSortFlagValue(cmd *cobra.Command) error {
+	if err := validateFlagStringValue([]string{"asc", "desc"},
+		cmd, "sort"); err != nil {
+		return err
+	}
+	return nil
 }
 
 func addProjectOrderByFlag(cmd *cobra.Command) {
@@ -118,9 +132,13 @@ func addProjectOrderByFlag(cmd *cobra.Command) {
 			"or last_activity_at fields. Default is created_at")
 }
 
-func validateProjectOrderByFlagValue(cmd *cobra.Command) {
-	validateFlagStringValue([]string{"id", "name", "path",
-		"created_at", "updated_at", "last_activity_at"}, cmd, "order-by")
+func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
+	if err := validateFlagStringValue([]string{"id", "name", "path",
+		"created_at", "updated_at", "last_activity_at"},
+		cmd, "order-by"); err != nil {
+		return err
+	}
+	return nil
 }
 
 //
@@ -141,9 +159,12 @@ func addVisibilityFlag(cmd *cobra.Command) {
 	cmd.Flags().String("visibility", "private", "public, internal or private")
 }
 
-func validateVisibilityFlagValue(cmd *cobra.Command) {
-	validateFlagStringValue([]string{"public", "private", "internal"},
-		cmd, "visibility")
+func validateVisibilityFlagValue(cmd *cobra.Command) error {
+	if err := validateFlagStringValue([]string{"public", "private", "internal"},
+		cmd, "visibility"); err != nil {
+		return err
+	}
+	return nil
 }
 
 func addRequestAccessEnabledFlag(cmd *cobra.Command) {
@@ -169,22 +190,25 @@ func addOutFlag(cmd *cobra.Command) {
 			"desired format. (json, yaml, simple)")
 }
 
-func validateOutFlagValue(cmd *cobra.Command) {
-	validateFlagStringValue([]string{"json", "yaml", "simple"},
-		cmd, "out")
+func validateOutFlagValue(cmd *cobra.Command) error {
+	if err := validateFlagStringValue([]string{"json", "yaml", "simple"},
+		cmd, "out"); err != nil {
+		return err
+	}
+	return nil
 }
 
 func validateFlagStringValue(stringSlice []string,
-	cmd *cobra.Command, fName string) {
+	cmd *cobra.Command, fName string) error {
 	fValue := getFlagString(cmd, fName)
 	for _, v := range stringSlice {
 		if fValue == v {
-			return
+			return nil
 		}
 	}
-	er(fmt.Sprintf("'%s' is not a recognized value of '%s' flag. "+
+	return fmt.Errorf("'%s' is not a recognized value of '%s' flag. "+
 		"Please choose from: [%s]\n",
-		fValue, fName, strings.Join(stringSlice, ", ")))
+		fValue, fName, strings.Join(stringSlice, ", "))
 }
 
 //
