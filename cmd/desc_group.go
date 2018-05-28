@@ -26,25 +26,27 @@ import (
 )
 
 var descGroupCmd = &cobra.Command{
-	Use:     "group",
-	Aliases: []string{"g"},
-	Short:   "Describe a group",
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := runDescGroup(cmd); err != nil {
-			er(err)
+	Use:           "group",
+	Aliases:       []string{"g"},
+	SuggestFor:    []string{"groups"},
+	SilenceErrors: true,
+	SilenceUsage:  true,
+	Short:         "Describe a group",
+	Args:          cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := runDescGroup(cmd, args[0]); err != nil {
+			return err
 		}
+		return nil
 	},
 }
 
 func init() {
 	descCmd.AddCommand(descGroupCmd)
-	addOutFlag(descGroupCmd)
-	addPathFlag(descGroupCmd)
 }
 
-func runDescGroup(cmd *cobra.Command) error {
-	path := getFlagString(cmd, "path")
-	g, err := descGroup(path)
+func runDescGroup(cmd *cobra.Command, targetGroup string) error {
+	g, err := descGroup(targetGroup)
 	if err != nil {
 		return err
 	}
@@ -52,12 +54,12 @@ func runDescGroup(cmd *cobra.Command) error {
 	return err
 }
 
-func descGroup(path string) (*gitlab.Group, error) {
+func descGroup(targetGroup string) (*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.GetGroup(path)
+	g, _, err := git.Groups.GetGroup(targetGroup)
 	if err != nil {
 		return nil, err
 	}
