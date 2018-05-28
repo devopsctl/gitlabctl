@@ -31,14 +31,14 @@ func TestGetGroups(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
-		result   testResult
+		expect   testResult
 	}{
 		{
 			name: "print in yaml",
 			flagsMap: map[string]string{
 				"out": "yaml",
 			},
-			result: pass,
+			expect: pass,
 		},
 		{
 			name: "print in json and use all flags",
@@ -51,36 +51,40 @@ func TestGetGroups(t *testing.T) {
 				"order-by":      "path",
 				"out":           "json",
 			},
-			result: pass,
+			expect: pass,
 		},
 		{
 			name:   "print in simple view with no flags",
-			result: pass,
+			expect: pass,
 		},
-		// TODO: test if flags are validated properly
-		// if the progam exits with error, you must put a validator
-		// on this command's or its parent a Command.PersistentPreRun
-		// {
-		// 	name: "invalid sort value returns an error",
-		// 	flagsMap: map[string]string{
-		// 		"sort": "xxx",
-		// 	},
-		// 	result: fail,
-		// },
-		// {
-		// 	name: "invalid order-by value returns an error",
-		// 	flagsMap: map[string]string{
-		// 		"order-by": "name",
-		// 	},
-		// 	result: fail,
-		// },
+		{
+			name: "get subgroups using from-group flag",
+			flagsMap: map[string]string{
+				"from-group": "Group1",
+			},
+			expect: pass,
+		},
+		{
+			name: "invalid sort value must fail",
+			flagsMap: map[string]string{
+				"sort": "xxx",
+			},
+			expect: fail,
+		},
+		{
+			name: "invalid order-by value must fail",
+			flagsMap: map[string]string{
+				"order-by": "name",
+			},
+			expect: fail,
+		},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{t, getGroupsCmd, tc.flagsMap}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, tc.result, execResult,
+			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 			// TODO : validate the output of the command
 			// fmt.Println(stdout)

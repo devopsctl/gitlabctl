@@ -26,23 +26,45 @@ import (
 )
 
 var getGroupsCmd = &cobra.Command{
-	Use:     "groups",
-	Aliases: []string{"group", "g"},
-	Short:   "List all groups",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		validateGroupOrderByFlagValue(cmd)
-		validateSortFlagValue(cmd)
-	},
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := runGetGroups(cmd); err != nil {
-			er(err)
+	Use:           "groups",
+	Aliases:       []string{"g"},
+	SuggestFor:    []string{"group"},
+	SilenceErrors: true,
+	SilenceUsage:  true,
+	Short:         "List all groups or subgroups of a group",
+	Example: `
+# list all groups
+gitlabctl get groups
+
+# list all subgroups of GroupX
+gitlabctl get groups --from-group=GroupX`,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := validateGroupOrderByFlagValue(cmd); err != nil {
+			return err
 		}
+		if err := validateSortFlagValue(cmd); err != nil {
+			return err
+		}
+		return nil
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if getFlagString(cmd, "from-group") != "" {
+			if err := runGetSubgroups(cmd); err != nil {
+				return err
+			}
+			return nil
+		}
+		if err := runGetGroups(cmd); err != nil {
+			return err
+		}
+		return nil
 	},
 }
 
 func init() {
 	getCmd.AddCommand(getGroupsCmd)
 	addGetGroupsFlags(getGroupsCmd)
+	addFromGroupFlag(getGroupsCmd)
 }
 
 func runGetGroups(cmd *cobra.Command) error {
@@ -61,6 +83,32 @@ func getGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 		return nil, err
 	}
 	g, _, err := git.Groups.ListGroups(opts)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
+}
+
+func runGetSubgroups(cmd *cobra.Command) error {
+	// to reuse the same opts mapping from groupLsCmd for groupLsSubGroup
+	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
+	opts := (*gitlab.ListSubgroupsOptions)(getListGroupsOptions(cmd))
+	path := getFlagString(cmd, "from-group")
+	groups, err := getSubgroups(path, opts)
+	if err != nil {
+		return err
+	}
+	printGroupsOut(cmd, groups...)
+	return nil
+}
+
+func getSubgroups(gid interface{},
+	opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return nil, err
+	}
+	g, _, err := git.Groups.ListSubgroups(gid, opts)
 	if err != nil {
 		return nil, err
 	}
