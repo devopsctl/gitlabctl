@@ -31,34 +31,43 @@ func TestDescGroup(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
+		args     []string
+		expect   testResult
 	}{
 		{
 			name: "print in yaml",
+			args: []string{"Group1"},
 			flagsMap: map[string]string{
-				"path": "Group1",
-				"out":  "yaml",
+				"out": "yaml",
 			},
+			expect: pass,
 		},
 		{
 			name: "print in json",
+			args: []string{"Group1"},
 			flagsMap: map[string]string{
-				"path": "Group2/SubGroup3",
-				"out":  "json",
+				"out": "json",
 			},
+			expect: pass,
 		},
 		{
-			name: "print simple view without flags",
-			flagsMap: map[string]string{
-				"path": "Group1",
-			},
+			name:   "print simple view without flags",
+			args:   []string{"Group1"},
+			expect: pass,
 		},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			execT := execTestCmdFlags{t, descGroupCmd, tc.flagsMap}
+			execT := execTestCmdFlags{
+				t:        t,
+				cmd:      descGroupCmd,
+				flagsMap: tc.flagsMap,
+				args:     tc.args,
+			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, execResult, pass, printFlagsTable(tc.flagsMap, stdout))
+			require.Equal(t, execResult, tc.expect,
+				printFlagsTable(tc.flagsMap, stdout))
 			// TODO : validate the output of the command
 			// fmt.Println(stdout)
 			_ = stdout

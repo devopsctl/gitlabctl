@@ -96,7 +96,11 @@ func TestGetProjects(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			execT := execTestCmdFlags{t, getProjectsCmd, tc.flagsMap}
+			execT := execTestCmdFlags{
+				t:        t,
+				cmd:      getProjectsCmd,
+				flagsMap: tc.flagsMap,
+			}
 			stdout, execResult := execT.executeCommand()
 			require.Equal(t, execResult, tc.expect,
 				printFlagsTable(tc.flagsMap, stdout))
