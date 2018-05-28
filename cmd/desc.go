@@ -34,4 +34,5 @@ var descCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(descCmd)
+	addOutFlag(descCmd)
 }
