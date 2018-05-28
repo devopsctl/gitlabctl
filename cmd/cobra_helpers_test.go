@@ -93,11 +93,15 @@ type execTestCmdFlags struct {
 	t        *testing.T
 	cmd      *cobra.Command
 	flagsMap map[string]string
+	args     []string
 }
 
 func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 	// build up the command args and flags value
 	args := []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
+	for _, arg := range execT.args {
+		args = append(args, arg)
+	}
 	for k, v := range execT.flagsMap {
 		arg := fmt.Sprintf("--%s=%s", k, v)
 		args = append(args, arg)
@@ -123,8 +127,8 @@ func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 // This was copied from https://github.com/spf13/cobra/blob/master/command_test.go
 func executeCommand(root *cobra.Command,
 	args ...string) (stdout string, err error) {
-	for _, arg := range args {
-		tInfo(arg)
+	for i, arg := range args {
+		tInfo(fmt.Sprintf("(%d) %s", i, arg))
 	}
 	// programs can exit with error here..
 	stdout, _, err = executeCommandC(root, args...)
@@ -137,10 +141,10 @@ func executeCommand(root *cobra.Command,
 func executeCommandC(root *cobra.Command,
 	args ...string) (stdout string, output string, err error) {
 	buf := new(bytes.Buffer)
-	root.SetOutput(buf) // this only redirects stderr, not stdout!
+	root.SetOutput(buf)
 	root.SetArgs(args)
 
-	// for capturing stdout, see https://stackoverflow.com/questions/10473800/in-go-how-do-i-capture-stdout-of-a-function-into-a-string
+	// see https://stackoverflow.com/questions/10473800/in-go-how-do-i-capture-stdout-of-a-function-into-a-string
 	old := os.Stdout // keep backup of the real stdout
 	r, w, _ := os.Pipe()
 	os.Stdout = w
