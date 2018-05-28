@@ -26,27 +26,18 @@ import (
 )
 
 var getProjectsCmd = &cobra.Command{
-	Use:     "projects",
-	Aliases: []string{"project", "p"},
-	Short:   "List all projects",
-	// SilenceUsage:  true,
-	// SilenceErrors: true,
+	Use:           "projects",
+	Aliases:       []string{"project", "p"},
+	Short:         "List all projects",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Example: `
 # get all projects with full details in JSON format
 gitlabctl get projects --json
 
 # get all projects from a group
 gitlabctl get projects --from-group=Group1
-
-# get all projects with simple details in JSON format
-gitlabctl get projects --simple --json
-
-# get all projects with issues enabled only in Table format
-gitlabctl get projects --with-issues-enabled
-
-# get private projects in Table format
-gitlabctl get projects --visibility private`,
-	// We use PreRunE instead of PreRun to test validation of flags in testing
+`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateSortFlagValue(cmd); err != nil {
 			return err
@@ -59,15 +50,17 @@ gitlabctl get projects --visibility private`,
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		if getFlagString(cmd, "from-group") != "" {
 			if err := runGetProjectsFromGroup(cmd); err != nil {
-				er(err)
+				return err
 			}
+			return nil
 		}
 		if err := runGetProjects(cmd); err != nil {
-			er(err)
+			return err
 		}
+		return nil
 	},
 }
 
@@ -98,13 +91,10 @@ func getProjects(opts *gitlab.ListProjectsOptions) ([]*gitlab.Project, error) {
 	return g, nil
 }
 
-// TODO:
-// list group project opts is currently not supported by the go-gitlab client
-// https://github.com/xanzy/go-gitlab/issues/407
 func runGetProjectsFromGroup(cmd *cobra.Command) error {
 	group := getFlagString(cmd, "from-group")
-	// opts := getListProjectsOptions(cmd)
-	projects, err := getProjectsFromGroup(group, nil)
+	opts := (*gitlab.ListGroupProjectsOptions)(getListProjectsOptions(cmd))
+	projects, err := getProjectsFromGroup(group, opts)
 	if err != nil {
 		return err
 	}

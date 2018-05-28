@@ -86,7 +86,7 @@ func TestGetProjects(t *testing.T) {
 			expect: fail,
 		},
 		{
-			name: "invalid visibility value must fail",
+			name: "invalid visibility value must fai",
 			flagsMap: map[string]string{
 				"visibility": "xxx",
 			},
