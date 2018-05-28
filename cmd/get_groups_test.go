@@ -82,7 +82,11 @@ func TestGetGroups(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			execT := execTestCmdFlags{t, getGroupsCmd, tc.flagsMap}
+			execT := execTestCmdFlags{
+				t:        t,
+				cmd:      getGroupsCmd,
+				flagsMap: tc.flagsMap,
+			}
 			stdout, execResult := execT.executeCommand()
 			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
