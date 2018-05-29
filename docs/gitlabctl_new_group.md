@@ -13,7 +13,13 @@ gitlabctl new group [flags]
 ### Examples
 
 ```
-gitlabctl new group GroupAZ
+
+# create a new group
+gitlabctl new group GroupAZ [flags]
+
+# create a subgroup using namespace
+gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
+
 ```
 
 ### Options

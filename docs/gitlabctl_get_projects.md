@@ -14,6 +14,9 @@ gitlabctl get projects [flags]
 
 ```
 
+# get all projects
+gitlabctl get projects [flags]
+
 # get all projects with full details in JSON format
 gitlabctl get projects --json
 

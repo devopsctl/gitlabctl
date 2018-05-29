@@ -34,7 +34,7 @@ var getGroupsCmd = &cobra.Command{
 	Short:         "List all groups or subgroups of a group",
 	Example: `
 # list all groups
-gitlabctl get groups
+gitlabctl get groups [flags]
 
 # list all subgroups of GroupX
 gitlabctl get groups --from-group=GroupX`,
