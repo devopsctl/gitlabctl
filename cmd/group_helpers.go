@@ -58,20 +58,43 @@ func getListGroupsOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 // flag does not use the flag default value.
 func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 	var opts gitlab.CreateGroupOptions
-	if cmd.Flag("namespace").Changed {
-		ns := getFlagString(cmd, "namespace")
-		id, err := strconv.Atoi(ns)
-		// if not nil take the given number
-		if err == nil {
-			opts.ParentID = &id
+
+	// change-name is only required when editing a group
+	if f := cmd.Flag("change-name"); f != nil {
+		if f.Changed {
+			opts.Name = gitlab.String(getFlagString(cmd, "change-name"))
 		}
-		// find the group as string and get it's id
-		gid, err := getGroupID(getFlagString(cmd, "namespace"))
-		if err != nil {
-			er(err)
-		}
-		opts.ParentID = gitlab.Int(gid)
 	}
+
+	// change-path is only required when editing a group
+	if f := cmd.Flag("change-path"); f != nil {
+		if f.Changed {
+			opts.Path = gitlab.String(getFlagString(cmd, "change-path"))
+		}
+	}
+
+	// namespace is only required when creating a new group
+	if f := cmd.Flag("namespace"); f != nil {
+		if f.Changed {
+			ns := getFlagString(cmd, "namespace")
+			id, err := strconv.Atoi(ns)
+			// if not nil take the given number
+			if err == nil {
+				opts.ParentID = &id
+			}
+			// find the group as string and get it's id
+			gid, err := getGroupID(getFlagString(cmd, "namespace"))
+			if err != nil {
+				er(err)
+			}
+			opts.ParentID = gitlab.Int(gid)
+		}
+	}
+
+	if cmd.Flag("desc").Changed {
+		opts.Description = gitlab.String(getFlagString(cmd, "desc"))
+	}
+
 	if cmd.Flag("visibility").Changed {
 		v := getFlagVisibility(cmd)
 		opts.Visibility = v
