@@ -99,8 +99,10 @@ type execTestCmdFlags struct {
 func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 	// build up the command args and flags value
 	args := []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
-	for _, arg := range execT.args {
-		args = append(args, arg)
+	if len(execT.args) > 0 {
+		for _, arg := range execT.args {
+			args = append(args, arg)
+		}
 	}
 	for k, v := range execT.flagsMap {
 		arg := fmt.Sprintf("--%s=%s", k, v)

@@ -30,6 +30,14 @@ var descCmd = &cobra.Command{
 	Short:   "Describe a gitlab resource",
 	Long: "All gitlab resources " +
 		"can be found here https://docs.gitlab.com/ce/api/#resources",
+	SilenceErrors: true,
+	SilenceUsage:  true,
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := validateOutFlagValue(cmd); err != nil {
+			return err
+		}
+		return nil
+	},
 }
 
 func init() {

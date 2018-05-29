@@ -64,14 +64,10 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 
 // addNewGroupFlags adds common flags for `new group` or `edit group` commands
 func addNewGroupFlags(cmd *cobra.Command) {
-	addNameFlag(cmd)
 	addNamespaceFlag(cmd)
 	addLFSenabled(cmd)
 	addRequestAccessEnabledFlag(cmd)
 	addVisibilityFlag(cmd)
-	if err := cmd.MarkFlagRequired("name"); err != nil {
-		er(err)
-	}
 }
 
 func addFromGroupFlag(cmd *cobra.Command) {
@@ -144,10 +140,6 @@ func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
 //
 // NOTE(@bzon): All addFlags* helpers should be added below
 //
-
-func addNameFlag(cmd *cobra.Command) {
-	cmd.Flags().String("name", "", "resource name")
-}
 
 func addNamespaceFlag(cmd *cobra.Command) {
 	cmd.Flags().String("namespace", "",
