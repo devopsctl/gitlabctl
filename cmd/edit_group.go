@@ -42,16 +42,10 @@ gitlabctl edit group GroupXB --namespace=ParentGroupXB [flags]
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		if err := validateVisibilityFlagValue(cmd); err != nil {
-			return err
-		}
-		return nil
+		return validateVisibilityFlagValue(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if err := runEditGroup(cmd, args[0]); err != nil {
-			return err
-		}
-		return nil
+		return runEditGroup(cmd, args[0])
 	},
 }
 

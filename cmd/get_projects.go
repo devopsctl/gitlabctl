@@ -48,22 +48,13 @@ gitlabctl get projects --from-group=Group1
 		if err := validateProjectOrderByFlagValue(cmd); err != nil {
 			return err
 		}
-		if err := validateVisibilityFlagValue(cmd); err != nil {
-			return err
-		}
-		return nil
+		return validateVisibilityFlagValue(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if getFlagString(cmd, "from-group") != "" {
-			if err := runGetProjectsFromGroup(cmd); err != nil {
-				return err
-			}
-			return nil
+			return runGetProjectsFromGroup(cmd)
 		}
-		if err := runGetProjects(cmd); err != nil {
-			return err
-		}
-		return nil
+		return runGetProjects(cmd)
 	},
 }
 

@@ -100,9 +100,7 @@ func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 	// build up the command args and flags value
 	args := []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
 	if len(execT.args) > 0 {
-		for _, arg := range execT.args {
-			args = append(args, arg)
-		}
+		args = append(args, execT.args...)
 	}
 	for k, v := range execT.flagsMap {
 		arg := fmt.Sprintf("--%s=%s", k, v)

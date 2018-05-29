@@ -126,11 +126,8 @@ func addGroupOrderByFlag(cmd *cobra.Command) {
 }
 
 func validateGroupOrderByFlagValue(cmd *cobra.Command) error {
-	if err := validateFlagStringValue([]string{"path", "name"},
-		cmd, "order-by"); err != nil {
-		return err
-	}
-	return nil
+	return validateFlagStringValue([]string{"path", "name"},
+		cmd, "order-by")
 }
 
 func addSearchFlag(cmd *cobra.Command) {
@@ -149,11 +146,8 @@ func addSortFlag(cmd *cobra.Command) {
 }
 
 func validateSortFlagValue(cmd *cobra.Command) error {
-	if err := validateFlagStringValue([]string{"asc", "desc"},
-		cmd, "sort"); err != nil {
-		return err
-	}
-	return nil
+	return validateFlagStringValue([]string{"asc", "desc"},
+		cmd, "sort")
 }
 
 func addProjectOrderByFlag(cmd *cobra.Command) {
@@ -163,12 +157,9 @@ func addProjectOrderByFlag(cmd *cobra.Command) {
 }
 
 func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
-	if err := validateFlagStringValue([]string{"id", "name", "path",
+	return validateFlagStringValue([]string{"id", "name", "path",
 		"created_at", "updated_at", "last_activity_at"},
-		cmd, "order-by"); err != nil {
-		return err
-	}
-	return nil
+		cmd, "order-by")
 }
 
 //
@@ -186,11 +177,8 @@ func addVisibilityFlag(cmd *cobra.Command) {
 }
 
 func validateVisibilityFlagValue(cmd *cobra.Command) error {
-	if err := validateFlagStringValue([]string{"public", "private", "internal"},
-		cmd, "visibility"); err != nil {
-		return err
-	}
-	return nil
+	return validateFlagStringValue([]string{"public", "private", "internal"},
+		cmd, "visibility")
 }
 
 func addRequestAccessEnabledFlag(cmd *cobra.Command) {
@@ -219,11 +207,8 @@ func addOutFlag(cmd *cobra.Command) {
 }
 
 func validateOutFlagValue(cmd *cobra.Command) error {
-	if err := validateFlagStringValue([]string{"json", "yaml", "simple"},
-		cmd, "out"); err != nil {
-		return err
-	}
-	return nil
+	return validateFlagStringValue([]string{JSON, YAML, "simple"},
+		cmd, "out")
 }
 
 func validateFlagStringValue(stringSlice []string,
@@ -267,13 +252,3 @@ func getFlagBool(cmd *cobra.Command, flag string) bool {
 	}
 	return b
 }
-
-// TODO - to be used soon
-// func getFlagInt(cmd *cobra.Command, flag string) int {
-// 	i, err := cmd.Flags().GetInt(flag)
-// 	if err != nil {
-// 		glog.Fatalf("error accessing flag %s for command %s: %v",
-// 			flag, cmd.Name(), err)
-// 	}
-// 	return i
-// }
