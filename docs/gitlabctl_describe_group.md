@@ -10,6 +10,12 @@ Describe a group
 gitlabctl describe group [flags]
 ```
 
+### Examples
+
+```
+gitlabctl describe group GroupX -o json
+```
+
 ### Options
 
 ```

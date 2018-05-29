@@ -6,9 +6,15 @@ import (
 )
 
 var newGroupCmd = &cobra.Command{
-	Use:           "group",
-	Short:         "Create a new group",
-	Example:       `gitlabctl new group GroupAZ`,
+	Use:   "group",
+	Short: "Create a new group",
+	Example: `
+# create a new group
+gitlabctl new group GroupAZ [flags]
+
+# create a subgroup using namespace
+gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
+`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,

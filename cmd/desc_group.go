@@ -29,10 +29,11 @@ var descGroupCmd = &cobra.Command{
 	Use:           "group",
 	Aliases:       []string{"g"},
 	SuggestFor:    []string{"groups"},
+	Short:         "Describe a group",
+	Example:       `gitlabctl describe group GroupX -o json`,
+	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Short:         "Describe a group",
-	Args:          cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := runDescGroup(cmd, args[0]); err != nil {
 			return err
