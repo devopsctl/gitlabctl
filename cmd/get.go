@@ -25,8 +25,10 @@ import (
 )
 
 var getCmd = &cobra.Command{
-	Use:   "get",
-	Short: "Get Gitlab resources",
+	Use:           "get",
+	Short:         "Get Gitlab resources",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateOutFlagValue(cmd); err != nil {
 			return err

@@ -58,8 +58,6 @@ func getListGroupsOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 // flag does not use the flag default value.
 func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 	var opts gitlab.CreateGroupOptions
-	opts.Path = gitlab.String(getFlagString(cmd, "name"))
-	opts.Name = opts.Path
 	if cmd.Flag("namespace").Changed {
 		ns := getFlagString(cmd, "namespace")
 		id, err := strconv.Atoi(ns)
