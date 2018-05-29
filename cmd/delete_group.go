@@ -42,10 +42,7 @@ gitlabctl delete group GroupX/GroupY
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if err := deleteGroup(args[0]); err != nil {
-			return err
-		}
-		return nil
+		return deleteGroup(args[0])
 	},
 }
 

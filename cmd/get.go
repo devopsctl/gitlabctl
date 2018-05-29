@@ -31,10 +31,7 @@ var getCmd = &cobra.Command{
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		if err := validateOutFlagValue(cmd); err != nil {
-			return err
-		}
-		return nil
+		return validateOutFlagValue(cmd)
 	},
 }
 

@@ -42,22 +42,13 @@ gitlabctl get groups --from-group=GroupX`,
 		if err := validateGroupOrderByFlagValue(cmd); err != nil {
 			return err
 		}
-		if err := validateSortFlagValue(cmd); err != nil {
-			return err
-		}
-		return nil
+		return validateSortFlagValue(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if getFlagString(cmd, "from-group") != "" {
-			if err := runGetSubgroups(cmd); err != nil {
-				return err
-			}
-			return nil
+			return runGetSubgroups(cmd)
 		}
-		if err := runGetGroups(cmd); err != nil {
-			return err
-		}
-		return nil
+		return runGetGroups(cmd)
 	},
 }
 

@@ -22,12 +22,6 @@ var (
 	testingOAuthToken = getE("OAUTH_TOKEN")
 )
 
-type testCase struct {
-	name         string
-	envs         map[string]string
-	negativeTest bool
-}
-
 func setBasicAuthEnvs() {
 	setE("GITLAB_USERNAME", testingUser)
 	setE("GITLAB_PASSWORD", testingPassword)

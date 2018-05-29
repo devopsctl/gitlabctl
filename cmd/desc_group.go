@@ -35,10 +35,7 @@ var descGroupCmd = &cobra.Command{
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if err := runDescGroup(cmd, args[0]); err != nil {
-			return err
-		}
-		return nil
+		return runDescGroup(cmd, args[0])
 	},
 }
 

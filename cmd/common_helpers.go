@@ -67,11 +67,18 @@ func printTable(header []string, rows [][]string) {
 	table.Render()
 }
 
+const (
+	// JSON is used as a constant of word "json" for out flag
+	JSON = "json"
+	// YAML is used as a constant of word "yaml" for out flag
+	YAML = "yaml"
+)
+
 func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	switch getFlagString(cmd, "out") {
-	case "json":
+	case JSON:
 		printJSON(groups)
-	case "yaml":
+	case YAML:
 		printYAML(groups)
 	default:
 		header := []string{"ID", "PATH", "URL", "PARENT ID", "PROJECTS COUNT"}
@@ -87,9 +94,9 @@ func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 
 func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 	switch getFlagString(cmd, "out") {
-	case "json":
+	case JSON:
 		printJSON(projects)
-	case "yaml":
+	case YAML:
 		printYAML(projects)
 	default:
 		header := []string{"ID", "PATH", "URL", "ISSUES COUNT", "TAGS"}
@@ -106,9 +113,8 @@ func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 
 func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 	switch getFlagString(cmd, "out") {
-	case "json":
+	case JSON:
 		printJSON(members)
-	case "yaml":
 		printYAML(members)
 	default:
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
