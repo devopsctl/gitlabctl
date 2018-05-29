@@ -30,6 +30,9 @@ import (
 )
 
 // addGetGroupsFlags adds common flags for `get groups` and `get subgroups` commands
+// Flags usage reference:
+// https://docs.gitlab.com/ce/api/groups.html#list-groups
+// https://docs.gitlab.com/ce/api/groups.html#list-a-groups-s-subgroups
 func addGetGroupsFlags(cmd *cobra.Command) {
 	addAllAvailableFlag(cmd)
 	addGroupOrderByFlag(cmd)
@@ -40,6 +43,8 @@ func addGetGroupsFlags(cmd *cobra.Command) {
 }
 
 // addGetProjectsFlags adds common flags for `get projects` commands
+// Flags usage reference:
+// https://docs.gitlab.com/ce/api/groups.html#list-a-group-39-s-projects
 func addGetProjectsFlags(cmd *cobra.Command) {
 	addFromGroupFlag(cmd)
 	addProjectOrderByFlag(cmd)
@@ -62,12 +67,41 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 		"Limit by enabled merge requests feature")
 }
 
-// addNewGroupFlags adds common flags for `new group` or `edit group` commands
+// addNewGroupFlags add the required flags for creating a new group
+// Flag usage reference: https://docs.gitlab.com/ce/api/groups.html#new-group
 func addNewGroupFlags(cmd *cobra.Command) {
 	addNamespaceFlag(cmd)
+	addDescriptionFlag(cmd)
 	addLFSenabled(cmd)
 	addRequestAccessEnabledFlag(cmd)
 	addVisibilityFlag(cmd)
+}
+
+// addEditGroupFlags add the required flags for updating an existing group
+// Flag suage reference: https://docs.gitlab.com/ce/api/groups.html#update-group
+func addEditGroupFlags(cmd *cobra.Command) {
+	addChangeNameFlag(cmd)
+	addChangePathFlag(cmd)
+	addDescriptionFlag(cmd)
+	addLFSenabled(cmd)
+	addRequestAccessEnabledFlag(cmd)
+	addVisibilityFlag(cmd)
+}
+
+func addDescriptionFlag(cmd *cobra.Command) {
+	cmd.Flags().String("desc", "", "The description of the resource")
+}
+
+func addChangeNameFlag(cmd *cobra.Command) {
+	cmd.Flags().String("change-name", "",
+		"Use this flag to change the resource name that is "+
+			"displayed in the web user interface")
+}
+
+func addChangePathFlag(cmd *cobra.Command) {
+	cmd.Flags().String("change-path", "",
+		"Use this flag to change the path name that is "+
+			"used when accessing the resource via http or ssh url")
 }
 
 func addFromGroupFlag(cmd *cobra.Command) {
@@ -160,13 +194,15 @@ func validateVisibilityFlagValue(cmd *cobra.Command) error {
 }
 
 func addRequestAccessEnabledFlag(cmd *cobra.Command) {
-	cmd.Flags().Bool("request-access-enabled", false, "enable request access")
+	cmd.Flags().Bool("request-access-enabled", false, "Enable request access")
 }
 
 func addLFSenabled(cmd *cobra.Command) {
-	cmd.Flags().Bool("lfs-enabled", false, "enable LFS")
+	cmd.Flags().Bool("lfs-enabled", false, "Enable LFS")
 }
 
+// TODO(@bzon): to be deleted soon
+// currently used by group-member that will be refactored
 func addPathFlag(cmd *cobra.Command) {
 	cmd.Flags().StringP("path", "p", "",
 		"the group name, id or full the path "+
