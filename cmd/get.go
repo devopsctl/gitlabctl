@@ -26,6 +26,7 @@ import (
 
 var getCmd = &cobra.Command{
 	Use:           "get",
+	Aliases:       []string{"g"},
 	Short:         "Get Gitlab resources",
 	SilenceErrors: true,
 	SilenceUsage:  true,
