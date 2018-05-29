@@ -21,56 +21,18 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-	"testing"
-
-	"github.com/stretchr/testify/require"
-	gitlab "github.com/xanzy/go-gitlab"
+	"github.com/spf13/cobra"
 )
 
-func TestDeleteGroup(t *testing.T) {
-	setBasicAuthEnvs()
-	tt := []struct {
-		name   string
-		args   []string
-		expect testResult
-	}{
-		{
-			name:   "delete an existing group",
-			args:   []string{"GroupTBD"},
-			expect: pass,
-		},
-		{
-			name:   "deleting a non existent group should fail",
-			args:   []string{"GroupUnknown"},
-			expect: fail,
-		},
-	}
+var deleteCmd = &cobra.Command{
+	Use:           "delete",
+	Aliases:       []string{"del", "d"},
+	SuggestFor:    []string{"remove", "rm"},
+	Short:         "Delete a Gitlab resource",
+	SilenceErrors: true,
+	SilenceUsage:  true,
+}
 
-	for _, tc := range tt {
-		t.Run(tc.name, func(t *testing.T) {
-			// SETUP:
-			// create the test group to be deleted
-			if tc.expect == pass {
-				if _, err := newGroup(&gitlab.CreateGroupOptions{
-					Path: gitlab.String(tc.args[0]),
-					Name: gitlab.String(tc.args[0]),
-				}); err != nil {
-					tInfo("Test data setup failure for delete group")
-					os.Exit(1)
-				}
-				tInfo("Test group to be deleted is created")
-			}
-
-			execT := execTestCmdFlags{
-				t:    t,
-				cmd:  deleteGroupCmd,
-				args: tc.args,
-			}
-			stdout, execResult := execT.executeCommand()
-			fmt.Println(stdout)
-			require.Equal(t, tc.expect, execResult, stdout)
-		})
-	}
+func init() {
+	rootCmd.AddCommand(deleteCmd)
 }

@@ -34,6 +34,7 @@ Set the following environment variables to authenticate the command-line client 
 
 ### SEE ALSO
 
+* [gitlabctl delete](gitlabctl_delete.md)	 - Delete a Gitlab resource
 * [gitlabctl describe](gitlabctl_describe.md)	 - Describe a gitlab resource
 * [gitlabctl gendoc](gitlabctl_gendoc.md)	 - Generate markdown documentation
 * [gitlabctl get](gitlabctl_get.md)	 - Get Gitlab resources
