@@ -81,6 +81,8 @@ func TestGetProjects(t *testing.T) {
 		{
 			name: "invalid order-by flag value must fail",
 			flagsMap: map[string]string{
+				// fix the previous invalid sort value
+				"sort":     "asc",
 				"order-by": "xxx",
 			},
 			expect: fail,
@@ -88,6 +90,8 @@ func TestGetProjects(t *testing.T) {
 		{
 			name: "invalid visibility value must fai",
 			flagsMap: map[string]string{
+				// fix the previous invalid order-by value
+				"order-by":   "id",
 				"visibility": "xxx",
 			},
 			expect: fail,
@@ -102,7 +106,7 @@ func TestGetProjects(t *testing.T) {
 				flagsMap: tc.flagsMap,
 			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, execResult, tc.expect,
+			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 			// TODO : validate the output of the command
 			// fmt.Println(stdout)

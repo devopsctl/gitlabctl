@@ -74,7 +74,10 @@ func TestGetGroups(t *testing.T) {
 		{
 			name: "invalid order-by value must fail",
 			flagsMap: map[string]string{
-				"order-by": "name",
+				// NOTE(@bzon): i had to set sort to correct value
+				// it is not being reset to default..
+				"sort":     "asc",
+				"order-by": "xxx",
 			},
 			expect: fail,
 		},
