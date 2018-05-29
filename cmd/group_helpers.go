@@ -87,7 +87,6 @@ func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 }
 
 // get the groupID of a group
-// exits with error if group does not exist
 func getGroupID(path string) (int, error) {
 	g, err := descGroup(path)
 	if err != nil {

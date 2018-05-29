@@ -6,8 +6,10 @@ import (
 )
 
 var newGroupCmd = &cobra.Command{
-	Use:   "group",
-	Short: "Create a new group",
+	Use:        "group",
+	Aliases:    []string{"g"},
+	SuggestFor: []string{"groups"},
+	Short:      "Create a new group",
 	Example: `
 # create a new group
 gitlabctl new group GroupAZ [flags]
@@ -38,7 +40,10 @@ func init() {
 }
 
 func runNewGroup(cmd *cobra.Command, name string) error {
-	group, err := newGroup(cmd, name)
+	opts := getCreateGroupOptions(cmd)
+	opts.Path = gitlab.String(name)
+	opts.Name = gitlab.String(name)
+	group, err := newGroup(opts)
 	if err != nil {
 		return err
 	}
@@ -46,14 +51,11 @@ func runNewGroup(cmd *cobra.Command, name string) error {
 	return nil
 }
 
-func newGroup(cmd *cobra.Command, name string) (*gitlab.Group, error) {
+func newGroup(opts *gitlab.CreateGroupOptions) (*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	opts := getCreateGroupOptions(cmd)
-	opts.Path = gitlab.String(name)
-	opts.Name = gitlab.String(name)
 	g, _, err := git.Groups.CreateGroup(opts)
 	if err != nil {
 		return nil, err

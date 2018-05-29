@@ -26,6 +26,7 @@ import (
 
 var newCmd = &cobra.Command{
 	Use:           "new",
+	Aliases:       []string{"n"},
 	Short:         "Create a Gitlab resource",
 	SilenceErrors: true,
 	SilenceUsage:  true,
