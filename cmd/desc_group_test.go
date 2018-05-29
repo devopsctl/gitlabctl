@@ -55,6 +55,26 @@ func TestDescGroup(t *testing.T) {
 			args:   []string{"Group1"},
 			expect: pass,
 		},
+		{
+			name:   "describe no args should fail",
+			expect: fail,
+		},
+		{
+			name: "invalid out flag should fail",
+			args: []string{"Group1"},
+			flagsMap: map[string]string{
+				"out": "xxx",
+			},
+			expect: fail,
+		},
+		{
+			name: "describe non existent group should fail",
+			args: []string{"XXX"},
+			flagsMap: map[string]string{
+				// fix the value of the previous out flag
+				"out": "simple"},
+			expect: fail,
+		},
 	}
 
 	for _, tc := range tt {
@@ -66,7 +86,7 @@ func TestDescGroup(t *testing.T) {
 				args:     tc.args,
 			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, execResult, tc.expect,
+			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 			// TODO : validate the output of the command
 			// fmt.Println(stdout)

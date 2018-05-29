@@ -37,10 +37,6 @@ func er(msg interface{}) {
 	os.Exit(1)
 }
 
-func removeQuotes(s string) string {
-	return strings.Replace(s, `"`, "", -1)
-}
-
 func printJSON(v interface{}) {
 	b, err := json.MarshalIndent(v, "", " ")
 	if err != nil {

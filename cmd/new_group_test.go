@@ -72,7 +72,7 @@ func TestNewGroup(t *testing.T) {
 			if strings.Contains(stdout, "{error:") {
 				tInfo(fmt.Sprintf("got error: %v", stdout))
 			}
-			require.Equal(t, execResult, tc.expect,
+			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 		})
 
