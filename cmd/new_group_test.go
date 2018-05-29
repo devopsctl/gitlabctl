@@ -19,6 +19,7 @@ func TestNewGroup(t *testing.T) {
 		{
 			name: "create group and print in yaml",
 			flagsMap: map[string]string{
+				"desc":                   "Created by go test",
 				"namespace":              "Group2",
 				"visibility":             "private",
 				"lfs-enabled":            "false",
@@ -31,6 +32,7 @@ func TestNewGroup(t *testing.T) {
 		{
 			name: "create group and print in json with no namespace",
 			flagsMap: map[string]string{
+				"desc":                   "Created by go test",
 				"visibility":             "private",
 				"lfs-enabled":            "false",
 				"request-access-enabled": "false",
@@ -42,6 +44,7 @@ func TestNewGroup(t *testing.T) {
 		{
 			name: "create group using id in namespace",
 			flagsMap: map[string]string{
+				"desc":                   "Created by go test",
 				"namespace":              "14", // is Group2
 				"visibility":             "private",
 				"lfs-enabled":            "false",
