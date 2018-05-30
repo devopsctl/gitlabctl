@@ -20,7 +20,34 @@
 
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var deleteProjectCmd = &cobra.Command{
+	Use:        "project",
+	Aliases:    []string{"p"},
+	SuggestFor: []string{"projects"},
+	Short:      "Delete a Gitlab project by specifying the full path",
+	Example: `# delete a project
+gitlabctl delete project ProjectX
+
+# delete a project under a group
+gitlabctl delete project GroupX/ProjectX
+`,
+	Args:          cobra.ExactArgs(1),
+	SilenceErrors: true,
+	SilenceUsage:  true,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return deleteProject(args[0])
+	},
+}
+
+func init() {
+	deleteCmd.AddCommand(deleteProjectCmd)
+}
 
 func deleteProject(path string) error {
 	git, err := newGitlabClient()
