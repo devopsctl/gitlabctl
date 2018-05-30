@@ -43,7 +43,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `get projects --from-group  [flags]`
 * [ ] `describe project [project path]`
 * [x] `new project [project name] [flags]`
-* [ ] `edit project [project name] [flags]`
+* [x] `edit project [project name] [flags]`
 * [x] `delete project [project path]`
 
 ### Project Hooks Command
