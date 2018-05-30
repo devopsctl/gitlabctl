@@ -284,9 +284,14 @@ func validateFlagStringValue(stringSlice []string,
 
 // getFlagVisibility converts the string flag visiblity to gitlab.VisibilityValue.
 func getFlagVisibility(cmd *cobra.Command) *gitlab.VisibilityValue {
-	// TODO(@bzon): can this be improved?
 	v := getFlagString(cmd, "visibility")
 	return gitlab.Visibility(gitlab.VisibilityValue(v))
+}
+
+// getFlagMergeMethod converts the string flag merge-method to gitlab.MergeMethod
+func getFlagMergeMethod(cmd *cobra.Command) *gitlab.MergeMethodValue {
+	v := getFlagString(cmd, "merge-method")
+	return gitlab.MergeMethod(gitlab.MergeMethodValue(v))
 }
 
 func getFlagStringSlice(cmd *cobra.Command, flag string) []string {
