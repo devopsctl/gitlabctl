@@ -28,7 +28,7 @@ gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
       --desc string              The description of the resource
   -h, --help                     help for group
       --lfs-enabled              Enable LFS
-      --namespace string         The parent group id or group path if creating a subgroup. (defaults to current user namespace)
+      --namespace string         This can be the parent namespace ID, group path, or user path. (defaults to current user namespace)
       --request-access-enabled   Enable request access
       --visibility string        public, internal or private (default "private")
 ```

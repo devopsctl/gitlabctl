@@ -78,7 +78,7 @@ func addNewGroupFlags(cmd *cobra.Command) {
 }
 
 // addEditGroupFlags add the required flags for updating an existing group
-// Flag suage reference: https://docs.gitlab.com/ce/api/groups.html#update-group
+// Flag usage reference: https://docs.gitlab.com/ce/api/groups.html#update-group
 func addEditGroupFlags(cmd *cobra.Command) {
 	addChangeNameFlag(cmd)
 	addChangePathFlag(cmd)
@@ -86,6 +86,60 @@ func addEditGroupFlags(cmd *cobra.Command) {
 	addLFSenabled(cmd)
 	addRequestAccessEnabledFlag(cmd)
 	addVisibilityFlag(cmd)
+}
+
+// addEditProjectFlags add the required flags for creating a new project
+// Flag usage reference:
+// https://docs.gitlab.com/ce/api/projects.html#edit-project
+func addEditProjectFlags(cmd *cobra.Command) {
+	addNewProjectFlags(cmd)
+	cmd.Flags().String("default-branch", "master", "The default branch")
+}
+
+// addNewProjectFlags add the required flags for creating a new project
+// Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#create-project
+func addNewProjectFlags(cmd *cobra.Command) {
+	addNamespaceFlag(cmd)
+	addDescriptionFlag(cmd)
+	addLFSenabled(cmd)
+	addRequestAccessEnabledFlag(cmd)
+	addVisibilityFlag(cmd)
+	// unique flags for projects
+	cmd.Flags().Bool("issues-enabled", true, "Enable issues")
+	cmd.Flags().Bool("merge-requests-enabled", true, "Enable merge requests")
+	cmd.Flags().Bool("jobs-enabled", true, "Enable jobs")
+	cmd.Flags().Bool("wiki-enabled", true, "Enable wiki")
+	cmd.Flags().Bool("snippets-enabled", true, "Enable snippets")
+	cmd.Flags().Bool("resolve-outdated-diff-discussions", false,
+		"Automatically resolve merge request diffs discussions on lines "+
+			"changed with a push")
+	cmd.Flags().Bool("container-registry-enabled", false,
+		"Enable container registry for this project")
+	cmd.Flags().Bool("shared-runners-enabled", false,
+		"Enable shared runners for this project")
+	cmd.Flags().Bool("public-jobs", false, "If true, jobs can be viewed "+
+		"by non-project-members")
+	cmd.Flags().Bool("only-allow-merge-if-pipeline-succeeds", false,
+		"Set whether merge requests can only be merged with successful jobs")
+	cmd.Flags().Bool("only-allow-merge-if-discussion-are-resolved", false,
+		"Set whether merge requests can only be merged "+
+			"when all the discussions are resolved")
+	cmd.Flags().String("merge-method", "merge",
+		"Set the merge method used. (available: 'merge', 'rebase_merge', 'ff')")
+	cmd.Flags().StringSlice("tag-list", []string{},
+		"The list of tags for a project; put array of tags, "+
+			"that should be finally assigned to a project.\n"+
+			"Example: --tag-list='tag1,tag2'")
+	cmd.Flags().Bool("printing-merge-request-link-enabled", true,
+		"Show link to create/view merge request "+
+			"when pushing from the command line")
+	cmd.Flags().String("ci-config-path", "", "The path to CI config file")
+}
+
+func validateMergeMethodValue(cmd *cobra.Command) error {
+	return validateFlagStringValue(
+		[]string{"merge", "ff", "rebase_merge"},
+		cmd, "merge-method")
 }
 
 func addDescriptionFlag(cmd *cobra.Command) {
@@ -168,7 +222,7 @@ func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
 
 func addNamespaceFlag(cmd *cobra.Command) {
 	cmd.Flags().String("namespace", "",
-		"The parent group id or group path if creating a subgroup. "+
+		"This can be the parent namespace ID, group path, or user path. "+
 			"(defaults to current user namespace)")
 }
 
@@ -233,6 +287,15 @@ func getFlagVisibility(cmd *cobra.Command) *gitlab.VisibilityValue {
 	// TODO(@bzon): can this be improved?
 	v := getFlagString(cmd, "visibility")
 	return gitlab.Visibility(gitlab.VisibilityValue(v))
+}
+
+func getFlagStringSlice(cmd *cobra.Command, flag string) []string {
+	s, err := cmd.Flags().GetStringSlice(flag)
+	if err != nil {
+		glog.Fatalf("error accessing flag %s for command %s: %v",
+			flag, cmd.Name(), err)
+	}
+	return s
 }
 
 func getFlagString(cmd *cobra.Command, flag string) string {

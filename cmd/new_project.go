@@ -25,57 +25,60 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var newGroupCmd = &cobra.Command{
-	Use:        "group",
-	Aliases:    []string{"g"},
-	SuggestFor: []string{"groups"},
-	Short:      "Create a new group",
-	Example: `
-# create a new group
-gitlabctl new group GroupAZ [flags]
+var newProjectCmd = &cobra.Command{
+	Use:        "project",
+	Aliases:    []string{"p"},
+	SuggestFor: []string{"projects"},
+	Short:      "Create a new project",
+	Example: `# create a new project
+gitlabctl new project ProjectX	
 
-# create a subgroup using namespace
-gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
+# create a new project under a group
+gitlabctl new project ProjectY --namespace=GroupY
 `,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		return validateVisibilityFlagValue(cmd)
+		if err := validateVisibilityFlagValue(cmd); err != nil {
+			return err
+		}
+		return validateMergeMethodValue(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runNewGroup(cmd, args[0])
+		return runNewProject(cmd, args[0])
 	},
 }
 
 func init() {
-	newCmd.AddCommand(newGroupCmd)
-	addNewGroupFlags(newGroupCmd)
+	newCmd.AddCommand(newProjectCmd)
+	addNewProjectFlags(newProjectCmd)
+	addOutFlag(newProjectCmd)
 }
 
-func runNewGroup(cmd *cobra.Command, name string) error {
-	opts, err := getCreateGroupOptions(cmd)
+func runNewProject(cmd *cobra.Command, name string) error {
+	opts, err := getCreateProjectOptions(cmd)
 	if err != nil {
 		return err
 	}
-	opts.Path = gitlab.String(name)
 	opts.Name = gitlab.String(name)
-	group, err := newGroup(opts)
+	opts.Path = gitlab.String(name)
+	p, err := newProject(opts)
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, group)
+	printProjectsOut(cmd, p)
 	return nil
 }
 
-func newGroup(opts *gitlab.CreateGroupOptions) (*gitlab.Group, error) {
+func newProject(opts *gitlab.CreateProjectOptions) (*gitlab.Project, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.CreateGroup(opts)
+	p, _, err := git.Projects.CreateProject(opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return p, nil
 }
