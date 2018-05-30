@@ -55,13 +55,16 @@ func init() {
 }
 
 func runEditGroup(cmd *cobra.Command, name string) error {
-	opts := (*gitlab.UpdateGroupOptions)(getCreateGroupOptions(cmd))
+	opts, err := getCreateGroupOptions(cmd)
+	if err != nil {
+		return err
+	}
 	gid, err := getGroupID(name)
 	if err != nil {
 		return fmt.Errorf("couldn't find the id of group %s, got error: %v",
 			name, err)
 	}
-	group, err := editGroup(gid, opts)
+	group, err := editGroup(gid, (*gitlab.UpdateGroupOptions)(opts))
 	if err != nil {
 		return err
 	}

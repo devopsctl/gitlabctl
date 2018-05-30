@@ -56,7 +56,7 @@ func getListGroupsOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 // getCreateGroupOptions maps the cmd flags to gitlab.CreateGroupOptions struct.
 // It also ensures that the struct field that is associated with the command
 // flag does not use the flag default value.
-func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
+func getCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, error) {
 	var opts gitlab.CreateGroupOptions
 
 	// change-name is only required when editing a group
@@ -85,7 +85,7 @@ func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 			// find the group as string and get it's id
 			gid, err := getGroupID(getFlagString(cmd, "namespace"))
 			if err != nil {
-				er(err)
+				return nil, err
 			}
 			opts.ParentID = gitlab.Int(gid)
 		}
@@ -106,7 +106,7 @@ func getCreateGroupOptions(cmd *cobra.Command) *gitlab.CreateGroupOptions {
 		opts.RequestAccessEnabled = gitlab.Bool(
 			getFlagBool(cmd, "request-access-enabled"))
 	}
-	return &opts
+	return &opts, nil
 }
 
 // get the groupID of a group
