@@ -1,4 +1,4 @@
-# Table of Contents
+# Developers Contribution Guide
 
 <!-- vim-markdown-toc GFM -->
 
@@ -67,6 +67,8 @@ Use `git pull --rebase origin master` or `git pull --rebase origin branchName`
 as much as possible.
 
 ### Issue Tracker
+
+[![Throughput Graph](http://graphs.waffle.io/devopsctl/gitlabctl/throughput.svg)](https://waffle.io/devopsctl/gitlabctl/metrics)
 
 * Ensure that you are working on an [Issue](https://github.com/devopsctl/gitlabctl/issues) 
 and is visible in [Waffle Issue Tracker](https://waffle.io/devopsctl/gitlabctl).
