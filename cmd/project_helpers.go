@@ -150,7 +150,7 @@ func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions,
 				getFlagBool(cmd, "only-allow-merge-if-discussion-are-resolved"))
 	}
 	if cmd.Flag("merge-method").Changed {
-		opts.MergeMethod = gitlab.String(getFlagString(cmd, "merge-method"))
+		opts.MergeMethod = getFlagMergeMethod(cmd)
 	}
 	if cmd.Flag("lfs-enabled").Changed {
 		opts.LFSEnabled = gitlab.Bool(getFlagBool(cmd, "lfs-enabled"))
