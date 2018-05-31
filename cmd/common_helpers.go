@@ -25,12 +25,24 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/araddon/dateparse"
 	"github.com/ghodss/yaml"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
+
+func newTimeFromString(s string) (*time.Time, error) {
+	t, err := dateparse.ParseAny(s)
+	if err != nil {
+		return nil, err
+	}
+	p := new(time.Time)
+	*p = t
+	return p, nil
+}
 
 func er(msg interface{}) {
 	fmt.Println("Error:", msg)
@@ -127,6 +139,7 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 	switch getFlagString(cmd, "out") {
 	case JSON:
 		printJSON(members)
+	case YAML:
 		printYAML(members)
 	default:
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
@@ -134,6 +147,23 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 		for _, v := range members {
 			rows = append(rows, []string{strconv.Itoa(v.ID),
 				v.Username, v.Email, gitlab.Stringify(v.AccessLevel)})
+		}
+		printTable(header, rows)
+	}
+}
+
+func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
+	switch getFlagString(cmd, "out") {
+	case JSON:
+		printJSON(users)
+	case YAML:
+		printYAML(users)
+	default:
+		header := []string{"ID", "USERNAME", "EMAIL", "NAME", "LAST SIGN IN AT"}
+		var rows [][]string
+		for _, v := range users {
+			rows = append(rows, []string{strconv.Itoa(v.ID),
+				v.Username, v.Email, v.Name, fmt.Sprintf("%v", v.LastSignInAt)})
 		}
 		printTable(header, rows)
 	}
