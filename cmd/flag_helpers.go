@@ -93,13 +93,14 @@ func addEditGroupFlags(cmd *cobra.Command) {
 // https://docs.gitlab.com/ce/api/projects.html#edit-project
 func addEditProjectFlags(cmd *cobra.Command) {
 	addNewProjectFlags(cmd)
+	addChangeNameFlag(cmd)
+	addChangePathFlag(cmd)
 	cmd.Flags().String("default-branch", "master", "The default branch")
 }
 
 // addNewProjectFlags add the required flags for creating a new project
 // Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#create-project
 func addNewProjectFlags(cmd *cobra.Command) {
-	addNamespaceFlag(cmd)
 	addDescriptionFlag(cmd)
 	addLFSenabled(cmd)
 	addRequestAccessEnabledFlag(cmd)
