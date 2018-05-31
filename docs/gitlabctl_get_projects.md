@@ -1,10 +1,10 @@
 ## gitlabctl get projects
 
-List all projects
+List all Gitlab projects
 
 ### Synopsis
 
-List all projects
+List all Gitlab projects
 
 ```
 gitlabctl get projects [flags]
@@ -13,12 +13,8 @@ gitlabctl get projects [flags]
 ### Examples
 
 ```
-
-# get all projects
-gitlabctl get projects [flags]
-
 # get all projects with full details in JSON format
-gitlabctl get projects --json
+gitlabctl get projects --out json
 
 # get all projects from a group
 gitlabctl get projects --from-group=Group1

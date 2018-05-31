@@ -42,6 +42,19 @@ func addGetGroupsFlags(cmd *cobra.Command) {
 	addSearchFlag(cmd)
 }
 
+func addGetUsersFlags(cmd *cobra.Command) {
+	addActiveFlag(cmd)
+	addBlockedFlag(cmd)
+	addSearchFlag(cmd)
+	addUsernameFlag(cmd)
+	addExternalUIDFlag(cmd)
+	addProviderFlag(cmd)
+	addCreatedBefore(cmd)
+	addCreatedAfter(cmd)
+	addUserOrderByFlag(cmd)
+	addSortFlag(cmd)
+}
+
 // addGetProjectsFlags adds common flags for `get projects` commands
 // Flags usage reference:
 // https://docs.gitlab.com/ce/api/groups.html#list-a-group-39-s-projects
@@ -205,6 +218,65 @@ func validateSortFlagValue(cmd *cobra.Command) error {
 		cmd, "sort")
 }
 
+func addActiveFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("active", true, "Lookup users with active status")
+}
+
+func addBlockedFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("blocked", true, "Lookup users with blocked status")
+}
+
+func addUsernameFlag(cmd *cobra.Command) {
+	cmd.Flags().String("username", "", "Lookup users by username")
+}
+
+func addExternalUIDFlag(cmd *cobra.Command) {
+	cmd.Flags().String("external-uid", "", "Lookup users by external uid."+
+		"Best combined with --provider flag.")
+}
+
+func addProviderFlag(cmd *cobra.Command) {
+	cmd.Flags().String("provider", "", "Lookup users by provider. "+
+		"Best combined with --external-uid flag.")
+}
+
+func addCreatedBefore(cmd *cobra.Command) {
+	cmd.Flags().String("created-before", "", "Lookup users that are "+
+		"created before the specified value.\n\n"+
+		"Example: gitlabctl get users --created-before=2001-01-02T00:00:00.060Z")
+}
+
+func addCreatedAfter(cmd *cobra.Command) {
+	cmd.Flags().String("created-after", "", "Lookup users that are "+
+		"created after the specified value.\n\n"+
+		"Example: gitlabctl get users --created-after=2001-01-02T00:00:00.060Z")
+}
+
+// TODO: not supported by go-gitlab client yet
+// func addTwoFactorFlagValue(cmd *cobra.Command) {
+// 	getUsersCmd.Flags().String("two-factor", "disabled",
+// 		"Filter users by Two-factor authentication. "+
+// 			"Filter values are enabled or disabled. "+
+// 			"By default it returns all users")
+// }
+
+// func validateTwoFactorFlagValue(cmd *cobra.Command) error {
+// 	return validateFlagStringValue([]string{"enabled", "disabled"},
+// 		cmd, "two-factor")
+// }
+
+func addUserOrderByFlag(cmd *cobra.Command) {
+	cmd.Flags().String("order-by", "id",
+		"Return projects ordered by id, name, username, created_at, updated_at "+
+			" fields. Default is created_at")
+}
+
+func validateUserOrderByFlagValue(cmd *cobra.Command) error {
+	return validateFlagStringValue([]string{"id", "name", "username",
+		"created_at", "updated_at"},
+		cmd, "order-by")
+}
+
 func addProjectOrderByFlag(cmd *cobra.Command) {
 	cmd.Flags().String("order-by", "created_at",
 		"Return projects ordered by id, name, path, created_at, updated_at, "+
@@ -216,10 +288,6 @@ func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
 		"created_at", "updated_at", "last_activity_at"},
 		cmd, "order-by")
 }
-
-//
-// NOTE(@bzon): All addFlags* helpers should be added below
-//
 
 func addNamespaceFlag(cmd *cobra.Command) {
 	cmd.Flags().String("namespace", "",
