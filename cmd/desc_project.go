@@ -25,41 +25,41 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var descGroupCmd = &cobra.Command{
-	Use:           "group",
-	Aliases:       []string{"g"},
-	SuggestFor:    []string{"groups"},
-	Short:         "Describe a group",
-	Example:       `gitlabctl describe group GroupX -o json`,
+var descProjectCmd = &cobra.Command{
+	Use:           "project",
+	Aliases:       []string{"p"},
+	SuggestFor:    []string{"projects"},
+	Short:         "Describe a project",
+	Example:       `gitlabctl describe project ProjectX -o json`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runDescGroup(cmd, args[0])
+		return runDescProject(cmd, args[0])
 	},
 }
 
 func init() {
-	descCmd.AddCommand(descGroupCmd)
+	descCmd.AddCommand(descProjectCmd)
 }
 
-func runDescGroup(cmd *cobra.Command, path string) error {
-	g, err := descGroup(path)
+func runDescProject(cmd *cobra.Command, path string) error {
+	p, err := descProject(path)
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, g)
+	printProjectsOut(cmd, p)
 	return nil
 }
 
-func descGroup(path string) (*gitlab.Group, error) {
+func descProject(path string) (*gitlab.Project, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.GetGroup(path)
+	p, _, err := git.Projects.GetProject(path)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return p, nil
 }

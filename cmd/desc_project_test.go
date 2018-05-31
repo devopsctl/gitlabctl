@@ -21,45 +21,57 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
-	gitlab "github.com/xanzy/go-gitlab"
+	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-var descGroupCmd = &cobra.Command{
-	Use:           "group",
-	Aliases:       []string{"g"},
-	SuggestFor:    []string{"groups"},
-	Short:         "Describe a group",
-	Example:       `gitlabctl describe group GroupX -o json`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return runDescGroup(cmd, args[0])
-	},
-}
-
-func init() {
-	descCmd.AddCommand(descGroupCmd)
-}
-
-func runDescGroup(cmd *cobra.Command, path string) error {
-	g, err := descGroup(path)
-	if err != nil {
-		return err
+func TestDescProject(t *testing.T) {
+	setBasicAuthEnvs()
+	tt := []struct {
+		name     string
+		flagsMap map[string]string
+		args     []string
+		expect   testResult
+	}{
+		{
+			name:   "describe a project successfully",
+			args:   []string{"Group2/project10"},
+			expect: pass,
+		},
+		{
+			name:   "describe no args should fail",
+			expect: fail,
+		},
+		{
+			name: "invalid out flag should fail",
+			args: []string{"Group2/project10"},
+			flagsMap: map[string]string{
+				"out": "xxx",
+			},
+			expect: fail,
+		},
+		{
+			name: "describe non existent project should fail",
+			args: []string{"XXX"},
+			flagsMap: map[string]string{
+				// fix the value of the previous out flag
+				"out": "simple"},
+			expect: fail,
+		},
 	}
-	printGroupsOut(cmd, g)
-	return nil
-}
 
-func descGroup(path string) (*gitlab.Group, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return nil, err
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			execT := execTestCmdFlags{
+				t:        t,
+				cmd:      descProjectCmd,
+				flagsMap: tc.flagsMap,
+				args:     tc.args,
+			}
+			stdout, execResult := execT.executeCommand()
+			require.Equal(t, tc.expect, execResult,
+				printFlagsTable(tc.flagsMap, stdout))
+		})
 	}
-	g, _, err := git.Groups.GetGroup(path)
-	if err != nil {
-		return nil, err
-	}
-	return g, nil
 }
