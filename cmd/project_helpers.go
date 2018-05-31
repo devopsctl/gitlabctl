@@ -88,20 +88,39 @@ func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions,
 		}
 	}
 
-	if cmd.Flag("namespace").Changed {
-		ns := getFlagString(cmd, "namespace")
-		id, err := strconv.Atoi(ns)
-		// if not nil take the given number
-		if err == nil {
-			opts.NamespaceID = &id
+	// change-name is only required when editing a project
+	if f := cmd.Flag("change-name"); f != nil {
+		if f.Changed {
+			opts.Name = gitlab.String(getFlagString(cmd, "change-name"))
 		}
-		// find the group as string and get it's id
-		gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
-		if err != nil {
-			return nil, err
-		}
-		opts.NamespaceID = gitlab.Int(gid)
 	}
+
+	// change-path is only required when editing a project
+	if f := cmd.Flag("change-path"); f != nil {
+		if f.Changed {
+			opts.Path = gitlab.String(getFlagString(cmd, "change-path"))
+		}
+	}
+
+	// namespace is only required when creating a project
+	if f := cmd.Flag("namespace"); f != nil {
+		if cmd.Flag("namespace").Changed {
+			ns := getFlagString(cmd, "namespace")
+			id, err := strconv.Atoi(ns)
+			// if not nil take the given number
+			if err == nil {
+				opts.NamespaceID = &id
+			}
+			// find the group as string and get it's id
+			gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
+			if err != nil {
+				return nil, err
+			}
+			opts.NamespaceID = gitlab.Int(gid)
+		}
+	}
+
+	// common flags to editing and creating a project
 	if cmd.Flag("desc").Changed {
 		opts.Description = gitlab.String(getFlagString(cmd, "desc"))
 	}
@@ -165,16 +184,4 @@ func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions,
 		opts.TagList = p
 	}
 	return &opts, nil
-}
-
-func getNamespaceID(id string) (int, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return -1, err
-	}
-	ns, _, err := git.Namespaces.GetNamespace(id)
-	if err != nil {
-		return -1, err
-	}
-	return ns.ID, nil
 }

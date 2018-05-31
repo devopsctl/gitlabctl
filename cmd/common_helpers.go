@@ -74,6 +74,18 @@ const (
 	YAML = "yaml"
 )
 
+func getNamespaceID(id string) (int, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return -1, err
+	}
+	ns, _, err := git.Namespaces.GetNamespace(id)
+	if err != nil {
+		return -1, err
+	}
+	return ns.ID, nil
+}
+
 func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	switch getFlagString(cmd, "out") {
 	case JSON:
