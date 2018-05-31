@@ -25,83 +25,55 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var getProjectsCmd = &cobra.Command{
-	Use:           "projects",
-	Aliases:       []string{"p"},
-	SuggestFor:    []string{"project"},
-	Short:         "List all Gitlab projects",
+// getUsersCmd references:
+// Gitlab API doc: https://docs.gitlab.com/ce/api/users.html#list-users
+// Go Client doc: https://godoc.org/github.com/xanzy/go-gitlab#UsersService.ListUsers
+var getUsersCmd = &cobra.Command{
+	Use:           "users",
+	Aliases:       []string{"u"},
+	SuggestFor:    []string{"user"},
+	Short:         "List all Gitlab users",
+	Args:          cobra.ExactArgs(0),
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Example: `# get all projects with full details in JSON format
-gitlabctl get projects --out json
-
-# get all projects from a group
-gitlabctl get projects --from-group=Group1
-`,
+	Example:       `gitlabctl get users --out json`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateSortFlagValue(cmd); err != nil {
 			return err
 		}
-		if err := validateProjectOrderByFlagValue(cmd); err != nil {
-			return err
-		}
-		return validateVisibilityFlagValue(cmd)
+		return validateUserOrderByFlagValue(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if getFlagString(cmd, "from-group") != "" {
-			return runGetProjectsFromGroup(cmd)
-		}
-		return runGetProjects(cmd)
+		return runGetUsers(cmd)
 	},
 }
 
 func init() {
-	getCmd.AddCommand(getProjectsCmd)
-	addGetProjectsFlags(getProjectsCmd)
+	getCmd.AddCommand(getUsersCmd)
+	addGetUsersFlags(getUsersCmd)
 }
 
-func runGetProjects(cmd *cobra.Command) error {
-	opts := getListProjectsOptions(cmd)
-	projects, err := getProjects(opts)
+func runGetUsers(cmd *cobra.Command) error {
+	opts, err := createListUsersOptions(cmd)
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, projects...)
+	users, err := getUsers(opts)
+	if err != nil {
+		return err
+	}
+	printUsersOut(cmd, users...)
 	return nil
 }
 
-func getProjects(opts *gitlab.ListProjectsOptions) ([]*gitlab.Project, error) {
+func getUsers(opts *gitlab.ListUsersOptions) ([]*gitlab.User, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Projects.ListProjects(opts)
+	users, _, err := git.Users.ListUsers(opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
-}
-
-func runGetProjectsFromGroup(cmd *cobra.Command) error {
-	group := getFlagString(cmd, "from-group")
-	opts := (*gitlab.ListGroupProjectsOptions)(getListProjectsOptions(cmd))
-	projects, err := getProjectsFromGroup(group, opts)
-	if err != nil {
-		return err
-	}
-	printProjectsOut(cmd, projects...)
-	return nil
-}
-
-func getProjectsFromGroup(group string,
-	opts *gitlab.ListGroupProjectsOptions) ([]*gitlab.Project, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return nil, err
-	}
-	p, _, err := git.Groups.ListGroupProjects(group, opts)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
+	return users, nil
 }
