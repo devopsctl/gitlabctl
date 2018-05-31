@@ -31,7 +31,7 @@ var newProjectCmd = &cobra.Command{
 	SuggestFor: []string{"projects"},
 	Short:      "Create a new project",
 	Example: `# create a new project
-gitlabctl new project ProjectX	
+gitlabctl new project ProjectX --desc="Project X is party!"
 
 # create a new project under a group
 gitlabctl new project ProjectY --namespace=GroupY
@@ -53,7 +53,7 @@ gitlabctl new project ProjectY --namespace=GroupY
 func init() {
 	newCmd.AddCommand(newProjectCmd)
 	addNewProjectFlags(newProjectCmd)
-	addOutFlag(newProjectCmd)
+	addNamespaceFlag(newProjectCmd)
 }
 
 func runNewProject(cmd *cobra.Command, name string) error {
