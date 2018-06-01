@@ -59,7 +59,7 @@ func init() {
 }
 
 func runGetGroups(cmd *cobra.Command) error {
-	opts := getListGroupsOptions(cmd)
+	opts := assignListGroupOptions(cmd)
 	groups, err := getGroups(opts)
 	if err != nil {
 		return err
@@ -83,7 +83,7 @@ func getGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 func runGetSubgroups(cmd *cobra.Command) error {
 	// to reuse the same opts mapping from groupLsCmd for groupLsSubGroup
 	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
-	opts := (*gitlab.ListSubgroupsOptions)(getListGroupsOptions(cmd))
+	opts := (*gitlab.ListSubgroupsOptions)(assignListGroupOptions(cmd))
 	path := getFlagString(cmd, "from-group")
 	groups, err := getSubgroups(path, opts)
 	if err != nil {

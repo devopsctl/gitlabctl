@@ -55,7 +55,7 @@ func init() {
 }
 
 func runEditGroup(cmd *cobra.Command, name string) error {
-	opts, err := getCreateGroupOptions(cmd)
+	opts, err := assignCreateGroupOptions(cmd)
 	if err != nil {
 		return err
 	}

@@ -57,7 +57,7 @@ func init() {
 }
 
 func runNewProject(cmd *cobra.Command, name string) error {
-	opts, err := getCreateProjectOptions(cmd)
+	opts, err := assignCreateProjectOptions(cmd)
 	if err != nil {
 		return err
 	}

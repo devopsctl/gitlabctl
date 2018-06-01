@@ -61,7 +61,7 @@ func init() {
 }
 
 func runGetProjects(cmd *cobra.Command) error {
-	opts := getListProjectsOptions(cmd)
+	opts := assignListProjectOptions(cmd)
 	projects, err := getProjects(opts)
 	if err != nil {
 		return err
@@ -84,7 +84,7 @@ func getProjects(opts *gitlab.ListProjectsOptions) ([]*gitlab.Project, error) {
 
 func runGetProjectsFromGroup(cmd *cobra.Command) error {
 	group := getFlagString(cmd, "from-group")
-	opts := (*gitlab.ListGroupProjectsOptions)(getListProjectsOptions(cmd))
+	opts := (*gitlab.ListGroupProjectsOptions)(assignListProjectOptions(cmd))
 	projects, err := getProjectsFromGroup(group, opts)
 	if err != nil {
 		return err
