@@ -28,11 +28,38 @@ import (
 	"time"
 
 	"github.com/araddon/dateparse"
-	"github.com/ghodss/yaml"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
+	yaml "gopkg.in/yaml.v2"
 )
+
+const (
+	// JSON is used as a constant of word "json" for out flag
+	JSON = "json"
+	// YAML is used as a constant of word "yaml" for out flag
+	YAML = "yaml"
+)
+
+func getNamespaceID(id string) (int, error) {
+	git, err := newGitlabClient()
+	if err != nil {
+		return -1, err
+	}
+	ns, _, err := git.Namespaces.GetNamespace(id)
+	if err != nil {
+		return -1, err
+	}
+	return ns.ID, nil
+}
+
+func getGroupID(path string) (int, error) {
+	g, err := descGroup(path)
+	if err != nil {
+		return -1, err
+	}
+	return g.ID, err
+}
 
 func newTimeFromString(s string) (*time.Time, error) {
 	t, err := dateparse.ParseAny(s)
@@ -77,25 +104,6 @@ func printTable(header []string, rows [][]string) {
 	table.SetCaption(true,
 		"Note: Use --out=json or --out=yaml to get more resource details.")
 	table.Render()
-}
-
-const (
-	// JSON is used as a constant of word "json" for out flag
-	JSON = "json"
-	// YAML is used as a constant of word "yaml" for out flag
-	YAML = "yaml"
-)
-
-func getNamespaceID(id string) (int, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return -1, err
-	}
-	ns, _, err := git.Namespaces.GetNamespace(id)
-	if err != nil {
-		return -1, err
-	}
-	return ns.ID, nil
 }
 
 func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {

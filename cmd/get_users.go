@@ -54,7 +54,7 @@ func init() {
 }
 
 func runGetUsers(cmd *cobra.Command) error {
-	opts, err := createListUsersOptions(cmd)
+	opts, err := assignListUsersOptions(cmd)
 	if err != nil {
 		return err
 	}
