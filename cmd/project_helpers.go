@@ -27,9 +27,9 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-// getListProjectsOptions maps the cmd flags to gitlab.ListProjectsOptions struct.
-// It also ensures that the struct field that is associated with the command
-// flag does not use the flag default value.
+// getListProjectsOptions maps the cmd flags to a gitlab.ListProjectsOptions struct.
+// If a flag's default value is not changed by the caller, 
+// it's value it will not be assigned to the associated gitlab.ListProjectsOptions field.
 func getListProjectsOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 	var opts gitlab.ListProjectsOptions
 	if cmd.Flag("archived").Changed {
@@ -74,11 +74,10 @@ func getListProjectsOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 	return &opts
 }
 
-// getListProjectsOptions maps the cmd flags to gitlab.ListProjectsOptions struct.
-// It also ensures that the struct field that is associated with the command
-// flag does not use the flag default value.
-func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions,
-	error) {
+// getCreateProjectOptions maps the cmd flags to gitlab.CreateProjectOptions struct.
+// If a flag's default value is not changed by the caller, 
+// it's value it will not be assigned to the associated gitlab.CreateProjectOptions field.
+func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions, error) {
 	var opts gitlab.CreateProjectOptions
 
 	// default branch is only applied to edit project command
@@ -120,7 +119,7 @@ func getCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions,
 		}
 	}
 
-	// common flags to editing and creating a project
+	// common flags for editing and creating a project
 	if cmd.Flag("desc").Changed {
 		opts.Description = gitlab.String(getFlagString(cmd, "desc"))
 	}
