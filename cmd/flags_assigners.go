@@ -30,7 +30,7 @@ import (
 
 // assignListProjectOptions assigns the flags' values to gitlab.ListProjectsOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value it will not be assigned to the associated gitlab.ListProjectsOptions field.
+// it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListProjectOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 	var opts gitlab.ListProjectsOptions
 	if cmd.Flag("archived").Changed {
@@ -77,7 +77,7 @@ func assignListProjectOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 
 // assignCreateProjectOptions assigns the flags' values to gitlab.CreateProjectOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value it will not be assigned to the associated gitlab.CreateProjectOptions field.
+// it's value will not be assigned to the associated gitlab.CreateProjectOptions field.
 func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions, error) {
 	var opts gitlab.CreateProjectOptions
 
@@ -188,7 +188,7 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 
 // assignListUsersOptions assigns the flags' values to gitlab.ListUsersOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value it will not be assigned to the associated gitlab.ListProjectsOptions field.
+// it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error) {
 	var opts gitlab.ListUsersOptions
 	if cmd.Flag("active").Changed {
@@ -238,7 +238,7 @@ func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error
 
 // assignListGroupOptions assigns the flags' values to gitlab.ListGroupsOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value it will not be assigned to the associated gitlab.ListGroupsOptions field.
+// it's value will not be assigned to the associated gitlab.ListGroupsOptions field.
 func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	var opts gitlab.ListGroupsOptions
 	if cmd.Flag("all-available").Changed {
@@ -264,7 +264,7 @@ func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 
 // assignCreateGroupOptions assigns the flags' values to gitlab.CreateGroupOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value it will not be assigned to the associated gitlab.CreateGroupOptions field.
+// it's value will not be assigned to the associated gitlab.CreateGroupOptions field.
 func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, error) {
 	var opts gitlab.CreateGroupOptions
 
