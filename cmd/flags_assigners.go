@@ -110,13 +110,14 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 			// if not nil take the given number
 			if err == nil {
 				opts.NamespaceID = &id
-			}
 			// find the group as string and get it's id
-			gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
-			if err != nil {
-				return nil, err
+			} else {
+				gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
+				if err != nil {
+					return nil, err
+				}
+				opts.NamespaceID = gitlab.Int(gid)				
 			}
-			opts.NamespaceID = gitlab.Int(gid)
 		}
 	}
 
@@ -290,13 +291,14 @@ func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, e
 			// if not nil take the given number
 			if err == nil {
 				opts.ParentID = &id
-			}
 			// find the group as string and get it's id
-			gid, err := getGroupID(getFlagString(cmd, "namespace"))
-			if err != nil {
-				return nil, err
+			} else {
+				gid, err := getGroupID(getFlagString(cmd, "namespace"))
+				if err != nil {
+					return nil, err
+				}
+				opts.ParentID = gitlab.Int(gid)	
 			}
-			opts.ParentID = gitlab.Int(gid)
 		}
 	}
 
