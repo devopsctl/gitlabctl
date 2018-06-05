@@ -110,13 +110,13 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 			// if not nil take the given number
 			if err == nil {
 				opts.NamespaceID = &id
-			// find the group as string and get it's id
+				// find the group as string and get it's id
 			} else {
 				gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
 				if err != nil {
 					return nil, err
 				}
-				opts.NamespaceID = gitlab.Int(gid)				
+				opts.NamespaceID = gitlab.Int(gid)
 			}
 		}
 	}
@@ -291,13 +291,13 @@ func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, e
 			// if not nil take the given number
 			if err == nil {
 				opts.ParentID = &id
-			// find the group as string and get it's id
+				// find the group as string and get it's id
 			} else {
 				gid, err := getGroupID(getFlagString(cmd, "namespace"))
 				if err != nil {
 					return nil, err
 				}
-				opts.ParentID = gitlab.Int(gid)	
+				opts.ParentID = gitlab.Int(gid)
 			}
 		}
 	}
@@ -318,4 +318,54 @@ func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, e
 			getFlagBool(cmd, "request-access-enabled"))
 	}
 	return &opts, nil
+}
+
+func assignCreateUserOptions(cmd *cobra.Command) (*gitlab.CreateUserOptions, error) {
+	opts := new(gitlab.CreateUserOptions)
+	opts.Username = gitlab.String(getFlagString(cmd, "username"))
+	opts.Name = gitlab.String(getFlagString(cmd, "name"))
+	opts.Email = gitlab.String(getFlagString(cmd, "email"))
+
+	if cmd.Flag("password").Changed {
+		opts.Password = gitlab.String(getFlagString(cmd, "password"))
+	}
+	if cmd.Flag("skype").Changed {
+		opts.Skype = gitlab.String(getFlagString(cmd, "skype"))
+	}
+	if cmd.Flag("linkedin").Changed {
+		opts.Linkedin = gitlab.String(getFlagString(cmd, "linkedin"))
+	}
+	if cmd.Flag("twitter").Changed {
+		opts.Twitter = gitlab.String(getFlagString(cmd, "twitter"))
+	}
+	if cmd.Flag("website-url").Changed {
+		opts.WebsiteURL = gitlab.String(getFlagString(cmd, "website-url"))
+	}
+	if cmd.Flag("org").Changed {
+		opts.Organization = gitlab.String(getFlagString(cmd, "org"))
+	}
+	if cmd.Flag("external-uid").Changed {
+		opts.ExternUID = gitlab.String(getFlagString(cmd, "external-uid"))
+	}
+	if cmd.Flag("provider").Changed {
+		opts.Provider = gitlab.String(getFlagString(cmd, "provider"))
+	}
+	if cmd.Flag("location").Changed {
+		opts.Location = gitlab.String(getFlagString(cmd, "location"))
+	}
+	// TODO:
+	// Waiting for https://github.com/xanzy/go-gitlab/pull/416/files
+	if cmd.Flag("reset-password").Changed {
+		opts.ResetPassword = gitlab.Bool(getFlagBool(cmd, "reset-password"))
+	}
+	if cmd.Flag("can-create-group").Changed {
+		opts.CanCreateGroup = gitlab.Bool(getFlagBool(cmd, "can-create-group"))
+	}
+	if cmd.Flag("skip-confirmation").Changed {
+		opts.SkipConfirmation = gitlab.Bool(getFlagBool(cmd, "skip-confirmation"))
+	}
+	if cmd.Flag("projects-limit").Changed {
+		opts.ProjectsLimit = gitlab.Int(getFlagInt(cmd, "projects-limit"))
+	}
+	return opts, nil
 }
