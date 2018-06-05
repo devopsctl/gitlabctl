@@ -37,6 +37,7 @@ before_install:
     echo "============ test data completed  ============="
 
 script:
+  - golint -set_exit_status
   - |
     source testdata/credentials.sh
     make coverage
