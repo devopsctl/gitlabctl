@@ -30,10 +30,9 @@ import (
 
 func TestDeleteProject(t *testing.T) {
 	tt := []struct {
-		name      string
-		args      []string
-		namespace string
-		expect    testResult
+		name   string
+		args   []string
+		expect testResult
 	}{
 		{
 			name: "successfully delete a project",
