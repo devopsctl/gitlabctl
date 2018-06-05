@@ -36,7 +36,13 @@ var getUsersCmd = &cobra.Command{
 	Args:          cobra.ExactArgs(0),
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Example:       `gitlabctl get users --out json`,
+	Example: `# get all users
+gitlabctl get users --out json
+
+# get all users created after a date
+gitlabctl get users --created-after="06/04/2018 22:05"
+
+`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateSortFlagValue(cmd); err != nil {
 			return err
