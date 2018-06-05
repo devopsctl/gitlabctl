@@ -54,6 +54,14 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [ ] `new project-hook [flags]`
 * [ ] `edit project-hook [flags]`
 
+### Users Command
+
+* [x] `get users [flags]`
+* [x] `describe user [username]`
+* [x] `new user [username] [flags]`
+* [ ] `delete user [username]`
+* [ ] `edit user [username] [flags]`
+
 ### Members Command
 
 * [ ] `get members --from-group [flags]`
@@ -66,12 +74,4 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [ ] `remove member [username] --from-project`
 * [ ] `edit member [username] --from-group  [flags]`
 * [ ] `edit member [username] --from-project  [flags]`
-
-### Users Command
-
-* [x] `get users [flags]`
-* [x] `describe user [username]`
-* [ ] `new user [username] [flags]`
-* [ ] `delete user [username]`
-* [ ] `edit user [username] [flags]`
 

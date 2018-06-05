@@ -46,7 +46,7 @@ func setE(k, v string) {
 	}
 }
 
-func tInfo(msg string) {
+func tInfo(msg interface{}) {
 	fmt.Println("--- INFO:", msg)
 }
 

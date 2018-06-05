@@ -167,11 +167,11 @@ func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
 	case YAML:
 		printYAML(users)
 	default:
-		header := []string{"ID", "USERNAME", "EMAIL", "NAME", "LAST SIGN IN AT"}
+		header := []string{"ID", "USERNAME", "EMAIL", "NAME"}
 		var rows [][]string
 		for _, v := range users {
 			rows = append(rows, []string{strconv.Itoa(v.ID),
-				v.Username, v.Email, v.Name, fmt.Sprintf("%v", v.LastSignInAt)})
+				v.Username, v.Email, v.Name})
 		}
 		printTable(header, rows)
 	}

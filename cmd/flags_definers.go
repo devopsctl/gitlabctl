@@ -42,6 +42,9 @@ func addGetGroupsFlags(cmd *cobra.Command) {
 	addSearchFlag(cmd)
 }
 
+// addGetUsersFlags adds flags for `get users` command
+// Flags usage reference:
+// https://docs.gitlab.com/ce/api/users.html#for-user
 func addGetUsersFlags(cmd *cobra.Command) {
 	addActiveFlag(cmd)
 	addBlockedFlag(cmd)
@@ -55,7 +58,42 @@ func addGetUsersFlags(cmd *cobra.Command) {
 	addSortFlag(cmd)
 }
 
-// addGetProjectsFlags adds common flags for `get projects` commands
+// addNewUserFlags adds flags for `new user` command
+// Flags usage reference:
+// https://docs.gitlab.com/ee/api/users.html#user-creation
+func addNewUserFlags(cmd *cobra.Command) {
+	cmd.Flags().String("username", "", "Username")
+	if err := cmd.MarkFlagRequired("username"); err != nil {
+		er(err)
+	}
+	cmd.Flags().String("name", "", "Name")
+	if err := cmd.MarkFlagRequired("name"); err != nil {
+		er(err)
+	}
+	cmd.Flags().String("email", "", "Email")
+	if err := cmd.MarkFlagRequired("email"); err != nil {
+		er(err)
+	}
+
+	cmd.Flags().String("password", "", "Password")
+	cmd.Flags().String("skype", "", "Skype id")
+	cmd.Flags().String("linkedin", "", "Linkedin account")
+	cmd.Flags().String("twitter", "", "Twitter account")
+	cmd.Flags().String("website-url", "", "Website URL")
+	cmd.Flags().String("org", "", "Organization name")
+	cmd.Flags().String("external-uid", "", "External UID")
+	cmd.Flags().String("provider", "", "External Provider Name")
+	cmd.Flags().String("bio", "", "User's biography")
+	cmd.Flags().String("location", "", "User's location")
+	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
+	cmd.Flags().Bool("external", false, "Flags the user as external")
+	cmd.Flags().Bool("admin", false, "User is admin")
+	cmd.Flags().Bool("can-create-group", false, "User can create groups")
+	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
+	cmd.Flags().Int("projects-limit", -1, "Number of projects user can create")
+}
+
+// addGetProjectsFlags adds flags for `get projects` command
 // Flags usage reference:
 // https://docs.gitlab.com/ce/api/groups.html#list-a-group-39-s-projects
 func addGetProjectsFlags(cmd *cobra.Command) {
