@@ -280,14 +280,16 @@ func addProviderFlag(cmd *cobra.Command) {
 
 func addCreatedBefore(cmd *cobra.Command) {
 	cmd.Flags().String("created-before", "", "Lookup users that are "+
-		"created before the specified value.\n\n"+
-		"Example: gitlabctl get users --created-before=2001-01-02T00:00:00.060Z")
+		"created before the specified value.\n"+
+		"Example: gitlabctl get users --created-before=2001-01-02T00:00:00.060Z\n"+
+		"Acceptable Format Reference: https://github.com/devopsctl/gitlabctl/blob/master/docs/dateparse.md\n")
 }
 
 func addCreatedAfter(cmd *cobra.Command) {
 	cmd.Flags().String("created-after", "", "Lookup users that are "+
-		"created after the specified value.\n\n"+
-		"Example: gitlabctl get users --created-after=2001-01-02T00:00:00.060Z")
+		"created after the specified value.\n"+
+		"Example: gitlabctl get users --created-after=2001-01-02T00:00:00.060Z\n"+
+		"Acceptable Format Reference: https://github.com/devopsctl/gitlabctl/blob/master/docs/dateparse.md\n")
 }
 
 // TODO: not supported by go-gitlab client yet
