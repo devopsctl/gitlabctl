@@ -1,25 +1,26 @@
-## gitlabctl describe group
+## gitlabctl describe user
 
-Describe a group
+Describe a user
 
 ### Synopsis
 
-Describe a group
+Describe a user
 
 ```
-gitlabctl describe group [flags]
+gitlabctl describe user [flags]
 ```
 
 ### Examples
 
 ```
-gitlabctl describe group GroupX -o json
+gitlabctl describe user john.smith
 ```
 
 ### Options
 
 ```
-  -h, --help   help for group
+  -h, --help     help for user
+      --id int   The ID of a user (default -1)
 ```
 
 ### Options inherited from parent commands
