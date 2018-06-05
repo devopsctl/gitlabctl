@@ -389,3 +389,12 @@ func getFlagBool(cmd *cobra.Command, flag string) bool {
 	}
 	return b
 }
+
+func getFlagInt(cmd *cobra.Command, flag string) int {
+	i, err := cmd.Flags().GetInt(flag)
+	if err != nil {
+		glog.Fatalf("error accessing flag %s for command %s: %v",
+			flag, cmd.Name(), err)
+	}
+	return i
+}
