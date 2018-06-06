@@ -29,13 +29,12 @@ var newProjectCmd = &cobra.Command{
 	Use:        "project",
 	Aliases:    []string{"p"},
 	SuggestFor: []string{"projects"},
-	Short:      "Create a new project",
+	Short:      "Create a new project by specifying the project name as the first argument",
 	Example: `# create a new project
 gitlabctl new project ProjectX --desc="Project X is party!"
 
 # create a new project under a group
-gitlabctl new project ProjectY --namespace=GroupY
-`,
+gitlabctl new project ProjectY --namespace=GroupY`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,

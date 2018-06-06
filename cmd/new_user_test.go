@@ -30,12 +30,12 @@ func TestNewUser(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
+		args     []string
 		expect   testResult
 	}{
 		{
 			name: "create user using all possible flags",
 			flagsMap: map[string]string{
-				"username":          "john.swagger",
 				"name":              "john.swagger",
 				"email":             "john.swagger@example.com",
 				"password":          "12345678",
@@ -55,6 +55,7 @@ func TestNewUser(t *testing.T) {
 				"location":          "london",
 				"projects-limit":    "5",
 			},
+			args:   []string{"john.swagger"},
 			expect: pass,
 		},
 	}
@@ -64,7 +65,7 @@ func TestNewUser(t *testing.T) {
 
 			// Ensure that the user to be created is deleted
 			if tc.expect == pass {
-				if err := deleteUser(tc.flagsMap["username"]); err != nil {
+				if err := deleteUser(tc.args[0]); err != nil {
 					tInfo(err)
 				}
 			}
@@ -73,6 +74,7 @@ func TestNewUser(t *testing.T) {
 				t:        t,
 				cmd:      newUserCmd,
 				flagsMap: tc.flagsMap,
+				args:     tc.args,
 			}
 
 			stdout, execResult := execT.executeCommand()

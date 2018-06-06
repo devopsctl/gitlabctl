@@ -1,10 +1,10 @@
 ## gitlabctl new group
 
-Create a new group
+Create a new group by specifying the group name as the first argument
 
 ### Synopsis
 
-Create a new group
+Create a new group by specifying the group name as the first argument
 
 ```
 gitlabctl new group [flags]
@@ -13,13 +13,11 @@ gitlabctl new group [flags]
 ### Examples
 
 ```
-
 # create a new group
-gitlabctl new group GroupAZ [flags]
+gitlabctl new group GroupAZ
 
 # create a subgroup using namespace
-gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
-
+gitlabctl new group GroupXB --namespace=ParentGroupXB
 ```
 
 ### Options

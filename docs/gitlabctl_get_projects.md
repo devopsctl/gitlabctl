@@ -18,7 +18,6 @@ gitlabctl get projects --out json
 
 # get all projects from a group
 gitlabctl get projects --from-group=Group1
-
 ```
 
 ### Options

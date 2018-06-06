@@ -26,11 +26,16 @@ import (
 )
 
 var descProjectCmd = &cobra.Command{
-	Use:           "project",
-	Aliases:       []string{"p"},
-	SuggestFor:    []string{"projects"},
-	Short:         "Describe a project",
-	Example:       `gitlabctl describe project ProjectX -o json`,
+	Use:        "project",
+	Aliases:    []string{"p"},
+	SuggestFor: []string{"projects"},
+	Short:      "Describe a project by specifying the id or project path",
+	Example: `# describe a project by path
+gitlabctl describe project ProjectX
+gitlabctl describe project GroupY/ProjectY
+
+# describe a project with id (23)
+gitlabctl describe project 23`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
@@ -43,23 +48,23 @@ func init() {
 	descCmd.AddCommand(descProjectCmd)
 }
 
-func runDescProject(cmd *cobra.Command, path string) error {
-	p, err := descProject(path)
+func runDescProject(cmd *cobra.Command, project string) error {
+	projectInfo, err := descProject(project)
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, p)
+	printProjectsOut(cmd, projectInfo)
 	return nil
 }
 
-func descProject(path string) (*gitlab.Project, error) {
+func descProject(project string) (*gitlab.Project, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	p, _, err := git.Projects.GetProject(path)
+	projectInfo, _, err := git.Projects.GetProject(project)
 	if err != nil {
 		return nil, err
 	}
-	return p, nil
+	return projectInfo, nil
 }

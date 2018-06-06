@@ -1,10 +1,10 @@
 ## gitlabctl edit group
 
-Update or patch a group
+Update a group by specifying the group id or path and using flags for fields to modify
 
 ### Synopsis
 
-Update or patch a group
+Update a group by specifying the group id or path and using flags for fields to modify
 
 ```
 gitlabctl edit group [flags]
@@ -14,21 +14,23 @@ gitlabctl edit group [flags]
 
 ```
 # edit a group
-gitlabctl edit group GroupAZ [flags]
+gitlabctl edit group GroupAZ --desc="Updated group"
 
-# edit a subgroup using namespace
-gitlabctl edit group GroupXB --namespace=ParentGroupXB [flags]
+# edit a subgroup
+gitlabctl edit group GroupX/GroupZ --desc="Updated group"
 
+# edit a group with id (23)
+gitlabctl edit group 23 --visibility="public"
 ```
 
 ### Options
 
 ```
-      --change-name string       Use this flag to change the resource name that is displayed in the web user interface
-      --change-path string       Use this flag to change the path name that is used when accessing the resource via http or ssh url
       --desc string              The description of the resource
   -h, --help                     help for group
       --lfs-enabled              Enable LFS
+      --name string              New group name
+      --path string              New group path
       --request-access-enabled   Enable request access
       --visibility string        public, internal or private (default "private")
 ```

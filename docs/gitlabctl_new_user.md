@@ -1,10 +1,10 @@
 ## gitlabctl new user
 
-Create a new user
+Create a new user by specifying the username as the first argument
 
 ### Synopsis
 
-Create a new user
+Create a new user by specifying the username as the first argument
 
 ```
 gitlabctl new user [flags]
@@ -13,11 +13,11 @@ gitlabctl new user [flags]
 ### Examples
 
 ```
-# create a new user with default settings
-gitlabctl new user --username=john.smith --name="Johhny Smith" --password=12345678 --email=john.smith@example.com --skip-confirmation
+# create a new user
+gitlabctl new user john.smith --name="Johhny Smith" --password=12345678 --email=john.smith@example.com --skip-confirmation
 
 # create a new user and send reset password link
-gitlabctl new user --username=aa --name="aaron" --password=aaaaaaaa --email=aa@example.com --reset-password
+gitlabctl new user james --name="james" --password=aaaaaaaa --email=aa@example.com --reset-password
 ```
 
 ### Options
@@ -41,7 +41,6 @@ gitlabctl new user --username=aa --name="aaron" --password=aaaaaaaa --email=aa@e
       --skip-confirmation     Skip confirmation
       --skype string          Skype id
       --twitter string        Twitter account
-      --username string       Username
       --website-url string    Website URL
 ```
 

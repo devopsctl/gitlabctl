@@ -29,13 +29,13 @@ var editProjectCmd = &cobra.Command{
 	Use:        "project",
 	Aliases:    []string{"p"},
 	SuggestFor: []string{"projects"},
-	Short:      "Update or patch a project",
-	Example: `# update a project description
+	Short:      "Edit a project by specifying the project id or path and using flags for fields to modify",
+	Example: `# update a project by path
 gitlabctl edit project ProjectX --desc="A go project"
+gitlabctl edit project GroupX/ProjectX --merge-method=rebase_merge 
 
-# update a project within a group or subgroup using 'namespace'
-gitlabctl edit project ProjectX --namespace=GroupX --merge-method=rebase_merge 
-`,
+# update a project with id (23)
+gitlabctl edit project 3 --desc="A go project"`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
@@ -55,27 +55,27 @@ func init() {
 	addEditProjectFlags(editProjectCmd)
 }
 
-func runEditProject(cmd *cobra.Command, path string) error {
+func runEditProject(cmd *cobra.Command, project string) error {
 	opts, err := assignCreateProjectOptions(cmd)
 	if err != nil {
 		return err
 	}
-	p, err := editProject(path, (*gitlab.EditProjectOptions)(opts))
+	editedProject, err := editProject(project, (*gitlab.EditProjectOptions)(opts))
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, p)
+	printProjectsOut(cmd, editedProject)
 	return nil
 }
 
-func editProject(path string, opts *gitlab.EditProjectOptions) (*gitlab.Project, error) {
+func editProject(project string, opts *gitlab.EditProjectOptions) (*gitlab.Project, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	p, _, err := git.Projects.EditProject(path, opts)
+	editedProject, _, err := git.Projects.EditProject(project, opts)
 	if err != nil {
 		return nil, err
 	}
-	return p, nil
+	return editedProject, nil
 }

@@ -30,40 +30,42 @@ func TestEditUser(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
+		args     []string
 		expect   testResult
 	}{
 		{
 			name: "edit user using all possible flags",
 			flagsMap: map[string]string{
-				"user": "matt.hunter",
 				// TODO: create a new user, and use new-username
-				// "new-username":     "matt.hunter",
-				"name":                "matt.swagger",
-				"email":               "matt.swagger@example.com",
-				"password":            "12345678",
-				"external":            "false",
-				"admin":               "false",
-				"can-create-group":    "false",
-				"skip-reconfirmation": "false",
-				"skype":               "matt.swagger",
-				"linkedin":            "matt.swagger",
-				"twitter":             "matt.swagger",
-				"website-url":         "matt.swagger.com",
-				"org":                 "matt.swagger org",
-				"external-uid":        "matt.swagger",
-				"provider":            "github",
-				"bio":                 "like a sir",
-				"location":            "london",
-				"projects-limit":      "5",
+				// "username":     "matt.hunter",
+				"name":             "matt.swagger",
+				"email":            "matt.swagger@example.com",
+				"password":         "12345678",
+				"external":         "false",
+				"admin":            "false",
+				"can-create-group": "false",
+				// TODO: not supported by go-gitlab, yet
+				// "skip-reconfirmation": "false",
+				"skype":          "matt.swagger",
+				"linkedin":       "matt.swagger",
+				"twitter":        "matt.swagger",
+				"website-url":    "matt.swagger.com",
+				"org":            "matt.swagger org",
+				"external-uid":   "matt.swagger",
+				"provider":       "github",
+				"bio":            "like a sir",
+				"location":       "london",
+				"projects-limit": "5",
 			},
+			args:   []string{"matt.hunter"},
 			expect: pass,
 		},
 		{
 			name: "editing a non existent user should fail",
 			flagsMap: map[string]string{
-				"username": "x.hunter",
-				"name":     "x.swagger",
+				"name": "x.swagger",
 			},
+			args:   []string{"x.hunter"},
 			expect: fail,
 		},
 	}
@@ -74,6 +76,7 @@ func TestEditUser(t *testing.T) {
 				t:        t,
 				cmd:      editUserCmd,
 				flagsMap: tc.flagsMap,
+				args:     tc.args,
 			}
 
 			stdout, execResult := execT.executeCommand()

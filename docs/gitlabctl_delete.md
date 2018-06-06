@@ -21,7 +21,7 @@ Delete a Gitlab resource
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
-* [gitlabctl delete group](gitlabctl_delete_group.md)	 - Delete a Gitlab group
+* [gitlabctl delete group](gitlabctl_delete_group.md)	 - Delete a Gitlab group by specifying the id or group path
 * [gitlabctl delete project](gitlabctl_delete_project.md)	 - Delete a Gitlab project by specifying the full path
 * [gitlabctl delete user](gitlabctl_delete_user.md)	 - Delete a Gitlab user by specifying the username
 

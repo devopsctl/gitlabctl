@@ -1,10 +1,10 @@
 ## gitlabctl delete group
 
-Delete a Gitlab group
+Delete a Gitlab group by specifying the id or group path
 
 ### Synopsis
 
-Delete a Gitlab group
+Delete a Gitlab group by specifying the id or group path
 
 ```
 gitlabctl delete group [flags]
@@ -13,12 +13,14 @@ gitlabctl delete group [flags]
 ### Examples
 
 ```
-
 # delete a Group named GroupX
 gitlabctl delete group GroupX
 
 # delete a Subgroup named GroupY under GroupX
 gitlabctl delete group GroupX/GroupY
+
+# delete a group with id (3)
+gitlabctl delete group 3
 
 ```
 

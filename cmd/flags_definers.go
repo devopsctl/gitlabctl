@@ -62,10 +62,6 @@ func addGetUsersFlags(cmd *cobra.Command) {
 // Flags usage reference:
 // https://docs.gitlab.com/ee/api/users.html#user-creation
 func addNewUserFlags(cmd *cobra.Command) {
-	cmd.Flags().String("username", "", "Username")
-	if err := cmd.MarkFlagRequired("username"); err != nil {
-		er(err)
-	}
 	cmd.Flags().String("name", "", "Name")
 	if err := cmd.MarkFlagRequired("name"); err != nil {
 		er(err)
@@ -74,7 +70,20 @@ func addNewUserFlags(cmd *cobra.Command) {
 	if err := cmd.MarkFlagRequired("email"); err != nil {
 		er(err)
 	}
+	addNewUserEditUserFlags(cmd)
+}
 
+// addEditUserFlags adds flags for `edit user` command
+// Flags usage reference:
+// https://docs.gitlab.com/ce/api/users.html#user-modification
+func addEditUserFlags(cmd *cobra.Command) {
+	cmd.Flags().String("name", "", "New name")
+	cmd.Flags().String("email", "", "New email")
+	cmd.Flags().String("username", "", "New username")
+	addNewUserEditUserFlags(cmd)
+}
+
+func addNewUserEditUserFlags(cmd *cobra.Command) {
 	cmd.Flags().String("password", "", "Password")
 	cmd.Flags().String("skype", "", "Skype id")
 	cmd.Flags().String("linkedin", "", "Linkedin account")
@@ -87,34 +96,6 @@ func addNewUserFlags(cmd *cobra.Command) {
 	cmd.Flags().String("location", "", "User's location")
 	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
 	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
-	cmd.Flags().Bool("external", false, "Flags the user as external")
-	cmd.Flags().Bool("admin", false, "User is admin")
-	cmd.Flags().Bool("can-create-group", false, "User can create groups")
-	cmd.Flags().Int("projects-limit", -1, "Number of projects user can create")
-}
-
-// addEditUserFlags adds flags for `edit user` command
-// Flags usage reference:
-// https://docs.gitlab.com/ce/api/users.html#user-modification
-func addEditUserFlags(cmd *cobra.Command) {
-	cmd.Flags().String("user", "", "Username or user ID to modify")
-	if err := cmd.MarkFlagRequired("user"); err != nil {
-		er(err)
-	}
-	cmd.Flags().String("name", "", "Name")
-	cmd.Flags().String("email", "", "Email")
-	cmd.Flags().String("new-username", "", "New username")
-	cmd.Flags().String("password", "", "Password")
-	cmd.Flags().String("skype", "", "Skype id")
-	cmd.Flags().String("linkedin", "", "Linkedin account")
-	cmd.Flags().String("twitter", "", "Twitter account")
-	cmd.Flags().String("website-url", "", "Website URL")
-	cmd.Flags().String("org", "", "Organization name")
-	cmd.Flags().String("external-uid", "", "External UID")
-	cmd.Flags().String("provider", "", "External Provider Name")
-	cmd.Flags().String("bio", "", "User's biography")
-	cmd.Flags().String("location", "", "User's location")
-	cmd.Flags().Bool("skip-reconfirmation", false, "Skip reconfirmation")
 	cmd.Flags().Bool("external", false, "Flags the user as external")
 	cmd.Flags().Bool("admin", false, "User is admin")
 	cmd.Flags().Bool("can-create-group", false, "User can create groups")
@@ -159,8 +140,8 @@ func addNewGroupFlags(cmd *cobra.Command) {
 // addEditGroupFlags add the required flags for updating an existing group
 // Flag usage reference: https://docs.gitlab.com/ce/api/groups.html#update-group
 func addEditGroupFlags(cmd *cobra.Command) {
-	addChangeNameFlag(cmd)
-	addChangePathFlag(cmd)
+	cmd.Flags().String("name", "", "New group name")
+	cmd.Flags().String("path", "", "New group path")
 	addDescriptionFlag(cmd)
 	addLFSenabled(cmd)
 	addRequestAccessEnabledFlag(cmd)
@@ -172,8 +153,8 @@ func addEditGroupFlags(cmd *cobra.Command) {
 // https://docs.gitlab.com/ce/api/projects.html#edit-project
 func addEditProjectFlags(cmd *cobra.Command) {
 	addNewProjectFlags(cmd)
-	addChangeNameFlag(cmd)
-	addChangePathFlag(cmd)
+	cmd.Flags().String("name", "", "New project name")
+	cmd.Flags().String("path", "", "New project path")
 	cmd.Flags().String("default-branch", "master", "The default branch")
 }
 
@@ -224,18 +205,6 @@ func validateMergeMethodValue(cmd *cobra.Command) error {
 
 func addDescriptionFlag(cmd *cobra.Command) {
 	cmd.Flags().String("desc", "", "The description of the resource")
-}
-
-func addChangeNameFlag(cmd *cobra.Command) {
-	cmd.Flags().String("change-name", "",
-		"Use this flag to change the resource name that is "+
-			"displayed in the web user interface")
-}
-
-func addChangePathFlag(cmd *cobra.Command) {
-	cmd.Flags().String("change-path", "",
-		"Use this flag to change the path name that is "+
-			"used when accessing the resource via http or ssh url")
 }
 
 func addFromGroupFlag(cmd *cobra.Command) {

@@ -31,14 +31,17 @@ var editUserCmd = &cobra.Command{
 	Use:        "user",
 	Aliases:    []string{"u"},
 	SuggestFor: []string{"users"},
-	Short:      "Modify a user",
-	Example: `# modify a user bio
-gitlabctl edit user --user=john.smith --bio="frontend devloper"`,
-	Args:          cobra.ExactArgs(0),
+	Short:      "Modify a user by specifying the id or username and using flags for fields to modify",
+	Example: `# modify a user bio using username
+gitlabctl edit user john.smith --bio="frontend devloper"
+
+# modify a user with id (23) 
+gitlabctl edit user 23 --bio="King james is GOAT"`,
+	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runEditUser(cmd)
+		return runEditUser(cmd, args[0])
 	},
 }
 
@@ -47,21 +50,20 @@ func init() {
 	addEditUserFlags(editUserCmd)
 }
 
-func runEditUser(cmd *cobra.Command) error {
+func runEditUser(cmd *cobra.Command, user string) error {
 	opts, err := assignEditUserOptions(cmd)
 	if err != nil {
 		return err
 	}
-	user := getFlagString(cmd, "user")
 	uid, err := strconv.Atoi(user)
 	// if user is not a number,
 	// search for the username's user id and assign it to uid
 	if err != nil {
-		u, err := getUserByUsername(user)
+		foundUser, err := getUserByUsername(user)
 		if err != nil {
 			return err
 		}
-		uid = u.ID
+		uid = foundUser.ID
 	}
 	editedUser, err := editUser(uid, opts)
 	if err != nil {

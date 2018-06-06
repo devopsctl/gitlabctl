@@ -73,11 +73,11 @@ func getGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.ListGroups(opts)
+	groups, _, err := git.Groups.ListGroups(opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return groups, nil
 }
 
 func runGetSubgroups(cmd *cobra.Command) error {
@@ -99,9 +99,9 @@ func getSubgroups(gid interface{},
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.ListSubgroups(gid, opts)
+	groups, _, err := git.Groups.ListSubgroups(gid, opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return groups, nil
 }

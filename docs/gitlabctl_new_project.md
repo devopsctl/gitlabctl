@@ -1,10 +1,10 @@
 ## gitlabctl new project
 
-Create a new project
+Create a new project by specifying the project name as the first argument
 
 ### Synopsis
 
-Create a new project
+Create a new project by specifying the project name as the first argument
 
 ```
 gitlabctl new project [flags]
@@ -18,7 +18,6 @@ gitlabctl new project ProjectX --desc="Project X is party!"
 
 # create a new project under a group
 gitlabctl new project ProjectY --namespace=GroupY
-
 ```
 
 ### Options

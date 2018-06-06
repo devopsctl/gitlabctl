@@ -1,10 +1,10 @@
 ## gitlabctl edit project
 
-Update or patch a project
+Edit a project by specifying the project id or path and using flags for fields to modify
 
 ### Synopsis
 
-Update or patch a project
+Edit a project by specifying the project id or path and using flags for fields to modify
 
 ```
 gitlabctl edit project [flags]
@@ -13,19 +13,17 @@ gitlabctl edit project [flags]
 ### Examples
 
 ```
-# update a project description
+# update a project by path
 gitlabctl edit project ProjectX --desc="A go project"
+gitlabctl edit project GroupX/ProjectX --merge-method=rebase_merge 
 
-# update a project within a group or subgroup using 'namespace'
-gitlabctl edit project ProjectX --namespace=GroupX --merge-method=rebase_merge 
-
+# update a project with id (23)
+gitlabctl edit project 3 --desc="A go project"
 ```
 
 ### Options
 
 ```
-      --change-name string                            Use this flag to change the resource name that is displayed in the web user interface
-      --change-path string                            Use this flag to change the path name that is used when accessing the resource via http or ssh url
       --ci-config-path string                         The path to CI config file
       --container-registry-enabled                    Enable container registry for this project
       --default-branch string                         The default branch (default "master")
@@ -36,8 +34,10 @@ gitlabctl edit project ProjectX --namespace=GroupX --merge-method=rebase_merge
       --lfs-enabled                                   Enable LFS
       --merge-method string                           Set the merge method used. (available: 'merge', 'rebase_merge', 'ff') (default "merge")
       --merge-requests-enabled                        Enable merge requests (default true)
+      --name string                                   New project name
       --only-allow-merge-if-discussion-are-resolved   Set whether merge requests can only be merged when all the discussions are resolved
       --only-allow-merge-if-pipeline-succeeds         Set whether merge requests can only be merged with successful jobs
+      --path string                                   New project path
       --printing-merge-request-link-enabled           Show link to create/view merge request when pushing from the command line (default true)
       --public-jobs                                   If true, jobs can be viewed by non-project-members
       --request-access-enabled                        Enable request access
