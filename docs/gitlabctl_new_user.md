@@ -35,7 +35,7 @@ gitlabctl new user james --name="james" --password=aaaaaaaa --email=aa@example.c
       --name string           Name
       --org string            Organization name
       --password string       Password
-      --projects-limit int    Number of projects user can create (default -1)
+      --projects-limit int    Number of projects user can create (default 5)
       --provider string       External Provider Name
       --reset-password        Send user password reset link?
       --skip-confirmation     Skip confirmation

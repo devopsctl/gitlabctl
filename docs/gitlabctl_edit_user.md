@@ -26,19 +26,18 @@ gitlabctl edit user 23 --bio="King james is GOAT"
       --admin                 User is admin
       --bio string            User's biography
       --can-create-group      User can create groups
-      --email string          New email
+      --email string          Email
       --external              Flags the user as external
       --external-uid string   External UID
   -h, --help                  help for user
       --linkedin string       Linkedin account
       --location string       User's location
-      --name string           New name
+      --name string           Name
       --org string            Organization name
       --password string       Password
-      --projects-limit int    Number of projects user can create (default -1)
+      --projects-limit int    Number of projects user can create (default 5)
       --provider string       External Provider Name
-      --reset-password        Send user password reset link?
-      --skip-confirmation     Skip confirmation
+      --skip-reconfirmation   Skip reconfirmation
       --skype string          Skype id
       --twitter string        Twitter account
       --username string       New username
