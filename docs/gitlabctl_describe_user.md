@@ -1,10 +1,10 @@
 ## gitlabctl describe user
 
-Describe a user
+Describe a user by specifying the user id or username
 
 ### Synopsis
 
-Describe a user
+Describe a user by specifying the user id or username
 
 ```
 gitlabctl describe user [flags]
@@ -13,14 +13,17 @@ gitlabctl describe user [flags]
 ### Examples
 
 ```
+# describe a user by username
 gitlabctl describe user john.smith
+
+# descrie user with user id (13)
+gitlabctl describe user 13
 ```
 
 ### Options
 
 ```
-  -h, --help     help for user
-      --id int   The ID of a user (default -1)
+  -h, --help   help for user
 ```
 
 ### Options inherited from parent commands
