@@ -86,10 +86,38 @@ func addNewUserFlags(cmd *cobra.Command) {
 	cmd.Flags().String("bio", "", "User's biography")
 	cmd.Flags().String("location", "", "User's location")
 	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
+	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
 	cmd.Flags().Bool("external", false, "Flags the user as external")
 	cmd.Flags().Bool("admin", false, "User is admin")
 	cmd.Flags().Bool("can-create-group", false, "User can create groups")
-	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
+	cmd.Flags().Int("projects-limit", -1, "Number of projects user can create")
+}
+
+// addEditUserFlags adds flags for `edit user` command
+// Flags usage reference:
+// https://docs.gitlab.com/ce/api/users.html#user-modification
+func addEditUserFlags(cmd *cobra.Command) {
+	cmd.Flags().String("user", "", "Username or user ID to modify")
+	if err := cmd.MarkFlagRequired("user"); err != nil {
+		er(err)
+	}
+	cmd.Flags().String("name", "", "Name")
+	cmd.Flags().String("email", "", "Email")
+	cmd.Flags().String("new-username", "", "New username")
+	cmd.Flags().String("password", "", "Password")
+	cmd.Flags().String("skype", "", "Skype id")
+	cmd.Flags().String("linkedin", "", "Linkedin account")
+	cmd.Flags().String("twitter", "", "Twitter account")
+	cmd.Flags().String("website-url", "", "Website URL")
+	cmd.Flags().String("org", "", "Organization name")
+	cmd.Flags().String("external-uid", "", "External UID")
+	cmd.Flags().String("provider", "", "External Provider Name")
+	cmd.Flags().String("bio", "", "User's biography")
+	cmd.Flags().String("location", "", "User's location")
+	cmd.Flags().Bool("skip-reconfirmation", false, "Skip reconfirmation")
+	cmd.Flags().Bool("external", false, "Flags the user as external")
+	cmd.Flags().Bool("admin", false, "User is admin")
+	cmd.Flags().Bool("can-create-group", false, "User can create groups")
 	cmd.Flags().Int("projects-limit", -1, "Number of projects user can create")
 }
 

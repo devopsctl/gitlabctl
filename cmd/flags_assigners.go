@@ -350,11 +350,12 @@ func assignCreateUserOptions(cmd *cobra.Command) (*gitlab.CreateUserOptions, err
 	if cmd.Flag("provider").Changed {
 		opts.Provider = gitlab.String(getFlagString(cmd, "provider"))
 	}
+	if cmd.Flag("bio").Changed {
+		opts.Bio = gitlab.String(getFlagString(cmd, "bio"))
+	}
 	if cmd.Flag("location").Changed {
 		opts.Location = gitlab.String(getFlagString(cmd, "location"))
 	}
-	// TODO:
-	// Waiting for https://github.com/xanzy/go-gitlab/pull/416/files
 	if cmd.Flag("reset-password").Changed {
 		opts.ResetPassword = gitlab.Bool(getFlagBool(cmd, "reset-password"))
 	}
@@ -364,6 +365,60 @@ func assignCreateUserOptions(cmd *cobra.Command) (*gitlab.CreateUserOptions, err
 	if cmd.Flag("skip-confirmation").Changed {
 		opts.SkipConfirmation = gitlab.Bool(getFlagBool(cmd, "skip-confirmation"))
 	}
+	if cmd.Flag("projects-limit").Changed {
+		opts.ProjectsLimit = gitlab.Int(getFlagInt(cmd, "projects-limit"))
+	}
+	return opts, nil
+}
+
+func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error) {
+	opts := new(gitlab.ModifyUserOptions)
+	if cmd.Flag("new-username").Changed {
+		opts.Username = gitlab.String(getFlagString(cmd, "new-username"))
+	}
+	if cmd.Flag("name").Changed {
+		opts.Name = gitlab.String(getFlagString(cmd, "name"))
+	}
+	if cmd.Flag("email").Changed {
+		opts.Email = gitlab.String(getFlagString(cmd, "email"))
+	}
+	if cmd.Flag("password").Changed {
+		opts.Password = gitlab.String(getFlagString(cmd, "password"))
+	}
+	if cmd.Flag("skype").Changed {
+		opts.Skype = gitlab.String(getFlagString(cmd, "skype"))
+	}
+	if cmd.Flag("linkedin").Changed {
+		opts.Linkedin = gitlab.String(getFlagString(cmd, "linkedin"))
+	}
+	if cmd.Flag("twitter").Changed {
+		opts.Twitter = gitlab.String(getFlagString(cmd, "twitter"))
+	}
+	if cmd.Flag("website-url").Changed {
+		opts.WebsiteURL = gitlab.String(getFlagString(cmd, "website-url"))
+	}
+	if cmd.Flag("org").Changed {
+		opts.Organization = gitlab.String(getFlagString(cmd, "org"))
+	}
+	if cmd.Flag("external-uid").Changed {
+		opts.ExternUID = gitlab.String(getFlagString(cmd, "external-uid"))
+	}
+	if cmd.Flag("provider").Changed {
+		opts.Provider = gitlab.String(getFlagString(cmd, "provider"))
+	}
+	if cmd.Flag("bio").Changed {
+		opts.Bio = gitlab.String(getFlagString(cmd, "bio"))
+	}
+	if cmd.Flag("location").Changed {
+		opts.Location = gitlab.String(getFlagString(cmd, "location"))
+	}
+	if cmd.Flag("can-create-group").Changed {
+		opts.CanCreateGroup = gitlab.Bool(getFlagBool(cmd, "can-create-group"))
+	}
+	// TODO: not in go-gitlab client yet
+	// if cmd.Flag("skip-reconfirmation").Changed {
+	// 	opts.SkipReconfirmation = gitlab.Bool(getFlagBool(cmd, "skip-reconfirmation"))
+	// }
 	if cmd.Flag("projects-limit").Changed {
 		opts.ProjectsLimit = gitlab.Int(getFlagInt(cmd, "projects-limit"))
 	}
