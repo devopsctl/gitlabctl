@@ -50,8 +50,9 @@ Set the following environment variables to authenticate the command-line client 
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gitlabctl",
-	Short: "Gitlab command-line interface",
+	Version: "alpha",
+	Use:     "gitlabctl",
+	Short:   "Gitlab command-line interface",
 	Long: `gitlabctl is a Gitlab client for the command-line.
 
 This client helps you view, update, create, and delete Gitlab resources from the 
