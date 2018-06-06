@@ -21,39 +21,51 @@
 package cmd
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
 var descUserCmd = &cobra.Command{
-	Use:           "user",
-	Aliases:       []string{"u"},
-	SuggestFor:    []string{"users"},
-	Short:         "Describe a user",
-	Example:       `gitlabctl describe user john.smith`,
-	Args:          cobra.ExactArgs(0),
+	Use:        "user",
+	Aliases:    []string{"u"},
+	SuggestFor: []string{"users"},
+	Short:      "Describe a user by specifying the user id or username",
+	Example: `# describe a user by username
+gitlabctl describe user john.smith
+
+# describe a user with user id (13)
+gitlabctl describe user 13`,
+	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runDescUser(cmd)
+		return runDescUser(cmd, args[0])
 	},
 }
 
 func init() {
 	descCmd.AddCommand(descUserCmd)
-	descUserCmd.Flags().Int("id", -1, "The ID of a user")
-	if err := descUserCmd.MarkFlagRequired("id"); err != nil {
-		er(err)
-	}
 }
 
-func runDescUser(cmd *cobra.Command) error {
-	uid := getFlagInt(cmd, "id")
-	u, err := descUser(uid)
+func runDescUser(cmd *cobra.Command, user string) error {
+	uid, err := strconv.Atoi(user)
+	// if user is not a number,
+	// search for the username's user id and assign it to uid
+	if err != nil {
+		foundUser, err := getUserByUsername(user)
+		if err != nil {
+			return err
+		}
+		uid = foundUser.ID
+	}
+	userInfo, err := descUser(uid)
 	if err != nil {
 		return err
 	}
-	printUsersOut(cmd, u)
+	printUsersOut(cmd, userInfo)
 	return nil
 }
 
@@ -62,9 +74,22 @@ func descUser(uid int) (*gitlab.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	u, _, err := git.Users.GetUser(uid)
+	userInfo, _, err := git.Users.GetUser(uid)
 	if err != nil {
 		return nil, err
 	}
-	return u, nil
+	return userInfo, nil
+}
+
+func getUserByUsername(username string) (*gitlab.User, error) {
+	users, err := getUsers(&gitlab.ListUsersOptions{
+		Username: gitlab.String(username),
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(users) < 1 {
+		return nil, fmt.Errorf("%s username not found", username)
+	}
+	return users[0], nil
 }

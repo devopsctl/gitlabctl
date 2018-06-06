@@ -27,24 +27,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDescUserCmd(t *testing.T) {
+func TestDescUser(t *testing.T) {
 	tt := []struct {
-		name     string
-		flagsMap map[string]string
-		expect   testResult
+		name   string
+		args   []string
+		expect testResult
 	}{
 		{
-			name: "describe existing user id successfully",
-			flagsMap: map[string]string{
-				"id": "1",
-			},
+			name:   "describe existing username successfully",
+			args:   []string{"matt.hunter"},
 			expect: pass,
 		},
 		{
-			name: "describe non existent user id should fail",
-			flagsMap: map[string]string{
-				"id": "999",
-			},
+			name:   "describe existing user id successfully",
+			args:   []string{"3"},
+			expect: pass,
+		},
+		{
+			name:   "describe non existent user id should fail",
+			args:   []string{"999"},
 			expect: fail,
 		},
 	}
@@ -52,14 +53,13 @@ func TestDescUserCmd(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{
-				t:        t,
-				cmd:      descUserCmd,
-				flagsMap: tc.flagsMap,
+				t:    t,
+				cmd:  descUserCmd,
+				args: tc.args,
 			}
 			stdout, execResult := execT.executeCommand()
 			fmt.Println(stdout)
-			require.Equal(t, tc.expect, execResult,
-				printFlagsTable(tc.flagsMap, stdout))
+			require.Equal(t, tc.expect, execResult, tc.args[0], stdout)
 		})
 	}
 }
