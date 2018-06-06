@@ -59,7 +59,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `get users [flags]`
 * [x] `describe user [username]`
 * [x] `new user [username] [flags]`
-* [ ] `delete user [username]`
+* [x] `delete user [username]`
 * [ ] `edit user [username] [flags]`
 
 ### Members Command
