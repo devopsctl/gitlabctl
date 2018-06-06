@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
@@ -31,13 +32,15 @@ var editGroupCmd = &cobra.Command{
 	Use:        "group",
 	Aliases:    []string{"g"},
 	SuggestFor: []string{"groups"},
-	Short:      "Update or patch a group",
+	Short:      "Update a group by specifying the group id or path and using flags for fields to modify",
 	Example: `# edit a group
-gitlabctl edit group GroupAZ [flags]
+gitlabctl edit group GroupAZ --desc="Updated group"
 
-# edit a subgroup using namespace
-gitlabctl edit group GroupXB --namespace=ParentGroupXB [flags]
-`,
+# edit a subgroup
+gitlabctl edit group GroupX/GroupZ --desc="Updated group"
+
+# edit a group with id (23)
+gitlabctl edit group 23 --visibility="public"`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
@@ -54,21 +57,26 @@ func init() {
 	addEditGroupFlags(editGroupCmd)
 }
 
-func runEditGroup(cmd *cobra.Command, name string) error {
+func runEditGroup(cmd *cobra.Command, group string) error {
 	opts, err := assignCreateGroupOptions(cmd)
 	if err != nil {
 		return err
 	}
-	gid, err := getGroupID(name)
+	gid, err := strconv.Atoi(group)
+	// if group is not a number,
+	// search for the group path's id and assign it to gid
 	if err != nil {
-		return fmt.Errorf("couldn't find the id of group %s, got error: %v",
-			name, err)
+		gid, err = getGroupID(group)
+		if err != nil {
+			return fmt.Errorf("couldn't find the id of group %s, got error: %v",
+				group, err)
+		}
 	}
-	group, err := editGroup(gid, (*gitlab.UpdateGroupOptions)(opts))
+	editedGroup, err := editGroup(gid, (*gitlab.UpdateGroupOptions)(opts))
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, group)
+	printGroupsOut(cmd, editedGroup)
 	return nil
 }
 

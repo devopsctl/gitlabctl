@@ -29,14 +29,12 @@ var newGroupCmd = &cobra.Command{
 	Use:        "group",
 	Aliases:    []string{"g"},
 	SuggestFor: []string{"groups"},
-	Short:      "Create a new group",
-	Example: `
-# create a new group
-gitlabctl new group GroupAZ [flags]
+	Short:      "Create a new group by specifying the group name as the first argument",
+	Example: `# create a new group
+gitlabctl new group GroupAZ
 
 # create a subgroup using namespace
-gitlabctl new group GroupXB --namespace=ParentGroupXB [flags]
-`,
+gitlabctl new group GroupXB --namespace=ParentGroupXB`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,

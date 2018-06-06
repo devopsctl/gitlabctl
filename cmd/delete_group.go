@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -30,13 +31,15 @@ var deleteGroupCmd = &cobra.Command{
 	Use:        "group",
 	Aliases:    []string{"g"},
 	SuggestFor: []string{"groups"},
-	Short:      "Delete a Gitlab group",
-	Example: `
-# delete a Group named GroupX
+	Short:      "Delete a Gitlab group by specifying the id or group path",
+	Example: `# delete a Group named GroupX
 gitlabctl delete group GroupX
 
 # delete a Subgroup named GroupY under GroupX
 gitlabctl delete group GroupX/GroupY
+
+# delete a group with id (3)
+gitlabctl delete group 3
 `,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
@@ -50,19 +53,25 @@ func init() {
 	deleteCmd.AddCommand(deleteGroupCmd)
 }
 
-func deleteGroup(path string) error {
+func deleteGroup(group string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err
 	}
-	gid, err := getGroupID(path)
+	gid, err := strconv.Atoi(group)
+	// if group is not a number,
+	// search for the group path's id and assign it to gid
 	if err != nil {
-		return err
+		gid, err = getGroupID(group)
+		if err != nil {
+			return fmt.Errorf("couldn't find the id of group %s, got error: %v",
+				group, err)
+		}
 	}
 	_, err = git.Groups.DeleteGroup(gid)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Group (%s) with id (%d) has been deleted\n", path, gid)
+	fmt.Printf("Group (%s) with id (%d) has been deleted\n", group, gid)
 	return nil
 }

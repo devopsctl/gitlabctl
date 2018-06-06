@@ -32,19 +32,19 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 * [x] `get groups [flags]`
 * [x] `get groups --from-group [flags]`
-* [x] `describe group [group path] [flags]`
+* [x] `describe group [group id or group path] [flags]`
 * [x] `new group [group name] [flags]`
-* [x] `delete group [group path]`
-* [x] `edit group [group  name] [flags]`
+* [x] `delete group [group id or group path]`
+* [x] `edit group [group id or group path] [flags]`
 
 ### Project
 
 * [x] `get projects [flags]`
 * [x] `get projects --from-group  [flags]`
-* [x] `describe project [project path]`
+* [x] `describe project [project id or project path]`
 * [x] `new project [project name] [flags]`
-* [x] `edit project [project name] [flags]`
-* [x] `delete project [project path]`
+* [x] `edit project [project id or project path] [flags]`
+* [x] `delete project [project id or project path]`
 
 ### Project Hooks
 
@@ -57,10 +57,10 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 ### Users 
 
 * [x] `get users [flags]`
-* [x] `describe user [username]`
+* [x] `describe user [user id or username]`
 * [x] `new user [username] [flags]`
-* [x] `delete user [username]`
-* [x] `edit user [username] [flags]`
+* [x] `delete user [user id or username]`
+* [x] `edit user [user id or username] [flags]`
 
 ### Users SSH Keys 
 

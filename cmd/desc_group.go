@@ -26,11 +26,15 @@ import (
 )
 
 var descGroupCmd = &cobra.Command{
-	Use:           "group",
-	Aliases:       []string{"g"},
-	SuggestFor:    []string{"groups"},
-	Short:         "Describe a group",
-	Example:       `gitlabctl describe group GroupX -o json`,
+	Use:        "group",
+	Aliases:    []string{"g"},
+	SuggestFor: []string{"groups"},
+	Short:      "Describe a group by specifying the id or group path",
+	Example: `# describe a group
+gitlabctl describe group GroupX -o json
+
+# describe a group by id
+gitlabctl describe group 13 -o json`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,

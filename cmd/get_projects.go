@@ -36,8 +36,7 @@ var getProjectsCmd = &cobra.Command{
 gitlabctl get projects --out json
 
 # get all projects from a group
-gitlabctl get projects --from-group=Group1
-`,
+gitlabctl get projects --from-group=Group1`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateSortFlagValue(cmd); err != nil {
 			return err
@@ -75,11 +74,11 @@ func getProjects(opts *gitlab.ListProjectsOptions) ([]*gitlab.Project, error) {
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Projects.ListProjects(opts)
+	projects, _, err := git.Projects.ListProjects(opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return projects, nil
 }
 
 func runGetProjectsFromGroup(cmd *cobra.Command) error {
@@ -99,9 +98,9 @@ func getProjectsFromGroup(group string,
 	if err != nil {
 		return nil, err
 	}
-	p, _, err := git.Groups.ListGroupProjects(group, opts)
+	projects, _, err := git.Groups.ListGroupProjects(group, opts)
 	if err != nil {
 		return nil, err
 	}
-	return p, nil
+	return projects, nil
 }

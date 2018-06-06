@@ -16,7 +16,7 @@ gitlabctl describe user [flags]
 # describe a user by username
 gitlabctl describe user john.smith
 
-# descrie user with user id (13)
+# describe a user with user id (13)
 gitlabctl describe user 13
 ```
 

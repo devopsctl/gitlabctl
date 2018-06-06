@@ -1,10 +1,10 @@
 ## gitlabctl describe project
 
-Describe a project
+Describe a project by specifying the id or project path
 
 ### Synopsis
 
-Describe a project
+Describe a project by specifying the id or project path
 
 ```
 gitlabctl describe project [flags]
@@ -13,7 +13,12 @@ gitlabctl describe project [flags]
 ### Examples
 
 ```
-gitlabctl describe project ProjectX -o json
+# describe a project by path
+gitlabctl describe project ProjectX
+gitlabctl describe project GroupY/ProjectY
+
+# describe a project with id (23)
+gitlabctl describe project 23
 ```
 
 ### Options

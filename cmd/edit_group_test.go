@@ -54,10 +54,18 @@ func TestEditGroup(t *testing.T) {
 			expect: pass,
 		},
 		{
+			name: "edit an existing group by id",
+			flagsMap: map[string]string{
+				"desc": "Updated by go test by id",
+			},
+			args:   []string{"13"},
+			expect: pass,
+		},
+		{
 			name: "change a group name and path",
 			flagsMap: map[string]string{
-				"desc":        "Updated by go test",
-				"change-name": "Renamed",
+				"desc": "Updated by go test",
+				"name": "Renamed",
 				// TODO(@bzon):
 				// we need to be able to rename the path back to
 				// its original path name

@@ -88,36 +88,33 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 		}
 	}
 
-	// change-name is only required when editing a project
-	if f := cmd.Flag("change-name"); f != nil {
+	// name is only required when editing a group
+	if f := cmd.Flag("name"); f != nil {
 		if f.Changed {
-			opts.Name = gitlab.String(getFlagString(cmd, "change-name"))
+			opts.Name = gitlab.String(getFlagString(cmd, "name"))
 		}
 	}
 
-	// change-path is only required when editing a project
-	if f := cmd.Flag("change-path"); f != nil {
+	// path is only required when editing a group
+	if f := cmd.Flag("path"); f != nil {
 		if f.Changed {
-			opts.Path = gitlab.String(getFlagString(cmd, "change-path"))
+			opts.Path = gitlab.String(getFlagString(cmd, "path"))
 		}
 	}
 
 	// namespace is only required when creating a project
 	if f := cmd.Flag("namespace"); f != nil {
 		if cmd.Flag("namespace").Changed {
-			ns := getFlagString(cmd, "namespace")
-			id, err := strconv.Atoi(ns)
-			// if not nil take the given number
-			if err == nil {
-				opts.NamespaceID = &id
-				// find the group as string and get it's id
-			} else {
-				gid, err := getNamespaceID(getFlagString(cmd, "namespace"))
+			gid, err := strconv.Atoi(getFlagString(cmd, "namespace"))
+			// if namespace is not a number,
+			// get the namespace's group id and assign it to gid
+			if err != nil {
+				gid, err = getNamespaceID(getFlagString(cmd, "namespace"))
 				if err != nil {
 					return nil, err
 				}
-				opts.NamespaceID = gitlab.Int(gid)
 			}
+			opts.NamespaceID = gitlab.Int(gid)
 		}
 	}
 
@@ -269,17 +266,17 @@ func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, error) {
 	var opts gitlab.CreateGroupOptions
 
-	// change-name is only required when editing a group
-	if f := cmd.Flag("change-name"); f != nil {
+	// name is only required when editing a group
+	if f := cmd.Flag("name"); f != nil {
 		if f.Changed {
-			opts.Name = gitlab.String(getFlagString(cmd, "change-name"))
+			opts.Name = gitlab.String(getFlagString(cmd, "name"))
 		}
 	}
 
-	// change-path is only required when editing a group
-	if f := cmd.Flag("change-path"); f != nil {
+	// path is only required when editing a group
+	if f := cmd.Flag("path"); f != nil {
 		if f.Changed {
-			opts.Path = gitlab.String(getFlagString(cmd, "change-path"))
+			opts.Path = gitlab.String(getFlagString(cmd, "path"))
 		}
 	}
 
@@ -320,12 +317,17 @@ func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, e
 	return &opts, nil
 }
 
+// assignCreateUserOptions assigns the flags' values to gitlab.CreateUserOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.CreateUserOptions field.
 func assignCreateUserOptions(cmd *cobra.Command) (*gitlab.CreateUserOptions, error) {
 	opts := new(gitlab.CreateUserOptions)
-	opts.Username = gitlab.String(getFlagString(cmd, "username"))
-	opts.Name = gitlab.String(getFlagString(cmd, "name"))
-	opts.Email = gitlab.String(getFlagString(cmd, "email"))
-
+	if cmd.Flag("name").Changed {
+		opts.Name = gitlab.String(getFlagString(cmd, "name"))
+	}
+	if cmd.Flag("email").Changed {
+		opts.Email = gitlab.String(getFlagString(cmd, "email"))
+	}
 	if cmd.Flag("password").Changed {
 		opts.Password = gitlab.String(getFlagString(cmd, "password"))
 	}
@@ -371,10 +373,13 @@ func assignCreateUserOptions(cmd *cobra.Command) (*gitlab.CreateUserOptions, err
 	return opts, nil
 }
 
+// assignEditUserOptions assigns the flags' values to gitlab.ModifyUserOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.ModifyUserOptions field.
 func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error) {
 	opts := new(gitlab.ModifyUserOptions)
-	if cmd.Flag("new-username").Changed {
-		opts.Username = gitlab.String(getFlagString(cmd, "new-username"))
+	if cmd.Flag("username").Changed {
+		opts.Username = gitlab.String(getFlagString(cmd, "username"))
 	}
 	if cmd.Flag("name").Changed {
 		opts.Name = gitlab.String(getFlagString(cmd, "name"))

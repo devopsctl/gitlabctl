@@ -1,10 +1,10 @@
 ## gitlabctl describe group
 
-Describe a group
+Describe a group by specifying the id or group path
 
 ### Synopsis
 
-Describe a group
+Describe a group by specifying the id or group path
 
 ```
 gitlabctl describe group [flags]
@@ -13,7 +13,11 @@ gitlabctl describe group [flags]
 ### Examples
 
 ```
+# describe a group
 gitlabctl describe group GroupX -o json
+
+# describe a group by id
+gitlabctl describe group 13 -o json
 ```
 
 ### Options

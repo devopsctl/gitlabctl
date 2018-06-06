@@ -1,10 +1,10 @@
 ## gitlabctl edit user
 
-Modify a user
+Modify a user by specifying the id or username and using flags for fields to modify
 
 ### Synopsis
 
-Modify a user
+Modify a user by specifying the id or username and using flags for fields to modify
 
 ```
 gitlabctl edit user [flags]
@@ -13,8 +13,11 @@ gitlabctl edit user [flags]
 ### Examples
 
 ```
-# modify a user bio
-gitlabctl edit user --user=john.smith --bio="frontend devloper"
+# modify a user bio using username
+gitlabctl edit user john.smith --bio="frontend devloper"
+
+# modify a user with id (23) 
+gitlabctl edit user 23 --bio="King james is GOAT"
 ```
 
 ### Options
@@ -23,22 +26,22 @@ gitlabctl edit user --user=john.smith --bio="frontend devloper"
       --admin                 User is admin
       --bio string            User's biography
       --can-create-group      User can create groups
-      --email string          Email
+      --email string          New email
       --external              Flags the user as external
       --external-uid string   External UID
   -h, --help                  help for user
       --linkedin string       Linkedin account
       --location string       User's location
-      --name string           Name
-      --new-username string   New username
+      --name string           New name
       --org string            Organization name
       --password string       Password
       --projects-limit int    Number of projects user can create (default -1)
       --provider string       External Provider Name
-      --skip-reconfirmation   Skip reconfirmation
+      --reset-password        Send user password reset link?
+      --skip-confirmation     Skip confirmation
       --skype string          Skype id
       --twitter string        Twitter account
-      --user string           Username or user ID to modify
+      --username string       New username
       --website-url string    Website URL
 ```
 

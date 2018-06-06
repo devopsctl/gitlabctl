@@ -61,6 +61,16 @@ func TestEditProject(t *testing.T) {
 			expect: pass,
 		},
 		{
+			name: "update a project by id",
+			flagsMap: map[string]string{
+				"desc": "updated by using id",
+				"name": "Project 4",
+				"out":  "json",
+			},
+			args:   []string{"4"},
+			expect: pass,
+		},
+		{
 			name: "invalid visibility value should fail",
 			flagsMap: map[string]string{
 				"visibility": "xxxx",
