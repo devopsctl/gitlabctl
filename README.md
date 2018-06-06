@@ -60,7 +60,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `describe user [username]`
 * [x] `new user [username] [flags]`
 * [x] `delete user [username]`
-* [ ] `edit user [username] [flags]`
+* [x] `edit user [username] [flags]`
 
 ### Users SSH Keys 
 
