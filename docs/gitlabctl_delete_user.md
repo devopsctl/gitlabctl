@@ -13,7 +13,11 @@ gitlabctl delete user [flags]
 ### Examples
 
 ```
+# delete a user by username
 gitlabctl delete user john.smith
+
+# delete a user with user id (15)
+gitlabctl delete user 15
 ```
 
 ### Options
