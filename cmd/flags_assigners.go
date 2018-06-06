@@ -28,11 +28,19 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
+func paginationApplies(cmd *cobra.Command) bool {
+	return cmd.Flag("page").Changed && cmd.Flag("per-page").Changed
+}
+
 // assignListProjectOptions assigns the flags' values to gitlab.ListProjectsOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListProjectOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
-	var opts gitlab.ListProjectsOptions
+	opts := new(gitlab.ListProjectsOptions)
+	if paginationApplies(cmd) {
+		opts.Page = getFlagInt(cmd, "page")
+		opts.PerPage = getFlagInt(cmd, "per-page")
+	}
 	if cmd.Flag("archived").Changed {
 		opts.Archived = gitlab.Bool(getFlagBool(cmd, "archived"))
 	}
@@ -72,15 +80,14 @@ func assignListProjectOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 		opts.WithMergeRequestsEnabled = gitlab.Bool(getFlagBool(cmd,
 			"with-merge-requests-enabled"))
 	}
-	return &opts
+	return opts
 }
 
 // assignCreateProjectOptions assigns the flags' values to gitlab.CreateProjectOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.CreateProjectOptions field.
 func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOptions, error) {
-	var opts gitlab.CreateProjectOptions
-
+	opts := new(gitlab.CreateProjectOptions)
 	// default branch is only applied to edit project command
 	if f := cmd.Flag("default-branch"); f != nil {
 		if cmd.Flag("default-branch").Changed {
@@ -181,14 +188,18 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 		*p = getFlagStringSlice(cmd, "tag-list")
 		opts.TagList = p
 	}
-	return &opts, nil
+	return opts, nil
 }
 
 // assignListUsersOptions assigns the flags' values to gitlab.ListUsersOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error) {
-	var opts gitlab.ListUsersOptions
+	opts := new(gitlab.ListUsersOptions)
+	if paginationApplies(cmd) {
+		opts.Page = getFlagInt(cmd, "page")
+		opts.PerPage = getFlagInt(cmd, "per-page")
+	}
 	if cmd.Flag("active").Changed {
 		opts.Active = gitlab.Bool(getFlagBool(cmd, "active"))
 	}
@@ -231,14 +242,18 @@ func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error
 	if cmd.Flag("sort").Changed {
 		opts.Sort = gitlab.String(getFlagString(cmd, "sort"))
 	}
-	return &opts, nil
+	return opts, nil
 }
 
 // assignListGroupOptions assigns the flags' values to gitlab.ListGroupsOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListGroupsOptions field.
 func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
-	var opts gitlab.ListGroupsOptions
+	opts := new(gitlab.ListGroupsOptions)
+	if paginationApplies(cmd) {
+		opts.Page = getFlagInt(cmd, "page")
+		opts.PerPage = getFlagInt(cmd, "per-page")
+	}
 	if cmd.Flag("all-available").Changed {
 		opts.AllAvailable = gitlab.Bool(getFlagBool(cmd, "all-available"))
 	}
@@ -257,7 +272,7 @@ func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	if cmd.Flag("order-by").Changed {
 		opts.OrderBy = gitlab.String(getFlagString(cmd, "order-by"))
 	}
-	return &opts
+	return opts
 }
 
 // assignCreateGroupOptions assigns the flags' values to gitlab.CreateGroupOptions fields.
