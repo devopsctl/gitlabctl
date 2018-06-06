@@ -21,14 +21,14 @@ Download the binary from [releases](https://github.com/devopsctl/gitlabctl/relea
 
 Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTION.md) for the process for submitting pull requests to us.
 
-## CLI Features
+## Gitlab Commands Available
 
 ### Authentication 
 
 * [x] Authentication through environment variables. See [gitlabctl](gitlabctl.md).
 * [ ] Authentication using `gitlabctl login` command.
 
-### Group Commands
+### Group
 
 * [x] `get groups [flags]`
 * [x] `get groups --from-group [flags]`
@@ -37,7 +37,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `delete group [group path]`
 * [x] `edit group [group  name] [flags]`
 
-### Project Commands
+### Project
 
 * [x] `get projects [flags]`
 * [x] `get projects --from-group  [flags]`
@@ -46,7 +46,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `edit project [project name] [flags]`
 * [x] `delete project [project path]`
 
-### Project Hooks Command
+### Project Hooks
 
 * [ ] `get project-hooks [project name]`
 * [ ] `delete all-project-hook [project name]`
@@ -54,7 +54,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [ ] `new project-hook [flags]`
 * [ ] `edit project-hook [flags]`
 
-### Users Command
+### Users 
 
 * [x] `get users [flags]`
 * [x] `describe user [username]`
@@ -62,7 +62,21 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `delete user [username]`
 * [ ] `edit user [username] [flags]`
 
-### Members Command
+### Users SSH Keys 
+
+* [ ] `get ssh-keys`
+* [ ] `get ssh-keys --from-user=[username]`
+* [ ] `new ssh-key [flags]`
+* [ ] `delete ssh-key [flags]`
+
+### Users GPG Keys
+
+* [ ] `get gpg-keys`
+* [ ] `get gpg-keys --from-user=[username]`
+* [ ] `new gpg-key [flags]`
+* [ ] `delete gpg-key [flags]`
+
+### Members
 
 * [ ] `get members --from-group [flags]`
 * [ ] `get members --from-project [flags]`
@@ -72,6 +86,6 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [ ] `new member [username] --from-project [flags]`
 * [ ] `remove member [username] --from-group`
 * [ ] `remove member [username] --from-project`
-* [ ] `edit member [username] --from-group  [flags]`
-* [ ] `edit member [username] --from-project  [flags]`
+* [ ] `edit member [username] --from-group [flags]`
+* [ ] `edit member [username] --from-project [flags]`
 
