@@ -62,28 +62,29 @@ func addGetUsersFlags(cmd *cobra.Command) {
 // Flags usage reference:
 // https://docs.gitlab.com/ee/api/users.html#user-creation
 func addNewUserFlags(cmd *cobra.Command) {
-	cmd.Flags().String("name", "", "Name")
+	addNewUserEditUserFlags(cmd)
 	if err := cmd.MarkFlagRequired("name"); err != nil {
 		er(err)
 	}
-	cmd.Flags().String("email", "", "Email")
 	if err := cmd.MarkFlagRequired("email"); err != nil {
 		er(err)
 	}
-	addNewUserEditUserFlags(cmd)
+	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
+	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
 }
 
 // addEditUserFlags adds flags for `edit user` command
 // Flags usage reference:
 // https://docs.gitlab.com/ce/api/users.html#user-modification
 func addEditUserFlags(cmd *cobra.Command) {
-	cmd.Flags().String("name", "", "New name")
-	cmd.Flags().String("email", "", "New email")
-	cmd.Flags().String("username", "", "New username")
 	addNewUserEditUserFlags(cmd)
+	cmd.Flags().String("username", "", "New username")
+	cmd.Flags().Bool("skip-reconfirmation", false, "Skip reconfirmation")
 }
 
 func addNewUserEditUserFlags(cmd *cobra.Command) {
+	cmd.Flags().String("name", "", "Name")
+	cmd.Flags().String("email", "", "Email")
 	cmd.Flags().String("password", "", "Password")
 	cmd.Flags().String("skype", "", "Skype id")
 	cmd.Flags().String("linkedin", "", "Linkedin account")
@@ -94,12 +95,10 @@ func addNewUserEditUserFlags(cmd *cobra.Command) {
 	cmd.Flags().String("provider", "", "External Provider Name")
 	cmd.Flags().String("bio", "", "User's biography")
 	cmd.Flags().String("location", "", "User's location")
-	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
-	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
 	cmd.Flags().Bool("external", false, "Flags the user as external")
 	cmd.Flags().Bool("admin", false, "User is admin")
 	cmd.Flags().Bool("can-create-group", false, "User can create groups")
-	cmd.Flags().Int("projects-limit", -1, "Number of projects user can create")
+	cmd.Flags().Int("projects-limit", 5, "Number of projects user can create")
 }
 
 // addGetProjectsFlags adds flags for `get projects` command

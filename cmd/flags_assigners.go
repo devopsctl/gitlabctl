@@ -420,10 +420,9 @@ func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error
 	if cmd.Flag("can-create-group").Changed {
 		opts.CanCreateGroup = gitlab.Bool(getFlagBool(cmd, "can-create-group"))
 	}
-	// TODO: not in go-gitlab client yet
-	// if cmd.Flag("skip-reconfirmation").Changed {
-	// 	opts.SkipReconfirmation = gitlab.Bool(getFlagBool(cmd, "skip-reconfirmation"))
-	// }
+	if cmd.Flag("skip-reconfirmation").Changed {
+		opts.SkipReconfirmation = gitlab.Bool(getFlagBool(cmd, "skip-reconfirmation"))
+	}
 	if cmd.Flag("projects-limit").Changed {
 		opts.ProjectsLimit = gitlab.Int(getFlagInt(cmd, "projects-limit"))
 	}
