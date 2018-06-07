@@ -20,13 +20,13 @@
 package cmd
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestGetMembers(t *testing.T) {
-	setBasicAuthEnvs()
 	tt := []struct {
 		name      string
 		flagsMap  map[string]string
@@ -84,7 +84,7 @@ func TestGetMembers(t *testing.T) {
 		{
 			name:      "nothing is passed should fail",
 			expect:    fail,
-			expectOut: "Set at least 1 of the following flags",
+			expectOut: fmt.Sprint(setAtLeastOneFlagError),
 		},
 		{
 			name: "from group and from project is passed should fail",
@@ -93,7 +93,7 @@ func TestGetMembers(t *testing.T) {
 				"from-project": "Group2",
 			},
 			expect:    fail,
-			expectOut: "Set only 1 of the following flags",
+			expectOut: fmt.Sprint(usedMoreThanOneFlagError),
 		},
 	}
 
@@ -106,6 +106,7 @@ func TestGetMembers(t *testing.T) {
 			}
 			stdout, execResult := execT.executeCommand()
 			if tc.expect == fail {
+				tInfo(stdout)
 				require.Contains(t, stdout, tc.expectOut,
 					printFlagsTable(tc.flagsMap, stdout))
 			} else {

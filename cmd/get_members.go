@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/xanzy/go-gitlab"
 )
@@ -36,30 +34,18 @@ var getMembersCmd = &cobra.Command{
 	SilenceUsage:  true,
 	Short:         "List all members of a group/project",
 	Example: `# list all members of a groups
-gitlabctl get members --from-group Group1[flags]
+gitlabctl get members --from-group Group1
 
 # list all members of a project
-gitlabctl get members --from-project Group1/Project1[flags]
-`,
+gitlabctl get members --from-project Group1/Project1`,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		return validateFromGroupAndProjectFlags(cmd)
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if getFlagString(cmd, "from-group") != "" &&
-			getFlagString(cmd, "from-project") != "" {
-			return fmt.Errorf("Set only 1 of the following flags:" +
-				"--from-group --from-project")
-		}
-		if getFlagString(cmd, "from-group") == "" &&
-			getFlagString(cmd, "from-project") == "" {
-			return fmt.Errorf("Set at least 1 of the following flags:" +
-				"--from-group --from-project")
-		}
 		if getFlagString(cmd, "from-group") != "" {
 			return runGetGroupMembers(cmd)
 		}
-		if getFlagString(cmd, "from-project") != "" {
-			return runGetProjectMembers(cmd)
-		}
-		return fmt.Errorf("error")
-
+		return runGetProjectMembers(cmd)
 	},
 }
 
@@ -68,7 +54,6 @@ func init() {
 	addFromGroupFlag(getMembersCmd)
 	addFromProjectFlag(getMembersCmd)
 	addQueryFlag(getMembersCmd)
-
 }
 
 func runGetGroupMembers(cmd *cobra.Command) error {
@@ -98,11 +83,11 @@ func getGroupsMembers(gid interface{},
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.ListGroupMembers(gid, opts)
+	groupMembers, _, err := git.Groups.ListGroupMembers(gid, opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return groupMembers, nil
 }
 
 func getProjectMembers(pid interface{},
@@ -111,9 +96,9 @@ func getProjectMembers(pid interface{},
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.ProjectMembers.ListProjectMembers(pid, opts)
+	projectMembers, _, err := git.ProjectMembers.ListProjectMembers(pid, opts)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return projectMembers, nil
 }
