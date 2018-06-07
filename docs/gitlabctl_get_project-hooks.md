@@ -1,20 +1,29 @@
-## gitlabctl get group-members
+## gitlabctl get project-hooks
 
-List all members of a group
+List all project hooks of a specified project
 
 ### Synopsis
 
-List all members of a group
+List all project hooks of a specified project
 
 ```
-gitlabctl get group-members [flags]
+gitlabctl get project-hooks [flags]
+```
+
+### Examples
+
+```
+# get project hooks of projectX
+gitlabctl get project-hooks projectX
+
+# get project hooks of project with id (23)
+gitlabctl get project-hooks 23
 ```
 
 ### Options
 
 ```
-  -h, --help          help for group-members
-  -p, --path string   the group name, id or full the path including the parent group (path/to/group)
+  -h, --help   help for project-hooks
 ```
 
 ### Options inherited from parent commands

@@ -26,74 +26,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetProjects(t *testing.T) {
+func TestGetProjectHooks(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
+		args     []string
 		expect   testResult
 	}{
 		{
-			name: "print in yaml",
+			name: "list all hooks of a project using project name",
 			flagsMap: map[string]string{
-				"out":        "yaml",
-				"statistics": "true",
+				"out": "json",
 			},
+			args:   []string{"rebecca.gray/project19"},
 			expect: pass,
 		},
 		{
-			name: "print in json and use all flags",
+			name: "list all hooks of a project using project id",
 			flagsMap: map[string]string{
-				"out":                         "json",
-				"archived":                    "false",
-				"search":                      "project23",
-				"simple":                      "false",
-				"owned":                       "false",
-				"sort":                        "desc",
-				"order-by":                    "name",
-				"membership":                  "false",
-				"starred":                     "false",
-				"statistics":                  "true",
-				"visibility":                  "private",
-				"with-issues-enabled":         "false",
-				"with-merge-requests-enabled": "false",
+				"out": "json",
 			},
+			args:   []string{"19"},
 			expect: pass,
-		},
-		{
-			name:   "print simple view with no flags",
-			expect: pass,
-		},
-		{
-			name: "use from-group",
-			flagsMap: map[string]string{
-				"from-group": "Group1",
-			},
-			expect: pass,
-		},
-		{
-			name: "invalid sort flag value must fail",
-			flagsMap: map[string]string{
-				"sort": "xxx",
-			},
-			expect: fail,
-		},
-		{
-			name: "invalid order-by flag value must fail",
-			flagsMap: map[string]string{
-				// fix the previous invalid sort value
-				"sort":     "asc",
-				"order-by": "xxx",
-			},
-			expect: fail,
-		},
-		{
-			name: "invalid visibility value must fai",
-			flagsMap: map[string]string{
-				// fix the previous invalid order-by value
-				"order-by":   "id",
-				"visibility": "xxx",
-			},
-			expect: fail,
 		},
 	}
 
@@ -101,15 +55,17 @@ func TestGetProjects(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{
 				t:        t,
-				cmd:      getProjectsCmd,
+				cmd:      getProjectHooksCmd,
+				args:     tc.args,
 				flagsMap: tc.flagsMap,
 			}
 			stdout, execResult := execT.executeCommand()
 			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
-			// TODO : validate the output of the command
-			// fmt.Println(stdout)
-			_ = stdout
+			if tc.expect == pass {
+				require.Contains(t, stdout, "url",
+					"'url' should be visible in output")
+			}
 		})
 	}
 }
