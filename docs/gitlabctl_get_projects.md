@@ -24,7 +24,7 @@ gitlabctl get projects --from-group=Group1
 
 ```
       --archived                      Limit by archived status
-      --from-group string             Use a group as the target namespace when performing the command
+  -G, --from-group string             Use a group as the target namespace when performing the command
   -h, --help                          help for projects
       --membership                    Limit by projects that the current user is a member of
       --order-by string               Return projects ordered by id, name, path, created_at, updated_at, or last_activity_at fields. Default is created_at (default "created_at")

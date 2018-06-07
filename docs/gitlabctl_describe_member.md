@@ -23,8 +23,8 @@ gitlabctl describe member john.smith --from-project Group1/Project1 -o yaml
 ### Options
 
 ```
-      --from-group string     Use a group as the target namespace when performing the command
-      --from-project string   Use a project as the target namespace when performing the command
+  -G, --from-group string     Use a group as the target namespace when performing the command
+  -P, --from-project string   Use a project as the target namespace when performing the command
   -h, --help                  help for member
 ```
 

@@ -14,20 +14,19 @@ gitlabctl get members [flags]
 
 ```
 # list all members of a groups
-gitlabctl get members --from-group Group1[flags]
+gitlabctl get members --from-group Group1
 
 # list all members of a project
-gitlabctl get members --from-project Group1/Project1[flags]
-
+gitlabctl get members --from-project Group1/Project1
 ```
 
 ### Options
 
 ```
-      --from-group string     Use a group as the target namespace when performing the command
-      --from-project string   Use a project as the target namespace when performing the command
+  -G, --from-group string     Use a group as the target namespace when performing the command
+  -P, --from-project string   Use a project as the target namespace when performing the command
   -h, --help                  help for members
-      --query string          A query string to search for members(defaults to blank)
+  -q, --query string          A query string to search for members(defaults to blank)
 ```
 
 ### Options inherited from parent commands
