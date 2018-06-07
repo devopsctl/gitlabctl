@@ -21,7 +21,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -41,24 +40,14 @@ gitlabctl describe member john.smith --from-project Group1/Project1 -o yaml`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		return validateFromGroupAndProjectFlags(cmd)
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if getFlagString(cmd, "from-group") != "" &&
-			getFlagString(cmd, "from-project") != "" {
-			return fmt.Errorf("Set only 1 of the following flags:" +
-				"--from-group --from-project")
-		}
-		if getFlagString(cmd, "from-group") == "" &&
-			getFlagString(cmd, "from-project") == "" {
-			return fmt.Errorf("Set at least 1 of the following flags:" +
-				"--from-group --from-project")
-		}
 		if getFlagString(cmd, "from-group") != "" {
 			return runDescGroupMember(cmd, args[0])
 		}
-		if getFlagString(cmd, "from-project") != "" {
-			return runDescProjectMember(cmd, args[0])
-		}
-		return fmt.Errorf("error")
+		return runDescProjectMember(cmd, args[0])
 	},
 }
 
@@ -103,11 +92,11 @@ func descProjectMember(pid interface{}, user string) (
 		uid = foundUser.ID
 	}
 
-	m, _, err := git.ProjectMembers.GetProjectMember(pid, uid, nil)
+	member, _, err := git.ProjectMembers.GetProjectMember(pid, uid, nil)
 	if err != nil {
 		return nil, err
 	}
-	return m, nil
+	return member, nil
 }
 
 func descGroupMember(gid interface{}, user string) (
@@ -125,9 +114,9 @@ func descGroupMember(gid interface{}, user string) (
 		uid = foundUser.ID
 	}
 
-	m, _, err := git.GroupMembers.GetGroupMember(gid, uid, nil)
+	members, _, err := git.GroupMembers.GetGroupMember(gid, uid, nil)
 	if err != nil {
 		return nil, err
 	}
-	return m, nil
+	return members, nil
 }

@@ -20,6 +20,7 @@
 package cmd
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -88,25 +89,20 @@ func TestDescribeMember(t *testing.T) {
 			expect: pass,
 		},
 		{
-			name:      "nothing is passed should fail",
-			expect:    fail,
-			expectOut: "accepts 1 arg(s), received 0",
-		},
-		{
-			name:      "from group and from project is passed should fail",
+			name:      "fails when from-group and from-project is not used",
 			args:      []string{"amelia.walsh"},
 			expect:    fail,
-			expectOut: "Set at least 1 of the following flags",
+			expectOut: fmt.Sprint(setAtLeastOneFlagError),
 		},
 		{
-			name: "from group and from project is passed should fail",
+			name: "fails when from-group and from-project are both used",
 			args: []string{"amelia.walsh"},
 			flagsMap: map[string]string{
 				"from-group":   "Group2",
 				"from-project": "Group2",
 			},
 			expect:    fail,
-			expectOut: "Set only 1 of the following flags",
+			expectOut: fmt.Sprint(usedMoreThanOneFlagError),
 		},
 	}
 
