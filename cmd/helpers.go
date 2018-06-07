@@ -39,7 +39,22 @@ const (
 	JSON = "json"
 	// YAML is used as a constant of word "yaml" for out flag
 	YAML = "yaml"
+	// Too many times used string messages
+	setAtLeastOneFlagError   = "set at least (1) required flag"
+	usedMoreThanOneFlagError = "use only (1) flag"
+	noResultMsg              = "The command returned no result. " +
+		"Use the (-h) flag to see the command usage."
 )
+
+func newUsedTooManyFlagError(flags ...string) error {
+	return fmt.Errorf("%s from (%s)",
+		usedMoreThanOneFlagError, strings.Join(flags, ", "))
+}
+
+func newSetAtLeastOneFlagError(flags ...string) error {
+	return fmt.Errorf("%s from (%s)",
+		setAtLeastOneFlagError, strings.Join(flags, ", "))
+}
 
 func getUserByUsername(username string) (*gitlab.User, error) {
 	users, err := getUsers(&gitlab.ListUsersOptions{
@@ -134,6 +149,10 @@ func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	case YAML:
 		printYAML(groups)
 	default:
+		if len(groups) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
 		header := []string{"ID", "PATH", "URL", "PARENT ID"}
 		var rows [][]string
 		for _, v := range groups {
@@ -155,6 +174,10 @@ func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 	case YAML:
 		printYAML(projects)
 	default:
+		if len(projects) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
 		header := []string{"ID", "PATH", "URL", "ISSUES COUNT", "TAGS"}
 		var rows [][]string
 		for _, v := range projects {
@@ -178,7 +201,7 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 		printYAML(members)
 	default:
 		if len(members) == 0 {
-			fmt.Printf("The get command returned no results.")
+			fmt.Println(noResultMsg)
 			return
 		}
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
@@ -203,7 +226,7 @@ func printProjectMembersOut(cmd *cobra.Command, members ...*gitlab.ProjectMember
 		printYAML(members)
 	default:
 		if len(members) == 0 {
-			fmt.Printf("The get command returned no results.")
+			fmt.Println(noResultMsg)
 			return
 		}
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
@@ -227,6 +250,10 @@ func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
 	case YAML:
 		printYAML(users)
 	default:
+		if len(users) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
 		header := []string{"ID", "USERNAME", "EMAIL", "NAME", "EXTERNAL"}
 		var rows [][]string
 		for _, v := range users {
@@ -249,6 +276,10 @@ func printProjectHooksOut(cmd *cobra.Command, hooks ...*gitlab.ProjectHook) {
 	case YAML:
 		printYAML(hooks)
 	default:
+		if len(hooks) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
 		header := []string{"ID", "URL", "MERGE REQUEST EVENTS", "PUSH EVENTS", "TAG PUSH EVENTS"}
 		var rows [][]string
 		for _, v := range hooks {
