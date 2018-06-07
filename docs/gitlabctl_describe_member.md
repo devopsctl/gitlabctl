@@ -13,8 +13,11 @@ gitlabctl describe member [flags]
 ### Examples
 
 ```
-# describe a member
-gitlabctl describe member john.smith --from-group Project1 -o json
+# describe a member from a group
+gitlabctl describe member john.smith --from-group Group1 -o json
+
+# describe a member from a project
+gitlabctl describe member john.smith --from-project Group1/Project1 -o yaml
 ```
 
 ### Options
