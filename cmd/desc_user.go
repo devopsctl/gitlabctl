@@ -21,7 +21,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -79,17 +78,4 @@ func descUser(uid int) (*gitlab.User, error) {
 		return nil, err
 	}
 	return userInfo, nil
-}
-
-func getUserByUsername(username string) (*gitlab.User, error) {
-	users, err := getUsers(&gitlab.ListUsersOptions{
-		Username: gitlab.String(username),
-	})
-	if err != nil {
-		return nil, err
-	}
-	if len(users) < 1 {
-		return nil, fmt.Errorf("%s username not found", username)
-	}
-	return users[0], nil
 }
