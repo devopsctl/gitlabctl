@@ -177,6 +177,35 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 	case YAML:
 		printYAML(members)
 	default:
+		if len(members) == 0 {
+			fmt.Printf("The get command returned no results.")
+			return
+		}
+		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
+		var rows [][]string
+		for _, v := range members {
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.Username,
+				v.Email,
+				gitlab.Stringify(v.AccessLevel),
+			})
+		}
+		printTable(header, rows)
+	}
+}
+
+func printProjectMembersOut(cmd *cobra.Command, members ...*gitlab.ProjectMember) {
+	switch getFlagString(cmd, "out") {
+	case JSON:
+		printJSON(members)
+	case YAML:
+		printYAML(members)
+	default:
+		if len(members) == 0 {
+			fmt.Printf("The get command returned no results.")
+			return
+		}
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
 		var rows [][]string
 		for _, v := range members {
