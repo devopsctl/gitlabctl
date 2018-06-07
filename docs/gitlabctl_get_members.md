@@ -14,10 +14,10 @@ gitlabctl get members [flags]
 
 ```
 # list all members of a groups
-gitlabctl get members --from-group 
+gitlabctl get members --from-group Group1[flags]
 
 # list all members of a project
-gitlabctl get members --from-project [flags]
+gitlabctl get members --from-project Group1/Project1[flags]
 
 ```
 

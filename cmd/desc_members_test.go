@@ -90,10 +90,17 @@ func TestDescribeMember(t *testing.T) {
 		{
 			name:      "nothing is passed should fail",
 			expect:    fail,
+			expectOut: "accepts 1 arg(s), received 0",
+		},
+		{
+			name:      "from group and from project is passed should fail",
+			args:      []string{"amelia.walsh"},
+			expect:    fail,
 			expectOut: "Set at least 1 of the following flags",
 		},
 		{
 			name: "from group and from project is passed should fail",
+			args: []string{"amelia.walsh"},
 			flagsMap: map[string]string{
 				"from-group":   "Group2",
 				"from-project": "Group2",
@@ -107,7 +114,8 @@ func TestDescribeMember(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{
 				t:        t,
-				cmd:      getMembersCmd,
+				args:     tc.args,
+				cmd:      descMemberCmd,
 				flagsMap: tc.flagsMap,
 			}
 			stdout, execResult := execT.executeCommand()

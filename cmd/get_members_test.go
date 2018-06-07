@@ -38,7 +38,6 @@ func TestGetMembers(t *testing.T) {
 			flagsMap: map[string]string{
 				"out":          "yaml",
 				"from-project": "Group1/Project1",
-				"from-group":   "",
 				"query":        "amelia",
 			},
 			expect: pass,
