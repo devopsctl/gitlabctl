@@ -211,6 +211,11 @@ func addFromGroupFlag(cmd *cobra.Command) {
 		"Use a group as the target namespace when performing the command")
 }
 
+func addFromProjectFlag(cmd *cobra.Command) {
+	cmd.Flags().String("from-project", "",
+		"Use a project as the target namespace when performing the command")
+}
+
 func addAllAvailableFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("all-available", false,
 		"Show all the groups you have access to "+
@@ -331,6 +336,12 @@ func addNamespaceFlag(cmd *cobra.Command) {
 			"(defaults to current user namespace)")
 }
 
+func addQueryFlag(cmd *cobra.Command) {
+	cmd.Flags().String("query", "",
+		"A query string to search for members"+
+			"(defaults to blank)")
+}
+
 func addVisibilityFlag(cmd *cobra.Command) {
 	cmd.Flags().String("visibility", "private", "public, internal or private")
 }
@@ -346,17 +357,6 @@ func addRequestAccessEnabledFlag(cmd *cobra.Command) {
 
 func addLFSenabled(cmd *cobra.Command) {
 	cmd.Flags().Bool("lfs-enabled", false, "Enable LFS")
-}
-
-// TODO(@bzon): to be deleted soon
-// currently used by group-member that will be refactored
-func addPathFlag(cmd *cobra.Command) {
-	cmd.Flags().StringP("path", "p", "",
-		"the group name, id or full the path "+
-			"including the parent group (path/to/group)")
-	if err := cmd.MarkFlagRequired("path"); err != nil {
-		panic(err)
-	}
 }
 
 func addOutFlag(cmd *cobra.Command) {

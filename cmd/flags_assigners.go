@@ -443,3 +443,25 @@ func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error
 	}
 	return opts, nil
 }
+
+// assignListProjectMembersOptions assigns the flags' values to gitlab.ListProjectMembersOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
+func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMembersOptions {
+	var opts gitlab.ListProjectMembersOptions
+	if cmd.Flag("query").Changed {
+		opts.Query = gitlab.String(getFlagString(cmd, "query"))
+	}
+	return &opts
+}
+
+// assignListGroupMembersOptions assigns the flags' values to gitlab.ListGroupMembersOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
+func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersOptions {
+	var opts gitlab.ListGroupMembersOptions
+	if cmd.Flag("query").Changed {
+		opts.Query = gitlab.String(getFlagString(cmd, "query"))
+	}
+	return &opts
+}

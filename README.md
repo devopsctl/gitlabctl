@@ -77,10 +77,10 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 ### Members
 
-* [ ] `get members --from-group [flags]`
-* [ ] `get members --from-project [flags]`
-* [ ] `describe member [username] --from-group [flags]`
-* [ ] `describe member [username] --from-project [flags]`
+* [x] `get members --from-group [flags]`
+* [x] `get members --from-project [flags]`
+* [x] `describe member [username] --from-group [flags]`
+* [x] `describe member [username] --from-project [flags]`
 * [ ] `new member [username] --from-group [flags]`
 * [ ] `new member [username] --from-project [flags]`
 * [ ] `remove member [username] --from-group`
