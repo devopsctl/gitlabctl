@@ -449,6 +449,10 @@ func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMembersOptions {
 	var opts gitlab.ListProjectMembersOptions
+	if paginationApplies(cmd) {
+		opts.Page = getFlagInt(cmd, "page")
+		opts.PerPage = getFlagInt(cmd, "per-page")
+	}
 	if cmd.Flag("query").Changed {
 		opts.Query = gitlab.String(getFlagString(cmd, "query"))
 	}
@@ -460,6 +464,10 @@ func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMemb
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersOptions {
 	var opts gitlab.ListGroupMembersOptions
+	if paginationApplies(cmd) {
+		opts.Page = getFlagInt(cmd, "page")
+		opts.PerPage = getFlagInt(cmd, "per-page")
+	}
 	if cmd.Flag("query").Changed {
 		opts.Query = gitlab.String(getFlagString(cmd, "query"))
 	}
