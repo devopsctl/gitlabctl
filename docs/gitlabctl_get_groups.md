@@ -25,7 +25,7 @@ gitlabctl get groups --from-group=GroupX
 
 ```
       --all-available       Show all the groups you have access to (defaults to false for authenticated users, true for admin)
-      --from-group string   Use a group as the target namespace when performing the command
+  -G, --from-group string   Use a group as the target namespace when performing the command
   -h, --help                help for groups
       --order-by string     Order groups by name or path. Default is name (default "name")
       --owned               Limit to resources owned by the current user

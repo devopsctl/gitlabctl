@@ -32,7 +32,7 @@ gitlabctl new project ProjectY --namespace=GroupY
       --lfs-enabled                                   Enable LFS
       --merge-method string                           Set the merge method used. (available: 'merge', 'rebase_merge', 'ff') (default "merge")
       --merge-requests-enabled                        Enable merge requests (default true)
-      --namespace string                              This can be the parent namespace ID, group path, or user path. (defaults to current user namespace)
+  -n, --namespace string                              This can be the parent namespace ID, group path, or user path. (defaults to current user namespace)
       --only-allow-merge-if-discussion-are-resolved   Set whether merge requests can only be merged when all the discussions are resolved
       --only-allow-merge-if-pipeline-succeeds         Set whether merge requests can only be merged with successful jobs
       --printing-merge-request-link-enabled           Show link to create/view merge request when pushing from the command line (default true)
