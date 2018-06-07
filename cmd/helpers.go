@@ -41,16 +41,29 @@ const (
 	YAML = "yaml"
 )
 
+func getUserByUsername(username string) (*gitlab.User, error) {
+	users, err := getUsers(&gitlab.ListUsersOptions{
+		Username: gitlab.String(username),
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(users) < 1 {
+		return nil, fmt.Errorf("%s username not found", username)
+	}
+	return users[0], nil
+}
+
 func getNamespaceID(id string) (int, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return -1, err
 	}
-	ns, _, err := git.Namespaces.GetNamespace(id)
+	namespace, _, err := git.Namespaces.GetNamespace(id)
 	if err != nil {
 		return -1, err
 	}
-	return ns.ID, nil
+	return namespace.ID, nil
 }
 
 func getGroupID(path string) (int, error) {
@@ -59,6 +72,14 @@ func getGroupID(path string) (int, error) {
 		return -1, err
 	}
 	return g.ID, err
+}
+
+func bToS(b bool) string {
+	return strconv.FormatBool(b)
+}
+
+func iToS(i int) string {
+	return strconv.Itoa(i)
 }
 
 func newTimeFromString(s string) (*time.Time, error) {
@@ -113,12 +134,15 @@ func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	case YAML:
 		printYAML(groups)
 	default:
-		header := []string{"ID", "PATH", "URL", "PARENT ID", "PROJECTS COUNT"}
+		header := []string{"ID", "PATH", "URL", "PARENT ID"}
 		var rows [][]string
 		for _, v := range groups {
-			rows = append(rows, []string{strconv.Itoa(v.ID), v.FullPath,
-				v.WebURL, strconv.Itoa(v.ParentID),
-				strconv.Itoa(len(v.Projects))})
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.FullPath,
+				v.WebURL,
+				iToS(v.ParentID),
+			})
 		}
 		printTable(header, rows)
 	}
@@ -134,10 +158,13 @@ func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 		header := []string{"ID", "PATH", "URL", "ISSUES COUNT", "TAGS"}
 		var rows [][]string
 		for _, v := range projects {
-			rows = append(rows, []string{strconv.Itoa(v.ID),
-				v.PathWithNamespace, v.HTTPURLToRepo,
-				strconv.Itoa(v.OpenIssuesCount),
-				strings.Join(v.TagList, ",")})
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.PathWithNamespace,
+				v.HTTPURLToRepo,
+				iToS(v.OpenIssuesCount),
+				strings.Join(v.TagList, ","),
+			})
 		}
 		printTable(header, rows)
 	}
@@ -153,8 +180,12 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 		header := []string{"ID", "USERNAME", "EMAIL", "ACCESS_LEVEL"}
 		var rows [][]string
 		for _, v := range members {
-			rows = append(rows, []string{strconv.Itoa(v.ID),
-				v.Username, v.Email, gitlab.Stringify(v.AccessLevel)})
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.Username,
+				v.Email,
+				gitlab.Stringify(v.AccessLevel),
+			})
 		}
 		printTable(header, rows)
 	}
@@ -167,11 +198,38 @@ func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
 	case YAML:
 		printYAML(users)
 	default:
-		header := []string{"ID", "USERNAME", "EMAIL", "NAME"}
+		header := []string{"ID", "USERNAME", "EMAIL", "NAME", "EXTERNAL"}
 		var rows [][]string
 		for _, v := range users {
-			rows = append(rows, []string{strconv.Itoa(v.ID),
-				v.Username, v.Email, v.Name})
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.Username,
+				v.Email,
+				v.Name,
+				bToS(v.External),
+			})
+		}
+		printTable(header, rows)
+	}
+}
+
+func printProjectHooksOut(cmd *cobra.Command, hooks ...*gitlab.ProjectHook) {
+	switch getFlagString(cmd, "out") {
+	case JSON:
+		printJSON(hooks)
+	case YAML:
+		printYAML(hooks)
+	default:
+		header := []string{"ID", "URL", "MERGE REQUEST EVENTS", "PUSH EVENTS", "TAG PUSH EVENTS"}
+		var rows [][]string
+		for _, v := range hooks {
+			rows = append(rows, []string{
+				iToS(v.ID),
+				v.URL,
+				bToS(v.MergeRequestsEvents),
+				bToS(v.PushEvents),
+				bToS(v.TagPushEvents),
+			})
 		}
 		printTable(header, rows)
 	}
