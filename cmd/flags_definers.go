@@ -207,13 +207,25 @@ func addDescriptionFlag(cmd *cobra.Command) {
 }
 
 func addFromGroupFlag(cmd *cobra.Command) {
-	cmd.Flags().String("from-group", "",
+	cmd.Flags().StringP("from-group", "G", "",
 		"Use a group as the target namespace when performing the command")
 }
 
 func addFromProjectFlag(cmd *cobra.Command) {
-	cmd.Flags().String("from-project", "",
+	cmd.Flags().StringP("from-project", "P", "",
 		"Use a project as the target namespace when performing the command")
+}
+
+func validateFromGroupAndProjectFlags(cmd *cobra.Command) error {
+	if getFlagString(cmd, "from-group") != "" &&
+		getFlagString(cmd, "from-project") != "" {
+		return newUsedTooManyFlagError("from-group", "from-project")
+	}
+	if getFlagString(cmd, "from-group") == "" &&
+		getFlagString(cmd, "from-project") == "" {
+		return newSetAtLeastOneFlagError("from-group", "from-project")
+	}
+	return nil
 }
 
 func addAllAvailableFlag(cmd *cobra.Command) {
@@ -331,13 +343,13 @@ func validateProjectOrderByFlagValue(cmd *cobra.Command) error {
 }
 
 func addNamespaceFlag(cmd *cobra.Command) {
-	cmd.Flags().String("namespace", "",
+	cmd.Flags().StringP("namespace", "n", "",
 		"This can be the parent namespace ID, group path, or user path. "+
 			"(defaults to current user namespace)")
 }
 
 func addQueryFlag(cmd *cobra.Command) {
-	cmd.Flags().String("query", "",
+	cmd.Flags().StringP("query", "q", "",
 		"A query string to search for members"+
 			"(defaults to blank)")
 }
