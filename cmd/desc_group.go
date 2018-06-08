@@ -4,8 +4,7 @@
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
@@ -47,23 +46,23 @@ func init() {
 	descCmd.AddCommand(descGroupCmd)
 }
 
-func runDescGroup(cmd *cobra.Command, path string) error {
-	g, err := descGroup(path)
+func runDescGroup(cmd *cobra.Command, group string) error {
+	groupInfo, err := descGroup(group)
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, g)
+	printGroupsOut(cmd, groupInfo)
 	return nil
 }
 
-func descGroup(path string) (*gitlab.Group, error) {
+func descGroup(group string) (*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	g, _, err := git.Groups.GetGroup(path)
+	groupInfo, _, err := git.Groups.GetGroup(group)
 	if err != nil {
 		return nil, err
 	}
-	return g, nil
+	return groupInfo, nil
 }

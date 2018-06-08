@@ -35,8 +35,7 @@ var deleteProjectCmd = &cobra.Command{
 gitlabctl delete project ProjectX
 
 # delete a project under a group
-gitlabctl delete project GroupX/ProjectX
-`,
+gitlabctl delete project GroupX/ProjectX`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
@@ -49,19 +48,19 @@ func init() {
 	deleteCmd.AddCommand(deleteProjectCmd)
 }
 
-func deleteProject(path string) error {
+func deleteProject(project string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err
 	}
-	p, _, err := git.Projects.GetProject(path)
+	projectInfo, _, err := git.Projects.GetProject(project)
 	if err != nil {
 		return err
 	}
-	_, err = git.Projects.DeleteProject(p.ID)
+	_, err = git.Projects.DeleteProject(projectInfo.ID)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("project (%s) with id (%d) has been deleted\n", path, p.ID)
+	fmt.Printf("project (%s) with id (%d) has been deleted\n", project, projectInfo.ID)
 	return nil
 }

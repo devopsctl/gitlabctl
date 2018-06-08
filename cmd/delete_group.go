@@ -39,8 +39,7 @@ gitlabctl delete group GroupX
 gitlabctl delete group GroupX/GroupY
 
 # delete a group with id (3)
-gitlabctl delete group 3
-`,
+gitlabctl delete group 3`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
