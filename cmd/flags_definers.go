@@ -196,6 +196,31 @@ func addNewProjectFlags(cmd *cobra.Command) {
 	cmd.Flags().String("ci-config-path", "", "The path to CI config file")
 }
 
+// addNewProjectHookFlags add the required flags for creating a new project hook
+// Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#add-project-hook
+func addNewProjectHookFlags(cmd *cobra.Command) {
+	addNewProjectHookEditProjectHookFlags(cmd)
+	if err := cmd.MarkFlagRequired("url"); err != nil {
+		er(err)
+	}
+}
+
+func addNewProjectHookEditProjectHookFlags(cmd *cobra.Command) {
+	cmd.Flags().String("url", "", "The hook URL") 
+	cmd.Flags().Bool("push-events", false, "Trigger hook on push events")
+	cmd.Flags().Bool("issues-events", false, "Trigger hook on issues events")
+	cmd.Flags().Bool("confidential-issues-events", false, "Trigger hook on confidential issues events")
+	cmd.Flags().Bool("merge-requests-events", false, "Trigger hook on merge requests events")
+	cmd.Flags().Bool("tag-push-events", false, "Trigger hook on tag push events")
+	cmd.Flags().Bool("note-events", false, "Trigger hook on note events")
+	cmd.Flags().Bool("job-events", false, "Trigger hook on job events")
+	cmd.Flags().Bool("pipeline-events", false, "Trigger hook on pipeline events")
+	cmd.Flags().Bool("wiki-page-events", false, "Trigger hook on wiki events")
+	cmd.Flags().Bool("enable-ssl-verification", false, "Do SSL verification when triggering the hook")
+	cmd.Flags().String("token", "", "Secret token to validate received payloads;" +
+		"this will not be returned in the response")
+}
+
 func validateMergeMethodValue(cmd *cobra.Command) error {
 	return validateFlagStringValue(
 		[]string{"merge", "ff", "rebase_merge"},
