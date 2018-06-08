@@ -114,9 +114,9 @@ func descGroupMember(gid interface{}, user string) (
 		uid = foundUser.ID
 	}
 
-	members, _, err := git.GroupMembers.GetGroupMember(gid, uid, nil)
+	member, _, err := git.GroupMembers.GetGroupMember(gid, uid, nil)
 	if err != nil {
 		return nil, err
 	}
-	return members, nil
+	return member, nil
 }
