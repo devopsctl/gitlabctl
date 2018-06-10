@@ -29,6 +29,8 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
+// TODO: fix this
+// page and per-page must be handled independently
 func paginationApplies(cmd *cobra.Command) bool {
 	return cmd.Flag("page").Changed && cmd.Flag("per-page").Changed
 }
