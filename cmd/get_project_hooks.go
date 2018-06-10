@@ -49,8 +49,10 @@ func init() {
 
 func runGetProjectHooks(cmd *cobra.Command, project string) error {
 	opts := new(gitlab.ListProjectHooksOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	hooks, err := getProjectHooks(project, opts)

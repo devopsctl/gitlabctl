@@ -29,19 +29,15 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-// TODO: fix this
-// page and per-page must be handled independently
-func paginationApplies(cmd *cobra.Command) bool {
-	return cmd.Flag("page").Changed && cmd.Flag("per-page").Changed
-}
-
 // assignListProjectOptions assigns the flags' values to gitlab.ListProjectsOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListProjectOptions(cmd *cobra.Command) *gitlab.ListProjectsOptions {
 	opts := new(gitlab.ListProjectsOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	if cmd.Flag("archived").Changed {
@@ -199,8 +195,10 @@ func assignCreateProjectOptions(cmd *cobra.Command) (*gitlab.CreateProjectOption
 // it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
 func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error) {
 	opts := new(gitlab.ListUsersOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	if cmd.Flag("active").Changed {
@@ -253,8 +251,10 @@ func assignListUsersOptions(cmd *cobra.Command) (*gitlab.ListUsersOptions, error
 // it's value will not be assigned to the associated gitlab.ListGroupsOptions field.
 func assignListGroupOptions(cmd *cobra.Command) *gitlab.ListGroupsOptions {
 	opts := new(gitlab.ListGroupsOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	if cmd.Flag("all-available").Changed {
@@ -452,8 +452,10 @@ func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMembersOptions {
 	opts := new(gitlab.ListProjectMembersOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	if cmd.Flag("query").Changed {
@@ -467,8 +469,10 @@ func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMemb
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersOptions {
 	opts := new(gitlab.ListGroupMembersOptions)
-	if paginationApplies(cmd) {
+	if cmd.Flag("page").Changed {
 		opts.Page = getFlagInt(cmd, "page")
+	}
+	if cmd.Flag("per-page").Changed {
 		opts.PerPage = getFlagInt(cmd, "per-page")
 	}
 	if cmd.Flag("query").Changed {
