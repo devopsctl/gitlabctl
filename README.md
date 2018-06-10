@@ -63,8 +63,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 ### Users SSH Keys 
 
-* [ ] `get ssh-keys`
-* [ ] `get ssh-keys --from-user=[username]`
+* [x] `get ssh-keys [flags]`
 * [x] `new ssh-key [flags]`
 * [ ] `delete ssh-key [flags]`
 
