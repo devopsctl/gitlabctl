@@ -65,7 +65,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 * [ ] `get ssh-keys`
 * [ ] `get ssh-keys --from-user=[username]`
-* [ ] `new ssh-key [flags]`
+* [x] `new ssh-key [flags]`
 * [ ] `delete ssh-key [flags]`
 
 ### Users GPG Keys
