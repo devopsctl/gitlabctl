@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -448,7 +449,7 @@ func assignEditUserOptions(cmd *cobra.Command) (*gitlab.ModifyUserOptions, error
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMembersOptions {
-	var opts gitlab.ListProjectMembersOptions
+	opts := new(gitlab.ListProjectMembersOptions)
 	if paginationApplies(cmd) {
 		opts.Page = getFlagInt(cmd, "page")
 		opts.PerPage = getFlagInt(cmd, "per-page")
@@ -456,14 +457,14 @@ func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMemb
 	if cmd.Flag("query").Changed {
 		opts.Query = gitlab.String(getFlagString(cmd, "query"))
 	}
-	return &opts
+	return opts
 }
 
 // assignListGroupMembersOptions assigns the flags' values to gitlab.ListGroupMembersOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
 func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersOptions {
-	var opts gitlab.ListGroupMembersOptions
+	opts := new(gitlab.ListGroupMembersOptions)
 	if paginationApplies(cmd) {
 		opts.Page = getFlagInt(cmd, "page")
 		opts.PerPage = getFlagInt(cmd, "per-page")
@@ -471,5 +472,16 @@ func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersO
 	if cmd.Flag("query").Changed {
 		opts.Query = gitlab.String(getFlagString(cmd, "query"))
 	}
-	return &opts
+	return opts
+}
+
+func assignAddSSHKeyOptions(cmd *cobra.Command) (*gitlab.AddSSHKeyOptions, error) {
+	opts := new(gitlab.AddSSHKeyOptions)
+	opts.Title = gitlab.String(getFlagString(cmd, "title"))
+	b, err := ioutil.ReadFile(getFlagString(cmd, "keyfile"))
+	if err != nil {
+		return nil, err
+	}
+	opts.Key = gitlab.String(string(b))
+	return opts, nil
 }

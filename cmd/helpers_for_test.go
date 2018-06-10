@@ -155,12 +155,16 @@ func executeCommandC(root *cobra.Command,
 	// copy the output in a separate goroutine so printing can't block indefinitely
 	go func() {
 		var buf bytes.Buffer
-		io.Copy(&buf, r)
+		if _, err := io.Copy(&buf, r); err != nil {
+			tInfo(err)
+		}
 		outC <- buf.String()
 	}()
 
 	// back to normal state
-	w.Close()
+	if err := w.Close(); err != nil {
+		tInfo(err)
+	}
 	os.Stdout = old // restoring the real stdout
 	stdout = <-outC
 

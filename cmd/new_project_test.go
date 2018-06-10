@@ -111,7 +111,9 @@ func TestNewProject(t *testing.T) {
 				if v, ok := tc.flagsMap["namespace"]; ok {
 					pPath = v + "/" + tc.args[0]
 				}
-				deleteProject(pPath)
+				if err := deleteProject(pPath); err != nil {
+					tInfo(err)
+				}
 			}
 
 		})
