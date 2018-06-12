@@ -65,7 +65,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 * [x] `get ssh-keys [flags]`
 * [x] `new ssh-key [flags]`
-* [ ] `delete ssh-key [flags]`
+* [x] `delete ssh-key [flags]`
 
 ### Members
 
