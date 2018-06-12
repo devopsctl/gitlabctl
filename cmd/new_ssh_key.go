@@ -21,7 +21,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -69,15 +68,14 @@ func runNewSSHKey(cmd *cobra.Command) error {
 		user := getFlagString(cmd, "user")
 		// if the passed user string is a number, use it immediately
 		if uid, err := strconv.Atoi(user); err == nil {
-			fmt.Println("got here")
 			return newSSHKey(uid, opts)
 		}
 		// get the user info of the passed user and use its id
-		userInfo, err := getUserByUsername(user)
+		uid, err := getUserIDbyUsername(user)
 		if err != nil {
 			return err
 		}
-		return newSSHKey(userInfo.ID, opts)
+		return newSSHKey(uid, opts)
 	}
 	return newSSHKey(-1, opts)
 }
