@@ -297,10 +297,10 @@ func printProjectHooksOut(cmd *cobra.Command, hooks ...*gitlab.ProjectHook) {
 
 func printSSHKeysOut(cmd *cobra.Command, keys ...*gitlab.SSHKey) {
 	switch getFlagString(cmd, "out") {
-	case JSON:
-		printJSON(keys)
+	case YAML:
+		printYAML(keys)
 	// NOTE: Printing long ssh key in table is ugly..
 	default:
-		printYAML(keys)
+		printJSON(keys)
 	}
 }
