@@ -32,7 +32,7 @@ var newSSHKeyCmd = &cobra.Command{
 	Use:   "ssh-key",
 	Short: "Upload or create ssh key for a gitlab user",
 	Example: `# upload a public ssh key for the current user
-gitlabctl -f=~/path/to/sshkey.pub -t"my ssh key"
+gitlabctl -f=/path/to/sshkey.pub -t="my ssh key"
 
 # upload ssh key for another user (only for admin)
 gitlabctl -f=/path/to/sshkey.pub -u="lebron.james" -t="the GOAT ssh key"
