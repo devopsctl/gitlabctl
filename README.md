@@ -23,7 +23,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 ### Authentication 
 
-* [x] Authentication through environment variables. See [gitlabctl](gitlabctl.md).
+* [x] Authentication through environment variables.
 * [ ] Authentication using `gitlabctl login` command.
 
 ### Group
