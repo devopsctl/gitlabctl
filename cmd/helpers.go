@@ -56,6 +56,14 @@ func newSetAtLeastOneFlagError(flags ...string) error {
 		setAtLeastOneFlagError, strings.Join(flags, ", "))
 }
 
+func getUserIDbyUsername(username string) (int, error) {
+	userInfo, err := getUserByUsername(username)
+	if err != nil {
+		return -1, nil
+	}
+	return userInfo.ID, nil
+}
+
 func getUserByUsername(username string) (*gitlab.User, error) {
 	users, err := getUsers(&gitlab.ListUsersOptions{
 		Username: gitlab.String(username),
