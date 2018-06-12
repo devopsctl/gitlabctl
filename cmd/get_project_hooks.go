@@ -27,7 +27,7 @@ import (
 
 var getProjectHooksCmd = &cobra.Command{
 	Use:           "project-hooks",
-	Aliases:       []string{"ph"},
+	Aliases:       []string{"h"},
 	SuggestFor:    []string{"project-hook"},
 	Short:         "List all project hooks of a specified project",
 	Args:          cobra.ExactArgs(1),
