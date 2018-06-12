@@ -1,10 +1,10 @@
 ## gitlabctl get members
 
-List all members of a group/project
+List all members of a group or a project
 
 ### Synopsis
 
-List all members of a group/project
+List all members of a group or a project
 
 ```
 gitlabctl get members [flags]

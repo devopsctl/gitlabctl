@@ -1,10 +1,10 @@
 ## gitlabctl get projects
 
-List all Gitlab projects
+List projects of the authenticated user or of a group
 
 ### Synopsis
 
-List all Gitlab projects
+List projects of the authenticated user or of a group
 
 ```
 gitlabctl get projects [flags]
@@ -13,8 +13,8 @@ gitlabctl get projects [flags]
 ### Examples
 
 ```
-# get all projects with full details in JSON format
-gitlabctl get projects --out json
+# get all projects
+gitlabctl get projects
 
 # get all projects from a group
 gitlabctl get projects --from-group=Group1

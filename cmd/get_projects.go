@@ -29,11 +29,11 @@ var getProjectsCmd = &cobra.Command{
 	Use:           "projects",
 	Aliases:       []string{"p"},
 	SuggestFor:    []string{"project"},
-	Short:         "List all Gitlab projects",
+	Short:         "List projects of the authenticated user or of a group",
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Example: `# get all projects with full details in JSON format
-gitlabctl get projects --out json
+	Example: `# get all projects
+gitlabctl get projects
 
 # get all projects from a group
 gitlabctl get projects --from-group=Group1`,

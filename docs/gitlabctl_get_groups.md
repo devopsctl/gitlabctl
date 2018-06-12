@@ -1,10 +1,10 @@
 ## gitlabctl get groups
 
-List all groups or subgroups of a group
+
 
 ### Synopsis
 
-List all groups or subgroups of a group
+List groups and subgroups
 
 ```
 gitlabctl get groups [flags]
@@ -13,9 +13,8 @@ gitlabctl get groups [flags]
 ### Examples
 
 ```
-
 # list all groups
-gitlabctl get groups [flags]
+gitlabctl get groups
 
 # list all subgroups of GroupX
 gitlabctl get groups --from-group=GroupX

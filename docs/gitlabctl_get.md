@@ -24,10 +24,10 @@ Get Gitlab resources
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
-* [gitlabctl get groups](gitlabctl_get_groups.md)	 - List all groups or subgroups of a group
-* [gitlabctl get members](gitlabctl_get_members.md)	 - List all members of a group/project
+* [gitlabctl get groups](gitlabctl_get_groups.md)	 - 
+* [gitlabctl get members](gitlabctl_get_members.md)	 - List all members of a group or a project
 * [gitlabctl get project-hooks](gitlabctl_get_project-hooks.md)	 - List all project hooks of a specified project
-* [gitlabctl get projects](gitlabctl_get_projects.md)	 - List all Gitlab projects
+* [gitlabctl get projects](gitlabctl_get_projects.md)	 - List projects of the authenticated user or of a group
 * [gitlabctl get ssh-keys](gitlabctl_get_ssh-keys.md)	 - 
 * [gitlabctl get users](gitlabctl_get_users.md)	 - List all Gitlab users
 
