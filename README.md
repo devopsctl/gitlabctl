@@ -49,7 +49,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 ### Project Hooks
 
 * [x] `get project-hooks [project id or project path]`
-* [ ] `new project-hook [project id or project path] [flags]`
+* [x] `new project-hook [project id or project path] [flags]`
 * [ ] `edit project-hook [project id or project path] [flags]`
 * [ ] `delete project-hook [hook id]`
 
@@ -66,13 +66,6 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `get ssh-keys [flags]`
 * [x] `new ssh-key [flags]`
 * [ ] `delete ssh-key [flags]`
-
-### Users GPG Keys
-
-* [ ] `get gpg-keys`
-* [ ] `get gpg-keys --from-user=[username]`
-* [ ] `new gpg-key [flags]`
-* [ ] `delete gpg-key [flags]`
 
 ### Members
 
