@@ -1,13 +1,11 @@
-[![Throughput Graph](http://graphs.waffle.io/devopsctl/gitlabctl/throughput.svg)](https://waffle.io/devopsctl/gitlabctl/metrics)
-
 [![Build Status](https://travis-ci.org/devopsctl/gitlabctl.svg?branch=master)](https://travis-ci.org/devopsctl/gitlabctl)
 [![codecov](https://codecov.io/gh/devopsctl/gitlabctl/branch/master/graph/badge.svg)](https://codecov.io/gh/devopsctl/gitlabctl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 [![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
 
-# gitlabctl - work in progress
+# [`gitlabctl`](https://devopsctl.github.io/gitlabctl/)
 
-A Gitlab command-line interface.
+Be a rockstar and efficiently manage your team's gitlab.org or [self-hosted Gitlab](https://about.gitlab.com/installation/) projects, groups, users and other resources.
 
 ## Getting Started
 
