@@ -1,6 +1,6 @@
 ## gitlabctl get groups
 
-
+List groups and subgroups
 
 ### Synopsis
 

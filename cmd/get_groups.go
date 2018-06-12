@@ -31,7 +31,7 @@ var getGroupsCmd = &cobra.Command{
 	SuggestFor:    []string{"group"},
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Long:          "List groups and subgroups",
+	Short:         "List groups and subgroups",
 	Example: `# list all groups
 gitlabctl get groups
 

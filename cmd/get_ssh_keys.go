@@ -30,6 +30,7 @@ import (
 var getSSHKeysCmd = &cobra.Command{
 	Use:     "ssh-keys",
 	Aliases: []string{"ssh", "ssh-key"},
+	Short:   "List all ssh keys of a user",
 	Example: `# get a list of currently authenticated user ssh keys
 gitlabctl get ssh-keys
 

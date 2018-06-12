@@ -1,10 +1,10 @@
 ## gitlabctl get ssh-keys
 
-
+List all ssh keys of a user
 
 ### Synopsis
 
-
+List all ssh keys of a user
 
 ```
 gitlabctl get ssh-keys [flags]
