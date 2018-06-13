@@ -216,7 +216,7 @@ func addEditProjectHookFlags(cmd *cobra.Command) {
 }
 
 func addNewProjectHookEditProjectHookFlags(cmd *cobra.Command) {
-	cmd.Flags().String("url", "", "The hook URL") 
+	cmd.Flags().String("url", "", "The hook URL")
 	cmd.Flags().Bool("push-events", false, "Trigger hook on push events")
 	cmd.Flags().Bool("issues-events", false, "Trigger hook on issues events")
 	cmd.Flags().Bool("confidential-issues-events", false, "Trigger hook on confidential issues events")
@@ -227,7 +227,7 @@ func addNewProjectHookEditProjectHookFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("pipeline-events", false, "Trigger hook on pipeline events")
 	cmd.Flags().Bool("wiki-page-events", false, "Trigger hook on wiki events")
 	cmd.Flags().Bool("enable-ssl-verification", false, "Do SSL verification when triggering the hook")
-	cmd.Flags().String("token", "", "Secret token to validate received payloads;" +
+	cmd.Flags().String("token", "", "Secret token to validate received payloads;"+
 		"this will not be returned in the response")
 }
 
@@ -261,6 +261,11 @@ func validateFromGroupAndProjectFlags(cmd *cobra.Command) error {
 		return newSetAtLeastOneFlagError("from-group", "from-project")
 	}
 	return nil
+}
+
+func validateAccessLevelFlag(cmd *cobra.Command) error {
+	return validateFlagIntValue([]int{10, 20, 30, 40, 50},
+		cmd, "access-level")
 }
 
 func addAllAvailableFlag(cmd *cobra.Command) {
@@ -389,6 +394,18 @@ func addQueryFlag(cmd *cobra.Command) {
 			"(defaults to blank)")
 }
 
+func addExpiresAtFlag(cmd *cobra.Command) {
+	cmd.Flags().StringP("expires-at", "e", "",
+		"A date string in the format YEAR-MONTH-DAY"+
+			"(defaults to blank)")
+}
+
+func addAccessLevelFlag(cmd *cobra.Command) {
+	cmd.Flags().IntP("access-level", "a", 30,
+		"Access level of member"+
+			"(defaults to 30)")
+}
+
 func addVisibilityFlag(cmd *cobra.Command) {
 	cmd.Flags().String("visibility", "private", "public, internal or private")
 }
@@ -428,6 +445,19 @@ func validateFlagStringValue(stringSlice []string,
 	return fmt.Errorf("'%s' is not a recognized value of '%s' flag. "+
 		"Please choose from: [%s]\n",
 		fValue, fName, strings.Join(stringSlice, ", "))
+}
+
+func validateFlagIntValue(intSlice []int,
+	cmd *cobra.Command, fName string) error {
+	fValue := getFlagInt(cmd, fName)
+	for _, v := range intSlice {
+		if fValue == v {
+			return nil
+		}
+	}
+	return fmt.Errorf("'%v' is not a recognized value of '%s' flag. "+
+		"Please choose from: [%s]\n",
+		fValue, fName, strings.Trim(strings.Join(strings.Split(fmt.Sprint(intSlice), " "), ","), "[]"))
 }
 
 func addPaginationFlags(cmd *cobra.Command) {
@@ -485,4 +515,13 @@ func getFlagInt(cmd *cobra.Command, flag string) int {
 			flag, cmd.Name(), err)
 	}
 	return i
+}
+
+func getFlagAccessLevel(cmd *cobra.Command, flag string) gitlab.AccessLevelValue {
+	i, err := cmd.Flags().GetInt(flag)
+	if err != nil {
+		glog.Fatalf("error accessing flag %s for command %s: %v",
+			flag, cmd.Name(), err)
+	}
+	return gitlab.AccessLevelValue(i)
 }
