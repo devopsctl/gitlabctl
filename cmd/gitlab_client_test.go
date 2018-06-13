@@ -10,16 +10,16 @@ import (
 // getE is binded to have "GITLAB_" as prefix
 var (
 	// base this from docker-compose.yml
-	testingUser     = getE("USERNAME")
-	testingPassword = getE("PASSWORD")
-	testingHTTPURL  = getE("HTTP_URL")
-	testingAPIURL   = getE("API_HTTP_URL")
+	testingUser     = getCfg("USERNAME")
+	testingPassword = getCfg("PASSWORD")
+	testingHTTPURL  = getCfg("HTTP_URL")
+	testingAPIURL   = getCfg("API_HTTP_URL")
 
 	// run ./testdata/get_oauth_token.sh
-	testingToken = getE("PRIVATE_TOKEN")
+	testingToken = getCfg("PRIVATE_TOKEN")
 
 	// run ./testdata/get_token.sh
-	testingOAuthToken = getE("OAUTH_TOKEN")
+	testingOAuthToken = getCfg("OAUTH_TOKEN")
 )
 
 func setBasicAuthEnvs() {
