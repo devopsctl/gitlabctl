@@ -23,6 +23,7 @@ Create a Gitlab resource
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
 * [gitlabctl new group](gitlabctl_new_group.md)	 - Create a new group by specifying the group name as the first argument
+* [gitlabctl new member](gitlabctl_new_member.md)	 - Create a new member by specifying the member name as the first argument
 * [gitlabctl new project](gitlabctl_new_project.md)	 - Create a new project by specifying the project name as the first argument
 * [gitlabctl new project-hook](gitlabctl_new_project-hook.md)	 - Create a new project hook by specifying the project id or project path as the first argument
 * [gitlabctl new ssh-key](gitlabctl_new_ssh-key.md)	 - Upload or create ssh key for a gitlab user

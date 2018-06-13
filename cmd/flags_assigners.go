@@ -423,6 +423,29 @@ func assignCreateGroupOptions(cmd *cobra.Command) (*gitlab.CreateGroupOptions, e
 	return &opts, nil
 }
 
+// assignAddProjectMemberOptions assigns the flags' values to gitlab.AddProjectMemberOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.AddProjectMemberOptions field.
+func assignAddProjectMemberOptions(cmd *cobra.Command) (*gitlab.AddProjectMemberOptions, error) {
+	opts := new(gitlab.AddProjectMemberOptions)
+
+	opts.AccessLevel = gitlab.AccessLevel(getFlagAccessLevel(cmd, "access-level"))
+	return opts, nil
+}
+
+// assignAddGroupMemberOptions assigns the flags' values to gitlab.AddGroupMemberOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.AddGroupMemberOptions field.
+func assignAddGroupMemberOptions(cmd *cobra.Command) (*gitlab.AddGroupMemberOptions, error) {
+	opts := new(gitlab.AddGroupMemberOptions)
+
+	opts.AccessLevel = gitlab.AccessLevel(getFlagAccessLevel(cmd, "access-level"))
+	if cmd.Flag("expires-at").Changed {
+		opts.ExpiresAt = gitlab.String(getFlagString(cmd, "expires-at"))
+	}
+	return opts, nil
+}
+
 // assignCreateUserOptions assigns the flags' values to gitlab.CreateUserOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.CreateUserOptions field.
