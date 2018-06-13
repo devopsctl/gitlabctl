@@ -23,6 +23,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -32,7 +33,15 @@ import (
 var cfgFile string
 
 var authDoc = `
-Set the following environment variables to authenticate the command-line client to Gitlab.
+There are two options to authenticate the command-line client to Gitlab interface:
+
+1.) Using the 'login' command by passing the host url, username and password.
+
+$ gitlabctl login [hosturl]
+
+The login token will be saved in $HOME/.gitlabctl.yaml file.
+
+2.) Using Environment variables.
 
 * Basic Authentication (if using a username and password)
     - GITLAB_USERNAME
@@ -45,8 +54,7 @@ Set the following environment variables to authenticate the command-line client 
 
 * OAuth Token (if using an oauth token)
     - GITLAB_OAUTH_TOKEN
-    - GITLAB_API_HTTP_URL
-`
+    - GITLAB_API_HTTP_URL`
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -82,11 +90,10 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			er(err)
 		}
 
-		// Search config in home directory with name ".gitlab-cli" (without extension).
+		// Search config in home directory with name ".gitlabctl" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".gitlabctl")
 	}
@@ -94,7 +101,11 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		// NOTE: the config file is not required to exists
+		// raise an error if error is other than config file not found
+		if !strings.Contains(err.Error(), `Config File ".gitlabctl" Not Found`) {
+			er(err)
+		}
 	}
 }
