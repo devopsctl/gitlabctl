@@ -75,6 +75,6 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `new member [username] --from-project [flags]`
 * [ ] `remove member [username] --from-group`
 * [ ] `remove member [username] --from-project`
-* [ ] `edit member [username] --from-group [flags]`
-* [ ] `edit member [username] --from-project [flags]`
+* [x] `edit member [username] --from-group [flags]`
+* [x] `edit member [username] --from-project [flags]`
 
