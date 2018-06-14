@@ -234,6 +234,50 @@ func assignAddProjectHookOptions(cmd *cobra.Command) (*gitlab.AddProjectHookOpti
 	return opts, nil
 }
 
+// assignEditProjectHookOptions assigns the flags' values to gitlab.EditProjectHookOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.EditProjectHookOptions field.
+func assignEditProjectHookOptions(cmd *cobra.Command) (*gitlab.EditProjectHookOptions, error) {
+	opts := new(gitlab.EditProjectHookOptions)
+	if cmd.Flag("url").Changed {
+		opts.URL = gitlab.String(getFlagString(cmd, "url"))
+	}
+	if cmd.Flag("push-events").Changed {
+		opts.PushEvents = gitlab.Bool(getFlagBool(cmd, "push-events"))
+	}
+	if cmd.Flag("issues-events").Changed {
+		opts.IssuesEvents = gitlab.Bool(getFlagBool(cmd, "issues-events"))
+	}
+	if cmd.Flag("confidential-issues-events").Changed {
+		opts.ConfidentialIssuesEvents = gitlab.Bool(getFlagBool(cmd, "confidential-issues-events"))
+	}
+	if cmd.Flag("merge-requests-events").Changed {
+		opts.MergeRequestsEvents = gitlab.Bool(getFlagBool(cmd, "merge-requests-events"))
+	}
+	if cmd.Flag("tag-push-events").Changed {
+		opts.TagPushEvents = gitlab.Bool(getFlagBool(cmd, "tag-push-events"))
+	}
+	if cmd.Flag("note-events").Changed {
+		opts.NoteEvents = gitlab.Bool(getFlagBool(cmd, "note-events"))
+	}
+	if cmd.Flag("job-events").Changed {
+		opts.JobEvents = gitlab.Bool(getFlagBool(cmd, "job-events"))
+	}
+	if cmd.Flag("pipeline-events").Changed {
+		opts.PipelineEvents = gitlab.Bool(getFlagBool(cmd, "pipeline-events"))
+	}
+	if cmd.Flag("wiki-page-events").Changed {
+		opts.WikiPageEvents = gitlab.Bool(getFlagBool(cmd, "wiki-page-events"))
+	}
+	if cmd.Flag("enable-ssl-verification").Changed {
+		opts.EnableSSLVerification = gitlab.Bool(getFlagBool(cmd, "enable-ssl-verification"))
+	}
+	if cmd.Flag("token").Changed {
+		opts.Token = gitlab.String(getFlagString(cmd, "token"))
+	}
+	return opts, nil
+}
+
 // assignListUsersOptions assigns the flags' values to gitlab.ListUsersOptions fields.
 // If a flag's default value is not changed by the caller,
 // it's value will not be assigned to the associated gitlab.ListProjectsOptions field.
