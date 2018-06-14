@@ -13,7 +13,7 @@ There are two options to authenticate the command-line client to Gitlab interfac
 
 1.) Using the 'login' command by passing the host url, username and password.
 
-$ gitlabctl login [hosturl]
+$ gitlabctl login
 
 The login token will be saved in $HOME/.gitlabctl.yaml file.
 
