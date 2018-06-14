@@ -94,11 +94,17 @@ type execTestCmdFlags struct {
 	cmd      *cobra.Command
 	flagsMap map[string]string
 	args     []string
+	noParent bool
 }
 
 func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 	// build up the command args and flags value
-	args := []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
+	var args []string
+	if execT.noParent {
+		args = []string{execT.cmd.Name()}
+	} else {
+		args = []string{execT.cmd.Parent().Name(), execT.cmd.Name()}
+	}
 	if len(execT.args) > 0 {
 		args = append(args, execT.args...)
 	}

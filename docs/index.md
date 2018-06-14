@@ -41,6 +41,7 @@ The login token will be saved in $HOME/.gitlabctl.yaml file.
 
 ### SEE ALSO
 
+* [gitlabctl completion](gitlabctl_completion.md)	 - Generates bash completion scripts
 * [gitlabctl delete](gitlabctl_delete.md)	 - Delete a Gitlab resource
 * [gitlabctl describe](gitlabctl_describe.md)	 - Describe a gitlab resource
 * [gitlabctl edit](gitlabctl_edit.md)	 - Update or patch a Gitlab resource
