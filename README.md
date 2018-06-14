@@ -48,7 +48,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 * [x] `get project-hooks [project id or project path]`
 * [x] `new project-hook [project id or project path] [flags]`
-* [ ] `edit project-hook [project id or project path] [flags]`
+* [x] `edit project-hook [project id or project path] [flags]`
 * [ ] `delete project-hook [hook id]`
 
 ### Users 
