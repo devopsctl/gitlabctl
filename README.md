@@ -15,9 +15,10 @@ Please see [Github site](https://devopsctl.github.io/gitlabctl/) for a nice docu
 
 Download the binary from [releases](https://github.com/devopsctl/gitlabctl/releases) or use Go Get, `go get github.com/devopsctl/gitlabctl`.
 
-Enable auto complete for 'bash' or 'zsh' shell. ❤️
+Enable auto complete for __bash__ or __zsh__ shell. ❤️
 
 ```bash
+# follow the instructions from the command output
 gitlabctl completion -h
 ```
 
