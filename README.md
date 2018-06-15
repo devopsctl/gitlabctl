@@ -73,8 +73,10 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `describe member [username] --from-project [flags]`
 * [x] `new member [username] --from-group [flags]`
 * [x] `new member [username] --from-project [flags]`
-* [ ] `remove member [username] --from-group`
-* [ ] `remove member [username] --from-project`
+* [x] `delete member [username] --from-group`
+* [x] `delete member [username] --from-project`
 * [x] `edit member [username] --from-group [flags]`
 * [x] `edit member [username] --from-project [flags]`
+* [ ] `remove all-members --from-group`
+* [ ] `remove all-members --from-project`
 

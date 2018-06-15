@@ -30,10 +30,10 @@ var editMemberCmd = &cobra.Command{
 	Aliases:    []string{"m"},
 	SuggestFor: []string{"members"},
 	Short:      "Edit a member by specifying the member name as the first argument",
-	Example: `# create a new group
+	Example: `# edit member of a group
 gitlabctl edit member john.smith --from-group Group2 --access-level 20
 
-# create a subgroup using namespace
+# edit member of a project
 gitlabctl edit member john.smith --from-project Project1 --expire-at 2069-06-25`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
