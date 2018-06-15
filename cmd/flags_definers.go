@@ -29,6 +29,13 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
+func verifyMarkFlagRequired(cmd *cobra.Command, fName string) {
+	if err := cmd.MarkFlagRequired(fName); err != nil {
+		glog.Fatalf("error marking %s flag as required for command %s: %v",
+			fName, cmd.Name(), err)
+	}
+}
+
 // addGetGroupsFlags adds common flags for `get groups` and `get subgroups` commands
 // Flags usage reference:
 // https://docs.gitlab.com/ce/api/groups.html#list-groups
@@ -63,12 +70,8 @@ func addGetUsersFlags(cmd *cobra.Command) {
 // https://docs.gitlab.com/ee/api/users.html#user-creation
 func addNewUserFlags(cmd *cobra.Command) {
 	addNewUserEditUserFlags(cmd)
-	if err := cmd.MarkFlagRequired("name"); err != nil {
-		er(err)
-	}
-	if err := cmd.MarkFlagRequired("email"); err != nil {
-		er(err)
-	}
+	verifyMarkFlagRequired(cmd, "name")
+	verifyMarkFlagRequired(cmd, "email")
 	cmd.Flags().Bool("reset-password", false, "Send user password reset link?")
 	cmd.Flags().Bool("skip-confirmation", false, "Skip confirmation")
 }
@@ -124,6 +127,17 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 		"Limit by enabled issues feature")
 	cmd.Flags().Bool("with-merge-requests-enabled", false,
 		"Limit by enabled merge requests feature")
+}
+
+func addNewBranchFlags(cmd *cobra.Command) {
+	addBranchFlag(cmd)
+	cmd.Flags().StringP("ref", "p", "", "The branch name or commit SHA to create branch from")
+	verifyMarkFlagRequired(cmd, "ref")
+}
+
+func addBranchFlag(cmd *cobra.Command) {
+	cmd.Flags().StringP("branch", "b", "", "The name of the branch")
+	verifyMarkFlagRequired(cmd, "branch")
 }
 
 // addNewGroupFlags add the required flags for creating a new group
@@ -200,19 +214,16 @@ func addNewProjectFlags(cmd *cobra.Command) {
 // Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#add-project-hook
 func addNewProjectHookFlags(cmd *cobra.Command) {
 	addNewProjectHookEditProjectHookFlags(cmd)
-	if err := cmd.MarkFlagRequired("url"); err != nil {
-		er(err)
-	}
+	verifyMarkFlagRequired(cmd, "url")
 }
 
 // addEditProjectHookFlags add the required flags for editing a project hook
 // Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#edit-project-hook
 func addEditProjectHookFlags(cmd *cobra.Command) {
-	cmd.Flags().Int("hook-id", 0, "The hook ID") 
+	cmd.Flags().Int("hook-id", 0, "The hook ID")
 	addNewProjectHookEditProjectHookFlags(cmd)
-	if err := cmd.MarkFlagRequired("hook-id"); err != nil {
-		er(err)
-	}
+	verifyMarkFlagRequired(cmd, "url")
+	verifyMarkFlagRequired(cmd, "hook-id")
 }
 
 func addNewProjectHookEditProjectHookFlags(cmd *cobra.Command) {
