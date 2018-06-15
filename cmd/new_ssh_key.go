@@ -54,9 +54,7 @@ func init() {
 		"Upload the ssh key file to the specified user")
 	newSSHKeyCmd.Flags().StringP("keyfile", "f", "",
 		"Public SSH key file")
-	if err := newSSHKeyCmd.MarkFlagRequired("keyfile"); err != nil {
-		er(err)
-	}
+	verifyMarkFlagRequired(newSSHKeyCmd, "keyfile")
 }
 
 func runNewSSHKey(cmd *cobra.Command) error {
