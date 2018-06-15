@@ -15,16 +15,26 @@ Please see [Github site](https://devopsctl.github.io/gitlabctl/) for a nice docu
 
 Download the binary from [releases](https://github.com/devopsctl/gitlabctl/releases) or use Go Get, `go get github.com/devopsctl/gitlabctl`.
 
+Enable auto complete for 'bash' or 'zsh' shell. ❤️
+
+```bash
+gitlabctl completion -h
+```
+
 ## Contributing
 
 Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTION.md) for the process for submitting pull requests to us.
 
-## Gitlab Commands Available
-
+## Gitlab Commands Available 
 ### Authentication 
 
 * [x] Authentication through environment variables.
 * [x] Authentication using `gitlabctl login` command.
+
+### Completion
+
+* [x] `completion --bash`
+* [x] `completion --zsh`
 
 ### Group
 
@@ -43,6 +53,14 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 * [x] `new project [project name] [flags]`
 * [x] `edit project [project id or project path] [flags]`
 * [x] `delete project [project id or project path]`
+
+### Project Branch
+
+* [ ] `get branch [project id or project path] [flags]`
+* [ ] `describe branch [project id or project path] [flags]`
+* [ ] `new branch [project id or project path] [flags]`
+* [ ] `edit branch [project id or project path] [--protect] [flags]`
+* [ ] `edit branch [project id or project path] [--unprotect] [flags]`
 
 ### Project Hooks
 
