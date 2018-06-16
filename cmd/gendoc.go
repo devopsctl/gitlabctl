@@ -34,19 +34,19 @@ var gendocCmd = &cobra.Command{
 	Use:     "gendoc",
 	Aliases: []string{"gendocs", "docs"},
 	Short:   "Generate markdown documentation",
-	Run: func(cmd *cobra.Command, args []string) {
-		err := doc.GenMarkdownTree(rootCmd, docsDir)
-		if err != nil {
-			er(err)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := doc.GenMarkdownTree(rootCmd, docsDir); err != nil {
+			return err
 		}
 		f, err := os.Create(docsDir + "/index.md")
 		if err != nil {
-			er(err)
+			return err
 		}
 		if err = doc.GenMarkdown(rootCmd, f); err != nil {
-			er(err)
+			return err
 		}
 		fmt.Printf("The documentations have been created in %s directory.\n", docsDir)
+		return nil
 	},
 }
 
