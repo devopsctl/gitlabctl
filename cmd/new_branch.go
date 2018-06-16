@@ -27,13 +27,19 @@ import (
 var newBranchCmd = &cobra.Command{
 	Use:           "branch",
 	Aliases:       []string{"b"},
-	Short:         "Create a new branch for a project repository",
+	Short:         "Create a new branch for a specified project",
+	Example:       `gitlabctl new branch project23 --name="release-x" --ref=master`,
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Args:          cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runNewBranch(cmd, args[0])
 	},
+}
+
+func init() {
+	newCmd.AddCommand(newBranchCmd)
+	addNewBranchFlags(newBranchCmd)
 }
 
 func runNewBranch(cmd *cobra.Command, project string) error {
@@ -56,9 +62,4 @@ func newBranch(project string, opts *gitlab.CreateBranchOptions) (*gitlab.Branch
 		return nil, err
 	}
 	return branch, nil
-}
-
-func init() {
-	newCmd.AddCommand(newBranchCmd)
-	addNewBranchFlags(newBranchCmd)
 }
