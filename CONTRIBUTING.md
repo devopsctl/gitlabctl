@@ -6,10 +6,13 @@
 	* [Requirements](#requirements)
 	* [Environment Variables and Test Data](#environment-variables-and-test-data)
 	* [Refresh Test Data](#refresh-test-data)
-	* [Branching](#branching)
 	* [Issue Tracker](#issue-tracker)
+	* [Branching](#branching)
+	* [Code Generator](#code-generator)
+	* [Good Commit Message Examples](#good-commit-message-examples)
 	* [Before Pushing your Commit](#before-pushing-your-commit)
-* [Custom Packages](#custom-packages)
+	* [Tips and Tricks](#tips-and-tricks)
+* [Custom Packages we are using](#custom-packages-we-are-using)
 * [Test Driven Development](#test-driven-development)
 * [How the Commands Authenticate](#how-the-commands-authenticate)
 * [Commands Pattern](#commands-pattern)
@@ -58,6 +61,14 @@ source testdata/credentials.sh
 testdata/seeder.sh
 ```
 
+### Issue Tracker
+
+[![Throughput Graph](http://graphs.waffle.io/devopsctl/gitlabctl/throughput.svg)](https://waffle.io/devopsctl/gitlabctl/metrics)
+
+* Ensure that you are working on an [Issue](https://github.com/devopsctl/gitlabctl/issues) 
+and is visible in [Waffle Issue Tracker](https://waffle.io/devopsctl/gitlabctl).
+* Ensure to create a branch for your Issue.
+
 ### Branching 
 
 * Branch name should be in the format of `{{issueNumber}}-{{shortTaskName}}`. 
@@ -66,13 +77,17 @@ Example: `19-add-group-get-cmd`.
 Use `git pull --rebase origin master` or `git pull --rebase origin branchName` 
 as much as possible.
 
-### Issue Tracker
+### Code Generator
 
-[![Throughput Graph](http://graphs.waffle.io/devopsctl/gitlabctl/throughput.svg)](https://waffle.io/devopsctl/gitlabctl/metrics)
+Once you get the basics of creating a gitlabctl command, you will find out that most code are repeatable. 
+This is where the `gitlabctl gencode` commands can be of help.
 
-* Ensure that you are working on an [Issue](https://github.com/devopsctl/gitlabctl/issues) 
-and is visible in [Waffle Issue Tracker](https://waffle.io/devopsctl/gitlabctl).
-* Ensure to create a branch for your Issue.
+Please use it in for your own convenience. Feedback about this command is also appreciated!
+
+### Good Commit Message Examples
+
+* `new_group: fix known issue when printing output` - when patching an existing command
+* `Add new command get labels` - when adding a new command
 
 ### Before Pushing your Commit
 
@@ -86,7 +101,19 @@ community may be able to answer your questions.
 * If you are not changing code (e.g: updating docs or adding test data), 
 use __ci skip__ in commit message to [Skip TravisCI build](https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build)
 
-## Custom Packages
+### Tips and Tricks
+
+Use `grm cmd subcmd` for ease of testing a command.
+* How: `alias grm='go run main.go'`
+* Example Usage: `grm get groups`
+
+Use `gt` for ease of running `go test`.
+
+* How: `alias gt='go test -v ./...'`
+* Example Usage: `gt -run NewGroup`
+
+
+## Custom Packages we are using
 
 * Gitlab api client - https://godoc.org/github.com/xanzy/go-gitlab 
 * Commandline flags - https://github.com/spf13/cobra 
@@ -104,6 +131,8 @@ Authenticate using environment variables.
 * Basic authentication - `GITLAB_USERNAME`, `GITLAB_PASSWORD` and `GITLAB_HTTP_URL`
 * Private token authentication - `GITLAB_PRIVATE_TOKEN` and `GITLAB_API_HTTP_URL`
 * OAuth2 token authentication - `GITLAB_OAUTH_TOKEN` and `GITLAB_API_HTTP_URL`
+
+Authenticate using `gitlabctl login` command.
 
 ## Commands Pattern
 

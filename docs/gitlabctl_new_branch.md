@@ -1,21 +1,27 @@
 ## gitlabctl new branch
 
-Create a new branch for a project repository
+Create a new branch for a specified project
 
 ### Synopsis
 
-Create a new branch for a project repository
+Create a new branch for a specified project
 
 ```
 gitlabctl new branch [flags]
+```
+
+### Examples
+
+```
+gitlabctl new branch project23 --name=release-x --ref=master
 ```
 
 ### Options
 
 ```
   -h, --help          help for branch
-  -b, --name string   The name of the branch
-  -p, --ref string    The branch name or commit SHA to create branch from
+  -n, --name string   The name of the branch
+  -r, --ref string    The branch name or commit SHA to create branch from
 ```
 
 ### Options inherited from parent commands
