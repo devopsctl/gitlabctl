@@ -112,6 +112,38 @@ Fetching resources with using `--output, -o` formatter flag.
  ]
 ```
 
+```bash
+>> gitlabctl get groups -o yaml
+- avatar_url: ""
+  description: Updated by go test by id
+  full_name: Group1
+  full_path: Group1
+  id: 13
+  lfs_enabled: false
+  name: Group1
+  parent_id: 0
+  path: Group1
+  projects: null
+  request_access_enabled: false
+  statistics: null
+  visibility: private
+  web_url: http://localhost:10080/groups/Group1
+- avatar_url: ""
+  description: ""
+  full_name: Group2
+  full_path: Group2
+  id: 14
+  lfs_enabled: true
+  name: Group2
+  parent_id: 0
+  path: Group2
+  projects: null
+  request_access_enabled: false
+  statistics: null
+  visibility: private
+  web_url: http://localhost:10080/groups/Group2
+```
+
 Creating resources.
 
 ```bash

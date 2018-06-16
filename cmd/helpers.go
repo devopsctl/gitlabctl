@@ -31,7 +31,8 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
-	yaml "gopkg.in/yaml.v2"
+
+	"github.com/ghodss/yaml"
 )
 
 const (
