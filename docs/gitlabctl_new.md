@@ -22,7 +22,7 @@ Create a Gitlab resource
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
-* [gitlabctl new branch](gitlabctl_new_branch.md)	 - Create a new branch for a project repository
+* [gitlabctl new branch](gitlabctl_new_branch.md)	 - Create a new branch for a specified project
 * [gitlabctl new group](gitlabctl_new_group.md)	 - Create a new group by specifying the group name as the first argument
 * [gitlabctl new member](gitlabctl_new_member.md)	 - Create a new member by specifying the member name as the first argument
 * [gitlabctl new project](gitlabctl_new_project.md)	 - Create a new project by specifying the project name as the first argument

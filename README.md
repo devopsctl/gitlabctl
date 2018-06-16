@@ -24,7 +24,7 @@ gitlabctl completion -h
 
 ## Contributing
 
-Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTION.md) for the process for submitting pull requests to us.
+Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the process for submitting pull requests to us.
 
 ## Gitlab Commands Available 
 ### Authentication 
