@@ -28,7 +28,7 @@ var newBranchCmd = &cobra.Command{
 	Use:           "branch",
 	Aliases:       []string{"b"},
 	Short:         "Create a new branch for a specified project",
-	Example:       `gitlabctl new branch project23 --name="release-x" --ref=master`,
+	Example:       `gitlabctl new branch project23 --name=release-x --ref=master`,
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Args:          cobra.ExactArgs(1),

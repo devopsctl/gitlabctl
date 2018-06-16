@@ -131,13 +131,13 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 
 func addNewBranchFlags(cmd *cobra.Command) {
 	addBranchName(cmd)
-	cmd.Flags().StringP("ref", "p", "",
+	cmd.Flags().StringP("ref", "r", "",
 		"The branch name or commit SHA to create branch from")
 	verifyMarkFlagRequired(cmd, "ref")
 }
 
 func addBranchName(cmd *cobra.Command) {
-	cmd.Flags().StringP("name", "b", "", "The name of the branch")
+	cmd.Flags().StringP("name", "n", "", "The name of the branch")
 	verifyMarkFlagRequired(cmd, "name")
 }
 
