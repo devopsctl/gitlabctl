@@ -600,7 +600,7 @@ func assignListProjectMembersOptions(cmd *cobra.Command) *gitlab.ListProjectMemb
 
 // assignListGroupMembersOptions assigns the flags' values to gitlab.ListGroupMembersOptions fields.
 // If a flag's default value is not changed by the caller,
-// it's value will not be assigned to the associated gitlab.ListProjectMembersOptions field.
+// it's value will not be assigned to the associated gitlab.ListGroupMembersOptions  field.
 func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersOptions {
 	opts := new(gitlab.ListGroupMembersOptions)
 	if cmd.Flag("page").Changed {
@@ -615,6 +615,9 @@ func assignListGroupMembersOptions(cmd *cobra.Command) *gitlab.ListGroupMembersO
 	return opts
 }
 
+// assignAddSSHKeyOptions assigns the flags' values to gitlab.AddSSHKeyOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.AddSSHKeyOptions field.
 func assignAddSSHKeyOptions(cmd *cobra.Command) (*gitlab.AddSSHKeyOptions, error) {
 	opts := new(gitlab.AddSSHKeyOptions)
 	opts.Title = gitlab.String(getFlagString(cmd, "title"))
@@ -624,4 +627,14 @@ func assignAddSSHKeyOptions(cmd *cobra.Command) (*gitlab.AddSSHKeyOptions, error
 	}
 	opts.Key = gitlab.String(string(b))
 	return opts, nil
+}
+
+// assignCreateBranchOptions assigns the flags' values to gitlab.AddSSHKeyOptions fields.
+// If a flag's default value is not changed by the caller,
+// it's value will not be assigned to the associated gitlab.AddSSHKeyOptions field.
+func assignCreateBranchOptions(cmd *cobra.Command) *gitlab.CreateBranchOptions {
+	opts := new(gitlab.CreateBranchOptions)
+	opts.Branch = gitlab.String(getFlagString(cmd, "name"))
+	opts.Ref = gitlab.String(getFlagString(cmd, "ref"))
+	return opts
 }
