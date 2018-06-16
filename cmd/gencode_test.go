@@ -56,4 +56,7 @@ func TestGenCodeCmd(t *testing.T) {
 	if err := os.Remove("cmd/test_gencode_test.go"); err != nil {
 		glog.Fatal(err)
 	}
+
+	// ensure to go back
+	os.Chdir("cmd")
 }

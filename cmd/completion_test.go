@@ -65,7 +65,6 @@ func TestCompletion(t *testing.T) {
 				noParent: true,
 			}
 			stdout, execResult := execT.executeCommand()
-			tInfo(stdout)
 			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 		})
