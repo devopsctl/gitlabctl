@@ -21,38 +21,38 @@
 package cmd
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
-	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var editProjectHookCmd = &cobra.Command{
+var deleteProjectHookCmd = &cobra.Command{
 	Use:        "project-hook",
 	Aliases:    []string{"h"},
 	SuggestFor: []string{"hook"},
-	Short:      "Edit a project hook by specifying the project id or path and using flags for fields to modify",
-	Example: `# update a project hook by project path
-gitlabctl edit project-hook 1 --project=ProjectX --url="http://www.sample123.com/"
-gitlabctl edit project-hook 2 --project=GroupX/ProjectX --tag-push-events=false  
+	Short:      "Delete a Gitlab project hook by specifying the project's full path or id",
+	Example: `# delete a project hook by project's path
+gitlabctl delete project-hook 1 --project=GroupX/ProjectX
 
-# update a project hook by project id
-gitlabctl edit project-hook 3 --project=3 --url="http://www.sample321.com/" --issues-events`,
+# delete a project hook by project id
+gitlabctl delete project-hook 2 --project=22`,
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runEditProjectHook(cmd, args[0])
+		return deleteProjectHook(args[0], getFlagString(cmd, "project"))
 	},
 }
 
 func init() {
-	editCmd.AddCommand(editProjectHookCmd)
-	addEditProjectHookFlags(editProjectHookCmd)
+	deleteCmd.AddCommand(deleteProjectHookCmd)
+	addProjectFlag(deleteProjectHookCmd)
+	verifyMarkFlagRequired(deleteProjectHookCmd, "project")
 }
 
-func runEditProjectHook(cmd *cobra.Command, hook string) error {
-	opts, err := assignEditProjectHookOptions(cmd)
+func deleteProjectHook(hook string, project string) error {
+	git, err := newGitlabClient()
 	if err != nil {
 		return err
 	}
@@ -60,23 +60,14 @@ func runEditProjectHook(cmd *cobra.Command, hook string) error {
 	if err != nil {
 		return err
 	}
-	project := getFlagString(cmd, "project")
-	editedProjectHook, err := editProjectHook(project, hid, (*gitlab.EditProjectHookOptions)(opts))
+	projectInfo, _, err := git.Projects.GetProject(project)
 	if err != nil {
 		return err
 	}
-	printProjectHooksOut(cmd, editedProjectHook)
+	_, err = git.Projects.DeleteProjectHook(projectInfo.ID, hid)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("project hook with id (%d) from (%s) has been deleted\n", hid, projectInfo.PathWithNamespace)
 	return nil
-}
-
-func editProjectHook(project string, hook int, opts *gitlab.EditProjectHookOptions) (*gitlab.ProjectHook, error) {
-	git, err := newGitlabClient()
-	if err != nil {
-		return nil, err
-	}
-	editedProjectHook, _, err := git.Projects.EditProjectHook(project, hook, opts)
-	if err != nil {
-		return nil, err
-	}
-	return editedProjectHook, nil
 }

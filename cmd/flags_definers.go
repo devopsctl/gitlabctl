@@ -213,10 +213,10 @@ func addNewProjectHookFlags(cmd *cobra.Command) {
 // addEditProjectHookFlags add the required flags for editing a project hook
 // Flag usage reference: https://docs.gitlab.com/ce/api/projects.html#edit-project-hook
 func addEditProjectHookFlags(cmd *cobra.Command) {
-	cmd.Flags().Int("hook-id", 0, "The hook ID")
+	addProjectFlag(cmd)
 	addNewProjectHookEditProjectHookFlags(cmd)
 	verifyMarkFlagRequired(cmd, "url")
-	verifyMarkFlagRequired(cmd, "hook-id")
+	verifyMarkFlagRequired(cmd, "project")
 }
 
 func addNewProjectHookEditProjectHookFlags(cmd *cobra.Command) {
