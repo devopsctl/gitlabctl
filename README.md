@@ -59,7 +59,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIO
 
 * [ ] `get branch [project id or project path] [flags]`
 * [ ] `describe branch [project id or project path] [flags]`
-* [ ] `new branch [project id or project path] [flags]`
+* [x] `new branch [project id or project path] [flags]`
 * [ ] `edit branch [project id or project path] [--protect] [flags]`
 * [ ] `edit branch [project id or project path] [--unprotect] [flags]`
 

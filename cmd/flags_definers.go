@@ -130,14 +130,15 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 }
 
 func addNewBranchFlags(cmd *cobra.Command) {
-	addBranchFlag(cmd)
-	cmd.Flags().StringP("ref", "p", "", "The branch name or commit SHA to create branch from")
+	addBranchName(cmd)
+	cmd.Flags().StringP("ref", "p", "",
+		"The branch name or commit SHA to create branch from")
 	verifyMarkFlagRequired(cmd, "ref")
 }
 
-func addBranchFlag(cmd *cobra.Command) {
-	cmd.Flags().StringP("branch", "b", "", "The name of the branch")
-	verifyMarkFlagRequired(cmd, "branch")
+func addBranchName(cmd *cobra.Command) {
+	cmd.Flags().StringP("name", "b", "", "The name of the branch")
+	verifyMarkFlagRequired(cmd, "name")
 }
 
 // addNewGroupFlags add the required flags for creating a new group

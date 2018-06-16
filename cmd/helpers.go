@@ -312,3 +312,28 @@ func printSSHKeysOut(cmd *cobra.Command, keys ...*gitlab.SSHKey) {
 		printJSON(keys)
 	}
 }
+
+func printBranchOut(cmd *cobra.Command, branches ...*gitlab.Branch) {
+	switch getFlagString(cmd, "out") {
+	case YAML:
+		printYAML(branches)
+	case JSON:
+		printJSON(branches)
+	default:
+		if len(branches) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
+		header := []string{"NAME", "PROTECTED", "DEVELOPERS CAN PUSH", "DEVELOPERS CAN MERGE"}
+		var rows [][]string
+		for _, v := range branches {
+			rows = append(rows, []string{
+				v.Name,
+				bToS(v.Protected),
+				bToS(v.DevelopersCanPush),
+				bToS(v.DevelopersCanMerge),
+			})
+		}
+		printTable(header, rows)
+	}
+}
