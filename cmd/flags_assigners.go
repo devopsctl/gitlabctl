@@ -9,7 +9,6 @@
 //
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -627,14 +626,4 @@ func assignAddSSHKeyOptions(cmd *cobra.Command) (*gitlab.AddSSHKeyOptions, error
 	}
 	opts.Key = gitlab.String(string(b))
 	return opts, nil
-}
-
-// assignCreateBranchOptions assigns the flags' values to gitlab.AddSSHKeyOptions fields.
-// If a flag's default value is not changed by the caller,
-// it's value will not be assigned to the associated gitlab.AddSSHKeyOptions field.
-func assignCreateBranchOptions(cmd *cobra.Command) *gitlab.CreateBranchOptions {
-	opts := new(gitlab.CreateBranchOptions)
-	opts.Branch = gitlab.String(getFlagString(cmd, "name"))
-	opts.Ref = gitlab.String(getFlagString(cmd, "ref"))
-	return opts
 }

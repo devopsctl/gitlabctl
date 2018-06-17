@@ -129,16 +129,8 @@ func addGetProjectsFlags(cmd *cobra.Command) {
 		"Limit by enabled merge requests feature")
 }
 
-func addNewBranchFlags(cmd *cobra.Command) {
-	addBranchName(cmd)
-	cmd.Flags().StringP("ref", "r", "",
-		"The branch name or commit SHA to create branch from")
-	verifyMarkFlagRequired(cmd, "ref")
-}
-
-func addBranchName(cmd *cobra.Command) {
-	cmd.Flags().StringP("name", "n", "", "The name of the branch")
-	verifyMarkFlagRequired(cmd, "name")
+func addProjectFlag(cmd *cobra.Command) {
+	cmd.Flags().StringP("project", "p", "", "The name or ID of the project")
 }
 
 // addNewGroupFlags add the required flags for creating a new group

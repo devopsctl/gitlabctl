@@ -37,15 +37,15 @@ func TestNewBranch(t *testing.T) {
 		{
 			name: "create a new branch",
 			flagsMap: map[string]string{
-				"name": "release-1",
-				"ref":  "master",
+				"project": "Group2/project12",
+				"ref":     "master",
 			},
-			args:   []string{"Group2/project12"},
+			args:   []string{"release-x"},
 			expect: pass,
 		},
 		{
 			name:   "flags must be required",
-			args:   []string{"Group2/project12"},
+			args:   []string{"master"},
 			expect: fail,
 		},
 	}
