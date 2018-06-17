@@ -40,9 +40,10 @@ gitlabctl delete group GroupX/GroupY
 
 # delete a group with id (3)
 gitlabctl delete group 3`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return deleteGroup(args[0])
 	},

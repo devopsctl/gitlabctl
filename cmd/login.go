@@ -17,13 +17,14 @@ import (
 )
 
 var loginCmd = &cobra.Command{
-	Use:           "login",
-	Short:         "Login to gitlab",
-	Long:          `This command authenticates you to a Gitlab server, retrieves your OAuth Token and then save it to $HOME/.gitlabctl.yaml file.`,
-	Example:       `gitlabctl login -H http://localhost:8080`,
-	Args:          cobra.ExactArgs(0),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "login",
+	Short:             "Login to gitlab",
+	Long:              `This command authenticates you to a Gitlab server, retrieves your OAuth Token and then save it to $HOME/.gitlabctl.yaml file.`,
+	Example:           `gitlabctl login -H http://localhost:8080`,
+	Args:              cobra.ExactArgs(0),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runLogin(cmd)
 	},

@@ -25,12 +25,13 @@ import (
 )
 
 var deleteCmd = &cobra.Command{
-	Use:           "delete",
-	Aliases:       []string{"del", "d"},
-	SuggestFor:    []string{"remove", "rm"},
-	Short:         "Delete a Gitlab resource",
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "delete",
+	Aliases:           []string{"del", "d"},
+	SuggestFor:        []string{"remove", "rm"},
+	Short:             "Delete a Gitlab resource",
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 }
 
 func init() {

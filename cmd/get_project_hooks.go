@@ -26,13 +26,14 @@ import (
 )
 
 var getProjectHooksCmd = &cobra.Command{
-	Use:           "project-hooks",
-	Aliases:       []string{"h"},
-	SuggestFor:    []string{"project-hook"},
-	Short:         "List all project hooks of a specified project",
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "project-hooks",
+	Aliases:           []string{"h"},
+	SuggestFor:        []string{"project-hook"},
+	Short:             "List all project hooks of a specified project",
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	Example: `# get project hooks of projectX
 gitlabctl get project-hooks projectX
 

@@ -36,9 +36,10 @@ gitlabctl delete ssh 23
 
 # delete ssh key for a user (for admins only)
 gitlabctl delete ssh 23 --user=lebron.james`,
-	Aliases:    []string{"ssh"},
-	SuggestFor: []string{"ssh-keys"},
-	Args:       cobra.ExactArgs(1),
+	Aliases:           []string{"ssh"},
+	SuggestFor:        []string{"ssh-keys"},
+	Args:              cobra.ExactArgs(1),
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runDeleteSSHKey(cmd, args[0])
 	},

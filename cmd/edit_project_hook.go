@@ -41,6 +41,7 @@ gitlabctl edit project-hook 3 --project=3 --url="http://www.sample321.com/" --is
 	Args:          cobra.ExactArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runEditProjectHook(cmd, args[0])
 	},

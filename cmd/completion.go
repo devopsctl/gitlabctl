@@ -37,9 +37,10 @@ var completionCmd = &cobra.Command{
 To configure your ZSH shell to load completions for each session do the following
 
 gitlabctl completion --zsh > /usr/local/share/zsh/site-functions/_gitlabctl`,
-	SilenceErrors: true,
-	SilenceUsage:  true,
-	Args:          cobra.ExactArgs(0),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
+	Args:              cobra.ExactArgs(0),
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if !cmd.Flag("bash").Changed && !cmd.Flag("zsh").Changed {
 			return newSetAtLeastOneFlagError("bash", "zsh")

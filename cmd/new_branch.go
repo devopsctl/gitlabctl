@@ -30,9 +30,10 @@ var newBranchCmd = &cobra.Command{
 	Short:   "Create a new branch for a specified project",
 	Example: `# create a develop branch from master branch for project groupx/myapp
 gitlabctl new branch develop --project=groupx/myapp --ref=master`,
-	SilenceErrors: true,
-	SilenceUsage:  true,
-	Args:          cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
+	Args:              cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runNewBranch(cmd, args[0])
 	},

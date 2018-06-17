@@ -37,9 +37,10 @@ gitlabctl edit user john.smith --bio="frontend devloper"
 
 # modify a user with id (23) 
 gitlabctl edit user 23 --bio="King james is GOAT"`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runEditUser(cmd, args[0])
 	},

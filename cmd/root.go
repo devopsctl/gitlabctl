@@ -65,6 +65,7 @@ var rootCmd = &cobra.Command{
 
 This client helps you view, update, create, and delete Gitlab resources from the 
 command-line interface.` + "\n" + authDoc,
+	DisableAutoGenTag: true,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

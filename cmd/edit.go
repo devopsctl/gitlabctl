@@ -25,11 +25,12 @@ import (
 )
 
 var editCmd = &cobra.Command{
-	Use:           "edit",
-	Aliases:       []string{"e"},
-	Short:         "Update or patch a Gitlab resource",
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "edit",
+	Aliases:           []string{"e"},
+	Short:             "Update or patch a Gitlab resource",
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		return validateOutFlagValue(cmd)
 	},

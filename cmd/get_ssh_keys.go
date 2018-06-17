@@ -36,9 +36,10 @@ gitlabctl get ssh-keys
 
 # get a list of a specific user ssh keys (admin only)
 gitlabctl get ssh-keys --user="lebron.james"`,
-	Args:          cobra.ExactArgs(0),
-	SilenceUsage:  true,
-	SilenceErrors: true,
+	Args:              cobra.ExactArgs(0),
+	SilenceUsage:      true,
+	SilenceErrors:     true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if cmd.Flag("user").Changed {
 			return runGetSSHKeyForUser(cmd)

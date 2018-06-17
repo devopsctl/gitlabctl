@@ -26,13 +26,14 @@ import (
 )
 
 var getMembersCmd = &cobra.Command{
-	Use:           "members",
-	Aliases:       []string{"m"},
-	SuggestFor:    []string{"member"},
-	Args:          cobra.ExactArgs(0),
-	SilenceErrors: true,
-	SilenceUsage:  true,
-	Short:         "List all members of a group or a project",
+	Use:               "members",
+	Aliases:           []string{"m"},
+	SuggestFor:        []string{"member"},
+	Args:              cobra.ExactArgs(0),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
+	Short:             "List all members of a group or a project",
 	Example: `# list all members of a groups
 gitlabctl get members --from-group Group1
 

@@ -35,9 +35,10 @@ gitlabctl edit member john.smith --from-group Group2 --access-level 20
 
 # edit member of a project
 gitlabctl edit member john.smith --from-project Project1 --expire-at 2069-06-25`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateFromGroupAndProjectFlags(cmd); err != nil {
 			return err

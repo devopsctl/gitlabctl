@@ -36,9 +36,10 @@ gitlabctl describe project GroupY/ProjectY
 
 # describe a project with id (23)
 gitlabctl describe project 23`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runDescProject(cmd, args[0])
 	},

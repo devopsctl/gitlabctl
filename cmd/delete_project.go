@@ -36,9 +36,10 @@ gitlabctl delete project ProjectX
 
 # delete a project under a group
 gitlabctl delete project GroupX/ProjectX`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return deleteProject(args[0])
 	},

@@ -35,9 +35,10 @@ gitlabctl new member john.smith --from-group Group2
 
 # create a subgroup using namespace
 gitlabctl new member john.smith --from-project Project1`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateFromGroupAndProjectFlags(cmd); err != nil {
 			return err

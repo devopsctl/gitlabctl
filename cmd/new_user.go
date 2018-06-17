@@ -37,9 +37,10 @@ gitlabctl new user john.smith --name="Johhny Smith" --password=12345678 --email=
 
 # create a new user and send reset password link
 gitlabctl new user james --name="james" --password=aaaaaaaa --email=aa@example.com --reset-password`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if getFlagBool(cmd, "reset-password") == false &&
 			getFlagString(cmd, "password") == "" {

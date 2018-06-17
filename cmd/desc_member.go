@@ -37,9 +37,10 @@ gitlabctl describe member john.smith --from-group Group1 -o json
 
 # describe a member from a project
 gitlabctl describe member john.smith --from-project Group1/Project1 -o yaml`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return validateFromGroupAndProjectFlags(cmd)
 	},

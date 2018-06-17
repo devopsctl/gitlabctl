@@ -26,12 +26,13 @@ import (
 )
 
 var getProjectsCmd = &cobra.Command{
-	Use:           "projects",
-	Aliases:       []string{"p"},
-	SuggestFor:    []string{"project"},
-	Short:         "List projects of the authenticated user or of a group",
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "projects",
+	Aliases:           []string{"p"},
+	SuggestFor:        []string{"project"},
+	Short:             "List projects of the authenticated user or of a group",
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	Example: `# get all projects
 gitlabctl get projects
 

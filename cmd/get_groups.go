@@ -26,12 +26,13 @@ import (
 )
 
 var getGroupsCmd = &cobra.Command{
-	Use:           "groups",
-	Aliases:       []string{"g"},
-	SuggestFor:    []string{"group"},
-	SilenceErrors: true,
-	SilenceUsage:  true,
-	Short:         "List groups and subgroups",
+	Use:               "groups",
+	Aliases:           []string{"g"},
+	SuggestFor:        []string{"group"},
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
+	Short:             "List groups and subgroups",
 	Example: `# list all groups
 gitlabctl get groups
 
