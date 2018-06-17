@@ -34,6 +34,7 @@ var deleteBranchCmd = &cobra.Command{
 gitlabctl delete branch develop --project=groupx/myapp`,
 	SilenceErrors: true,
 	SilenceUsage:  true,
+	DisableAutoGenTag: true,
 	Args:          cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return deleteBranch(getFlagString(cmd, "project"), args[0])

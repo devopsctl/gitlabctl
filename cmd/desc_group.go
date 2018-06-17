@@ -34,9 +34,10 @@ gitlabctl describe group GroupX -o json
 
 # describe a group by id
 gitlabctl describe group 13 -o json`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runDescGroup(cmd, args[0])
 	},

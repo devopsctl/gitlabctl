@@ -36,9 +36,10 @@ gitlabctl edit project GroupX/ProjectX --merge-method=rebase_merge
 
 # update a project with id (23)
 gitlabctl edit project 3 --desc="A go project"`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateVisibilityFlagValue(cmd); err != nil {
 			return err

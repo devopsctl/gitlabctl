@@ -29,13 +29,14 @@ import (
 // Gitlab API doc: https://docs.gitlab.com/ce/api/users.html#list-users
 // Go Client doc: https://godoc.org/github.com/xanzy/go-gitlab#UsersService.ListUsers
 var getUsersCmd = &cobra.Command{
-	Use:           "users",
-	Aliases:       []string{"u"},
-	SuggestFor:    []string{"user"},
-	Short:         "List all Gitlab users",
-	Args:          cobra.ExactArgs(0),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "users",
+	Aliases:           []string{"u"},
+	SuggestFor:        []string{"user"},
+	Short:             "List all Gitlab users",
+	Args:              cobra.ExactArgs(0),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	Example: `# get all users
 gitlabctl get users --out json
 

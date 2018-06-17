@@ -38,9 +38,10 @@ gitlabctl -f=/path/to/sshkey.pub -u="lebron.james" -t="the GOAT ssh key"
 
 # upload ssh key for another user with user id 23
 gitlabctl -f=path/to/sshkey.pub -u="23" -t="the GOAT ssh key"`,
-	Aliases:    []string{"ssh"},
-	SuggestFor: []string{"ssh-keys"},
-	Args:       cobra.ExactArgs(0),
+	Aliases:           []string{"ssh"},
+	SuggestFor:        []string{"ssh-keys"},
+	Args:              cobra.ExactArgs(0),
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runNewSSHKey(cmd)
 	},

@@ -18,9 +18,10 @@ gitlabctl delete user john.smith
 
 # delete a user with user id (15)
 gitlabctl delete user 15`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return deleteUser(args[0])
 	},

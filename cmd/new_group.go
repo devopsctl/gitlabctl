@@ -35,9 +35,10 @@ gitlabctl new group GroupAZ
 
 # create a subgroup using namespace
 gitlabctl new group GroupXB --namespace=ParentGroupXB`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return validateVisibilityFlagValue(cmd)
 	},

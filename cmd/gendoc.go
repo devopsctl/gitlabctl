@@ -31,9 +31,10 @@ import (
 var docsDir string
 
 var gendocCmd = &cobra.Command{
-	Use:     "gendoc",
-	Aliases: []string{"gendocs", "docs"},
-	Short:   "Generate markdown documentation",
+	Use:               "gendoc",
+	Aliases:           []string{"gendocs", "docs"},
+	Short:             "Generate markdown documentation",
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := doc.GenMarkdownTree(rootCmd, docsDir); err != nil {
 			return err

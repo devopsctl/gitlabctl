@@ -31,10 +31,11 @@ import (
 )
 
 var genCodeCmd = &cobra.Command{
-	Use:     "gencode",
-	Aliases: []string{"gc"},
-	Hidden:  true,
-	Short:   "For gitlabctl developers only",
+	Use:               "gencode",
+	Aliases:           []string{"gc"},
+	Hidden:            true,
+	DisableAutoGenTag: true,
+	Short:             "For gitlabctl developers only",
 	Run: func(cmd *cobra.Command, args []string) {
 		generateCode(cmd)
 	},

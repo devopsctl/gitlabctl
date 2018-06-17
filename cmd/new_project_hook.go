@@ -38,9 +38,10 @@ gitlabctl new project-hook 123 --url="http://www.sample.com/"
 
 # create a new project hook with merge request events trigger enabled
 gitlabctl new project-hook 123 --url="http://www.sample.com/" --merge-requests-events`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runNewProjectHook(cmd, args[0])
 	},

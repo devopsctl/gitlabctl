@@ -35,9 +35,10 @@ gitlabctl new project ProjectX --desc="Project X is party!"
 
 # create a new project under a group
 gitlabctl new project ProjectY --namespace=GroupY`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := validateVisibilityFlagValue(cmd); err != nil {
 			return err

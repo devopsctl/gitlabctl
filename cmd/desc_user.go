@@ -37,9 +37,10 @@ gitlabctl describe user john.smith
 
 # describe a user with user id (13)
 gitlabctl describe user 13`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runDescUser(cmd, args[0])
 	},

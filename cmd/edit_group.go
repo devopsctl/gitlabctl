@@ -41,9 +41,10 @@ gitlabctl edit group GroupX/GroupZ --desc="Updated group"
 
 # edit a group with id (23)
 gitlabctl edit group 23 --visibility="public"`,
-	Args:          cobra.ExactArgs(1),
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Args:              cobra.ExactArgs(1),
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return validateVisibilityFlagValue(cmd)
 	},

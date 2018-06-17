@@ -25,11 +25,12 @@ import (
 )
 
 var newCmd = &cobra.Command{
-	Use:           "new",
-	Aliases:       []string{"n"},
-	Short:         "Create a Gitlab resource",
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "new",
+	Aliases:           []string{"n"},
+	Short:             "Create a Gitlab resource",
+	SilenceErrors:     true,
+	SilenceUsage:      true,
+	DisableAutoGenTag: true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		return validateOutFlagValue(cmd)
 	},
