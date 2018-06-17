@@ -52,7 +52,7 @@ func runDescGroup(cmd *cobra.Command, group string) error {
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, groupInfo)
+	printGroupsOut(getFlagString(cmd, "out"), groupInfo)
 	return nil
 }
 

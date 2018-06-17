@@ -58,46 +58,42 @@ func init() {
 }
 
 func runGetGroupMembers(cmd *cobra.Command) error {
-	group := getFlagString(cmd, "from-group")
 	opts := assignListGroupMembersOptions(cmd)
-	members, err := getGroupsMembers(group, opts)
+	members, err := getGroupsMembers(getFlagString(cmd, "from-group"), opts)
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, members...)
+	printGroupMembersOut(getFlagString(cmd, "out"), members...)
 	return err
 }
 func runGetProjectMembers(cmd *cobra.Command) error {
-	project := getFlagString(cmd, "from-project")
 	opts := assignListProjectMembersOptions(cmd)
-	members, err := getProjectMembers(project, opts)
+	members, err := getProjectMembers(getFlagString(cmd, "from-project"), opts)
 	if err != nil {
 		return err
 	}
-	printProjectMembersOut(cmd, members...)
+	printProjectMembersOut(getFlagString(cmd, "out"), members...)
 	return err
 }
 
-func getGroupsMembers(gid interface{},
-	opts *gitlab.ListGroupMembersOptions) ([]*gitlab.GroupMember, error) {
+func getGroupsMembers(group string, opts *gitlab.ListGroupMembersOptions) ([]*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	groupMembers, _, err := git.Groups.ListGroupMembers(gid, opts)
+	groupMembers, _, err := git.Groups.ListGroupMembers(group, opts)
 	if err != nil {
 		return nil, err
 	}
 	return groupMembers, nil
 }
 
-func getProjectMembers(pid interface{},
-	opts *gitlab.ListProjectMembersOptions) ([]*gitlab.ProjectMember, error) {
+func getProjectMembers(project string, opts *gitlab.ListProjectMembersOptions) ([]*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	projectMembers, _, err := git.ProjectMembers.ListProjectMembers(pid, opts)
+	projectMembers, _, err := git.ProjectMembers.ListProjectMembers(project, opts)
 	if err != nil {
 		return nil, err
 	}

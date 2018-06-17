@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -42,8 +43,14 @@ func unsetAuthEnvs() {
 	unsetE("GITLAB_PRIVATE_TOKEN",
 		"GITLAB_OAUTH_TOKEN",
 		"GITLAB_API_HTTP_URL",
+		"GITLAB_HTTP_URL",
 		"GITLAB_USERNAME",
 		"GITLAB_PASSWORD")
+	// ensure to remove the config file
+	// this causes testing missing variable scenario in gitlab_client_test.go
+	if err := os.Remove(cfgFile); err != nil {
+		tInfo(err)
+	}
 }
 
 func TestGitlabNewClient(t *testing.T) {
@@ -57,6 +64,7 @@ func TestGitlabNewClient(t *testing.T) {
 		{"PRIVATE_TOKEN_OK", setPrivateTokenEnvs, false},
 		{"MISSING_ENVS_FAILS", unsetAuthEnvs, true},
 	}
+
 	for _, tc := range tt {
 		// Setup before each test case
 		unsetAuthEnvs()
@@ -66,6 +74,7 @@ func TestGitlabNewClient(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			gitlabClient, err := newGitlabClient()
 			if tc.negativeTest {
+				tInfo(err)
 				assert.NotNil(t, err)
 			} else {
 				assert.Nil(t, err)
@@ -75,6 +84,5 @@ func TestGitlabNewClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 		})
-
 	}
 }

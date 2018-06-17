@@ -54,7 +54,7 @@ func runDescProject(cmd *cobra.Command, project string) error {
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, projectInfo)
+	printProjectsOut(getFlagString(cmd, "out"), projectInfo)
 	return nil
 }
 

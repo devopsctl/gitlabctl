@@ -87,15 +87,9 @@ func newSSHKey(uid int, opts *gitlab.AddSSHKeyOptions) error {
 		return err
 	}
 	if uid == -1 {
-		_, _, err := git.Users.AddSSHKey(opts)
-		if err != nil {
-			return err
-		}
-		return nil
-	}
-	_, _, err = git.Users.AddSSHKeyForUser(uid, opts)
-	if err != nil {
+		_, _, err = git.Users.AddSSHKey(opts)
 		return err
 	}
-	return nil
+	_, _, err = git.Users.AddSSHKeyForUser(uid, opts)
+	return err
 }

@@ -64,9 +64,9 @@ func runGetSSHKeyForUser(cmd *cobra.Command) error {
 	user := getFlagString(cmd, "user")
 	uid, err := strconv.Atoi(user)
 	if err != nil {
-		userInfo, err := getUserByUsername(user)
-		if err != nil {
-			return err
+		userInfo, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return err2
 		}
 		uid = userInfo.ID
 	}
@@ -74,7 +74,7 @@ func runGetSSHKeyForUser(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printSSHKeysOut(cmd, sshKeys...)
+	printSSHKeysOut(getFlagString(cmd, "out"), sshKeys...)
 	return nil
 }
 
@@ -83,7 +83,7 @@ func runGetSSHKey(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printSSHKeysOut(cmd, sshKeys...)
+	printSSHKeysOut(getFlagString(cmd, "out"), sshKeys...)
 	return nil
 }
 

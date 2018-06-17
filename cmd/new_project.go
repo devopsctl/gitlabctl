@@ -67,7 +67,7 @@ func runNewProject(cmd *cobra.Command, name string) error {
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, p)
+	printProjectsOut(getFlagString(cmd, "out"), p)
 	return nil
 }
 

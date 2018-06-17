@@ -76,10 +76,7 @@ func deleteSSHKey(key int) error {
 		return err
 	}
 	_, err = git.Users.DeleteSSHKey(key)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func deleteSSHKeyForUser(uid, key int) error {
@@ -92,26 +89,5 @@ func deleteSSHKeyForUser(uid, key int) error {
 		return err
 	}
 	fmt.Printf("Deleted ssh key with id (%d) for user (%d)\n", key, uid)
-	return nil
-}
-
-// deleteAllSSHKeyForUser is currently used for test teardown
-func deleteAllSSHKeyForUser(user string) error {
-	uid, err := strconv.Atoi(user)
-	if err != nil {
-		uid, err = getUserIDbyUsername(user)
-		if err != nil {
-			return err
-		}
-	}
-	userKeys, err := getSSHKeysForUser(uid, nil)
-	if err != nil {
-		return err
-	}
-	for _, key := range userKeys {
-		if err := deleteSSHKeyForUser(uid, key.ID); err != nil {
-			return err
-		}
-	}
 	return nil
 }

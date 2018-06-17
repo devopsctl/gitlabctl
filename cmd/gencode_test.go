@@ -58,5 +58,6 @@ func TestGenCodeCmd(t *testing.T) {
 	}
 
 	// ensure to go back
-	os.Chdir("cmd")
+	err := os.Chdir("cmd")
+	tInfo(err)
 }

@@ -55,9 +55,9 @@ func runDescUser(cmd *cobra.Command, user string) error {
 	// if user is not a number,
 	// search for the username's user id and assign it to uid
 	if err != nil {
-		foundUser, err := getUserByUsername(user)
-		if err != nil {
-			return err
+		foundUser, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return err2
 		}
 		uid = foundUser.ID
 	}
@@ -65,7 +65,7 @@ func runDescUser(cmd *cobra.Command, user string) error {
 	if err != nil {
 		return err
 	}
-	printUsersOut(cmd, userInfo)
+	printUsersOut(getFlagString(cmd, "out"), userInfo)
 	return nil
 }
 

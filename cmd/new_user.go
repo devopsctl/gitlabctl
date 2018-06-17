@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 )
@@ -42,10 +40,9 @@ gitlabctl new user james --name="james" --password=aaaaaaaa --email=aa@example.c
 	SilenceUsage:      true,
 	DisableAutoGenTag: true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		if getFlagBool(cmd, "reset-password") == false &&
+		if !getFlagBool(cmd, "reset-password") &&
 			getFlagString(cmd, "password") == "" {
-			return fmt.Errorf("password, reset-password are missing, " +
-				"at least one parameter must be provided")
+			return newSetAtLeastOneFlagError("password", "reset-password")
 		}
 		return nil
 	},
@@ -69,7 +66,7 @@ func runNewUser(cmd *cobra.Command, username string) error {
 	if err != nil {
 		return err
 	}
-	printUsersOut(cmd, user)
+	printUsersOut(getFlagString(cmd, "out"), user)
 	return nil
 }
 

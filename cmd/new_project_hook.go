@@ -61,7 +61,7 @@ func runNewProjectHook(cmd *cobra.Command, name string) error {
 	if errr != nil {
 		return errr
 	}
-	printProjectHooksOut(cmd, hook)
+	printProjectHooksOut(getFlagString(cmd, "out"), hook)
 	return nil
 }
 

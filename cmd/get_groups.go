@@ -64,7 +64,7 @@ func runGetGroups(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, groups...)
+	printGroupsOut(getFlagString(cmd, "out"), groups...)
 	return nil
 }
 
@@ -81,27 +81,23 @@ func getGroups(opts *gitlab.ListGroupsOptions) ([]*gitlab.Group, error) {
 }
 
 func runGetSubgroups(cmd *cobra.Command) error {
-	// to reuse the same opts mapping from groupLsCmd for groupLsSubGroup
-	// convert gitlab.ListGroupsOptions to gitlab.ListSubgroupsOptions
 	opts := (*gitlab.ListSubgroupsOptions)(assignListGroupOptions(cmd))
-	path := getFlagString(cmd, "from-group")
-	groups, err := getSubgroups(path, opts)
+	groups, err := getSubgroups(getFlagString(cmd, "from-group"), opts)
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, groups...)
+	printGroupsOut(getFlagString(cmd, "out"), groups...)
 	return nil
 }
 
-func getSubgroups(gid interface{},
-	opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
+func getSubgroups(group string, opts *gitlab.ListSubgroupsOptions) ([]*gitlab.Group, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	groups, _, err := git.Groups.ListSubgroups(gid, opts)
+	subgroups, _, err := git.Groups.ListSubgroups(group, opts)
 	if err != nil {
 		return nil, err
 	}
-	return groups, nil
+	return subgroups, nil
 }

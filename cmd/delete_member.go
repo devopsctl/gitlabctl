@@ -45,10 +45,10 @@ gitlabctl delete member john.smith --from-project Group1/Project1`,
 		return validateFromGroupAndProjectFlags(cmd)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if getFlagString(cmd, "from-group") != "" {
-			return deleteGroupMember(cmd, args[0])
+		if group := getFlagString(cmd, "from-group"); group != "" {
+			return deleteGroupMember(group, args[0])
 		}
-		return deleteProjectMember(cmd, args[0])
+		return deleteProjectMember(getFlagString(cmd, "from-project"), args[0])
 	},
 }
 
@@ -58,17 +58,16 @@ func init() {
 	addFromProjectFlag(deleteMemberCmd)
 }
 
-func deleteProjectMember(cmd *cobra.Command, user string) error {
+func deleteProjectMember(project string, user string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err
 	}
-	project := getFlagString(cmd, "from-project")
 	uid, err := strconv.Atoi(user)
 	if err != nil {
-		foundUser, err := getUserByUsername(user)
-		if err != nil {
-			return err
+		foundUser, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return err2
 		}
 		uid = foundUser.ID
 	}
@@ -80,17 +79,16 @@ func deleteProjectMember(cmd *cobra.Command, user string) error {
 	return nil
 }
 
-func deleteGroupMember(cmd *cobra.Command, user string) error {
+func deleteGroupMember(group string, user string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err
 	}
-	group := getFlagString(cmd, "from-group")
 	uid, err := strconv.Atoi(user)
 	if err != nil {
-		foundUser, err := getUserByUsername(user)
-		if err != nil {
-			return err
+		foundUser, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return err2
 		}
 		uid = foundUser.ID
 	}

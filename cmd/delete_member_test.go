@@ -22,7 +22,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -31,11 +30,10 @@ import (
 
 func TestDeleteMember(t *testing.T) {
 	tg := []struct {
-		name      string
-		args      []string
-		flagsMap  map[string]string
-		expect    testResult
-		expectOut string
+		name     string
+		args     []string
+		flagsMap map[string]string
+		expect   testResult
 	}{
 		{
 			name: "delete from a group",
@@ -64,10 +62,8 @@ func TestDeleteMember(t *testing.T) {
 				&gitlab.AddGroupMemberOptions{
 					AccessLevel: gitlab.AccessLevel(40),
 				}); err != nil {
-				tInfo("Test data setup failure for delete group member")
-				os.Exit(1)
+				tInfo(err)
 			}
-			tInfo("Test member to be removed is added")
 		}
 
 		execT := execTestCmdFlags{
@@ -90,10 +86,8 @@ func TestDeleteMember(t *testing.T) {
 				&gitlab.AddProjectMemberOptions{
 					AccessLevel: gitlab.AccessLevel(40),
 				}); err != nil {
-				tInfo("Test data setup failure for delete project member")
-				os.Exit(1)
+				tInfo(err)
 			}
-			tInfo("Test member to be removed is added")
 		}
 
 		execT := execTestCmdFlags{

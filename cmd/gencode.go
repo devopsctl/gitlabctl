@@ -51,17 +51,17 @@ var genCode genCodeCfg
 func init() {
 	rootCmd.AddCommand(genCodeCmd)
 	genCodeCmd.Flags().StringVarP(&genCode.FileName, "file", "f", "", "command file name")
-	genCodeCmd.MarkFlagRequired("file")
+	verifyMarkFlagRequired(genCodeCmd, "file")
 	genCodeCmd.Flags().StringVarP(&genCode.Use, "use", "u", "", "command use")
-	genCodeCmd.MarkFlagRequired("use")
+	verifyMarkFlagRequired(genCodeCmd, "use")
 	genCodeCmd.Flags().StringVarP(&genCode.Parent, "parent", "p", "", "command parent variable name")
-	genCodeCmd.MarkFlagRequired("parent")
+	verifyMarkFlagRequired(genCodeCmd, "parent")
 	genCodeCmd.Flags().StringVarP(&genCode.Name, "name", "n", "", "command variable name")
-	genCodeCmd.MarkFlagRequired("name")
+	verifyMarkFlagRequired(genCodeCmd, "name")
 	genCodeCmd.Flags().StringVarP(&genCode.Short, "short", "s", "", "command short description")
-	genCodeCmd.MarkFlagRequired("short")
+	verifyMarkFlagRequired(genCodeCmd, "short")
 	genCodeCmd.Flags().IntVar(&genCode.MaxArgs, "max-args", 0, "command max accepted args")
-	genCodeCmd.MarkFlagRequired("max-args")
+	verifyMarkFlagRequired(genCodeCmd, "max-args")
 }
 
 func generateCode(cmd *cobra.Command) {
