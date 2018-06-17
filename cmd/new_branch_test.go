@@ -40,7 +40,7 @@ func TestNewBranch(t *testing.T) {
 				"project": "Group2/project12",
 				"ref":     "master",
 			},
-			args:   []string{"release-x"},
+			args:   []string{"release-xy"},
 			expect: pass,
 		},
 		{
@@ -63,7 +63,10 @@ func TestNewBranch(t *testing.T) {
 			require.Equal(t, tc.expect, execResult,
 				printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				require.Contains(t, stdout, tc.flagsMap["name"], stdout)
+				require.Contains(t, stdout, tc.args[0], stdout)
+				if err := deleteBranch(tc.flagsMap["project"], tc.args[0]); err != nil {
+					tInfo(err)
+				}
 			}
 		})
 	}
