@@ -190,13 +190,14 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `edit project [project id or project path] [flags]`
 * [x] `delete project [project id or project path]`
 
-### Project Branch
+### Project Repository Branch
 
-* [ ] `get branch [project id or project path] [flags]`
-* [ ] `describe branch [project id or project path] [flags]`
-* [x] `new branch [project id or project path] [flags]`
-* [ ] `edit branch [project id or project path] [--protect] [flags]`
-* [ ] `edit branch [project id or project path] [--unprotect] [flags]`
+* [ ] `get branch [flags]`
+* [ ] `describe branch [branch name] [flags]`
+* [x] `new branch [branch name] [flags]`
+* [x] `delete branch [branch name] [flags]`
+* [ ] `edit branch [branch name] [--protect] [flags]`
+* [ ] `edit branch [branch name] [--unprotect] [flags]`
 
 ### Project Hooks
 
