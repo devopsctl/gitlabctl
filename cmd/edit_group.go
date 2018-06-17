@@ -77,7 +77,7 @@ func runEditGroup(cmd *cobra.Command, group string) error {
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, editedGroup)
+	printGroupsOut(getFlagString(cmd, "out"), editedGroup)
 	return nil
 }
 

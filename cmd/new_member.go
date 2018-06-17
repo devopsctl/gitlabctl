@@ -66,12 +66,11 @@ func runNewProjectMember(cmd *cobra.Command, user string) error {
 	if err != nil {
 		return err
 	}
-	project := getFlagString(cmd, "from-project")
-	member, err := newProjectMember(project, user, opts)
+	member, err := newProjectMember(getFlagString(cmd, "from-project"), user, opts)
 	if err != nil {
 		return err
 	}
-	printProjectMembersOut(cmd, member)
+	printProjectMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
@@ -80,17 +79,15 @@ func runNewGroupMember(cmd *cobra.Command, user string) error {
 	if err != nil {
 		return err
 	}
-	group := getFlagString(cmd, "from-group")
-	member, err := newGroupMember(group, user, opts)
+	member, err := newGroupMember(getFlagString(cmd, "from-group"), user, opts)
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, member)
+	printGroupMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
-func newProjectMember(pid interface{}, user string,
-	opts *gitlab.AddProjectMemberOptions) (*gitlab.ProjectMember, error) {
+func newProjectMember(project, user string, opts *gitlab.AddProjectMemberOptions) (*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -102,15 +99,14 @@ func newProjectMember(pid interface{}, user string,
 	}
 	opts.UserID = gitlab.Int(foundUser.ID)
 
-	member, _, err := git.ProjectMembers.AddProjectMember(pid, opts)
+	member, _, err := git.ProjectMembers.AddProjectMember(project, opts)
 	if err != nil {
 		return nil, err
 	}
 	return member, nil
 }
 
-func newGroupMember(gid interface{}, user string,
-	opts *gitlab.AddGroupMemberOptions) (*gitlab.GroupMember, error) {
+func newGroupMember(group, user string, opts *gitlab.AddGroupMemberOptions) (*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -122,7 +118,7 @@ func newGroupMember(gid interface{}, user string,
 	}
 	opts.UserID = gitlab.Int(foundUser.ID)
 
-	member, _, err := git.GroupMembers.AddGroupMember(gid, opts)
+	member, _, err := git.GroupMembers.AddGroupMember(group, opts)
 	if err != nil {
 		return nil, err
 	}

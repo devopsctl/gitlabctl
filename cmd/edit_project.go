@@ -65,7 +65,7 @@ func runEditProject(cmd *cobra.Command, project string) error {
 	if err != nil {
 		return err
 	}
-	printProjectsOut(cmd, editedProject)
+	printProjectsOut(getFlagString(cmd, "out"), editedProject)
 	return nil
 }
 

@@ -38,16 +38,18 @@ func newOAuthClient(oAuthToken, apihttpURL string) (*gitlab.Client, error) {
 }
 
 func newGitlabClient() (*gitlab.Client, error) {
-	if getCfg("access_token") != "" && getCfg("host_url") != "" {
-		gitlabClient, err := newOAuthClient(getCfg("access_token"),
-			getCfg("host_url")+"/api/v4")
+	switch {
+	case getCfg("access_token") != "" && getCfg("host_url") != "":
+		gitlabClient, err :=
+			newOAuthClient(getCfg("access_token"), getCfg("host_url")+"/api/v4")
 		if err != nil {
 			return nil, err
 		}
 		return gitlabClient, nil
-	}
 
-	if getCfg("USERNAME") != "" && getCfg("PASSWORD") != "" && getCfg("HTTP_URL") != "" {
+	case getCfg("USERNAME") != "" &&
+		getCfg("PASSWORD") != "" &&
+		getCfg("HTTP_URL") != "":
 		gitlabClient, err := newBasicAuthClient(getCfg("USERNAME"),
 			getCfg("PASSWORD"),
 			getCfg("HTTP_URL"),
@@ -56,24 +58,40 @@ func newGitlabClient() (*gitlab.Client, error) {
 			return nil, err
 		}
 		return gitlabClient, nil
-	}
-	if getCfg("PRIVATE_TOKEN") != "" && getCfg("API_HTTP_URL") != "" {
-		gitlabClient, err := newClient(getCfg("PRIVATE_TOKEN"), getCfg("API_HTTP_URL"))
+
+	case getCfg("PRIVATE_TOKEN") != "" && getCfg("API_HTTP_URL") != "":
+		gitlabClient, err :=
+			newClient(getCfg("PRIVATE_TOKEN"), getCfg("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
 		return gitlabClient, nil
-	}
-	if getCfg("OAUTH_TOKEN") != "" && getCfg("API_HTTP_URL") != "" {
-		gitlabClient, err := newOAuthClient(getCfg("OAUTH_TOKEN"), getCfg("API_HTTP_URL"))
+
+	case getCfg("PRIVATE_TOKEN") != "" && getCfg("API_HTTP_URL") != "":
+		gitlabClient, err :=
+			newClient(getCfg("PRIVATE_TOKEN"), getCfg("API_HTTP_URL"))
 		if err != nil {
 			return nil, err
 		}
 		return gitlabClient, nil
+
+	case getCfg("OAUTH_TOKEN") != "" && getCfg("API_HTTP_URL") != "":
+		gitlabClient, err :=
+			newOAuthClient(getCfg("OAUTH_TOKEN"), getCfg("API_HTTP_URL"))
+		if err != nil {
+			return nil, err
+		}
+		return gitlabClient, nil
+
+	default:
+		return nil, fmt.Errorf("no client was created. "+
+			"gitlab configuration was not set properly. \n %s", authDoc)
 	}
-	return nil, fmt.Errorf("no client was created. GITLAB variables may not be set properly. \n %s", authDoc)
 }
 
+// getCfg retrieves the value of a token from the config '--config' file
+// in 'key=value' format or from any environment variable that starts
+// with 'GITLAB' as prefix; e.g: GITLAB_USERNAME
 func getCfg(e string) string {
 	viper.SetEnvPrefix("GITLAB")
 	if err := viper.BindEnv(e); err != nil {

@@ -6,7 +6,6 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -29,7 +28,6 @@ import (
 
 	"github.com/araddon/dateparse"
 	"github.com/olekukonko/tablewriter"
-	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 
 	"github.com/ghodss/yaml"
@@ -151,8 +149,8 @@ func printTable(header []string, rows [][]string) {
 	table.Render()
 }
 
-func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
-	switch getFlagString(cmd, "out") {
+func printGroupsOut(format string, groups ...*gitlab.Group) {
+	switch format {
 	case JSON:
 		printJSON(groups)
 	case YAML:
@@ -176,8 +174,8 @@ func printGroupsOut(cmd *cobra.Command, groups ...*gitlab.Group) {
 	}
 }
 
-func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
-	switch getFlagString(cmd, "out") {
+func printProjectsOut(format string, projects ...*gitlab.Project) {
+	switch format {
 	case JSON:
 		printJSON(projects)
 	case YAML:
@@ -202,8 +200,8 @@ func printProjectsOut(cmd *cobra.Command, projects ...*gitlab.Project) {
 	}
 }
 
-func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
-	switch getFlagString(cmd, "out") {
+func printGroupMembersOut(format string, members ...*gitlab.GroupMember) {
+	switch format {
 	case JSON:
 		printJSON(members)
 	case YAML:
@@ -227,8 +225,8 @@ func printGroupMembersOut(cmd *cobra.Command, members ...*gitlab.GroupMember) {
 	}
 }
 
-func printProjectMembersOut(cmd *cobra.Command, members ...*gitlab.ProjectMember) {
-	switch getFlagString(cmd, "out") {
+func printProjectMembersOut(format string, members ...*gitlab.ProjectMember) {
+	switch format {
 	case JSON:
 		printJSON(members)
 	case YAML:
@@ -252,8 +250,8 @@ func printProjectMembersOut(cmd *cobra.Command, members ...*gitlab.ProjectMember
 	}
 }
 
-func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
-	switch getFlagString(cmd, "out") {
+func printUsersOut(format string, users ...*gitlab.User) {
+	switch format {
 	case JSON:
 		printJSON(users)
 	case YAML:
@@ -278,8 +276,8 @@ func printUsersOut(cmd *cobra.Command, users ...*gitlab.User) {
 	}
 }
 
-func printProjectHooksOut(cmd *cobra.Command, hooks ...*gitlab.ProjectHook) {
-	switch getFlagString(cmd, "out") {
+func printProjectHooksOut(format string, hooks ...*gitlab.ProjectHook) {
+	switch format {
 	case JSON:
 		printJSON(hooks)
 	case YAML:
@@ -304,8 +302,8 @@ func printProjectHooksOut(cmd *cobra.Command, hooks ...*gitlab.ProjectHook) {
 	}
 }
 
-func printSSHKeysOut(cmd *cobra.Command, keys ...*gitlab.SSHKey) {
-	switch getFlagString(cmd, "out") {
+func printSSHKeysOut(format string, keys ...*gitlab.SSHKey) {
+	switch format {
 	case YAML:
 		printYAML(keys)
 	// NOTE: Printing long ssh key in table is ugly..
@@ -314,8 +312,8 @@ func printSSHKeysOut(cmd *cobra.Command, keys ...*gitlab.SSHKey) {
 	}
 }
 
-func printBranchOut(cmd *cobra.Command, branches ...*gitlab.Branch) {
-	switch getFlagString(cmd, "out") {
+func printBranchOut(format string, branches ...*gitlab.Branch) {
+	switch format {
 	case YAML:
 		printYAML(branches)
 	case JSON:

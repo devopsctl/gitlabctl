@@ -66,12 +66,11 @@ func runEditProjectMember(cmd *cobra.Command, user string) error {
 	if err != nil {
 		return err
 	}
-	project := getFlagString(cmd, "from-project")
-	member, err := editProjectMember(project, user, opts)
+	member, err := editProjectMember(getFlagString(cmd, "from-project"), user, opts)
 	if err != nil {
 		return err
 	}
-	printProjectMembersOut(cmd, member)
+	printProjectMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
@@ -80,17 +79,15 @@ func runEditGroupMember(cmd *cobra.Command, user string) error {
 	if err != nil {
 		return err
 	}
-	group := getFlagString(cmd, "from-group")
-	member, err := editGroupMember(group, user, opts)
+	member, err := editGroupMember(getFlagString(cmd, "from-group"), user, opts)
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, member)
+	printGroupMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
-func editProjectMember(pid interface{}, user string,
-	opts *gitlab.EditProjectMemberOptions) (*gitlab.ProjectMember, error) {
+func editProjectMember(project string, user string, opts *gitlab.EditProjectMemberOptions) (*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -101,15 +98,14 @@ func editProjectMember(pid interface{}, user string,
 		return nil, err
 	}
 
-	member, _, err := git.ProjectMembers.EditProjectMember(pid, foundUser.ID, opts)
+	member, _, err := git.ProjectMembers.EditProjectMember(project, foundUser.ID, opts)
 	if err != nil {
 		return nil, err
 	}
 	return member, nil
 }
 
-func editGroupMember(gid interface{}, user string,
-	opts *gitlab.EditGroupMemberOptions) (*gitlab.GroupMember, error) {
+func editGroupMember(group string, user string, opts *gitlab.EditGroupMemberOptions) (*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -119,7 +115,7 @@ func editGroupMember(gid interface{}, user string,
 	if err != nil {
 		return nil, err
 	}
-	member, _, err := git.GroupMembers.EditGroupMember(gid, foundUser.ID, opts)
+	member, _, err := git.GroupMembers.EditGroupMember(group, foundUser.ID, opts)
 	if err != nil {
 		return nil, err
 	}

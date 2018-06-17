@@ -1,20 +1,12 @@
 package cmd
 
 import (
-	"os"
 	"testing"
 
-	"github.com/golang/glog"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenDoc(t *testing.T) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		glog.Fatal(err)
-	}
-	docs := cwd + "/testdocs"
-	os.Mkdir(docs, 0755)
-	if _, err := executeCommand(rootCmd, "gendoc", "--dir="+docs); err != nil {
-		t.Fatal(err)
-	}
+	_, err := executeCommand(rootCmd, "gendoc", "--dir=../docs")
+	require.Nil(t, err, err)
 }

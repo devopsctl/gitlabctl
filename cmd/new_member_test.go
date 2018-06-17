@@ -35,38 +35,19 @@ func TestNewMember(t *testing.T) {
 		expectOut string
 	}{
 		{
-			name: "username from project print in yaml",
+			name: "add a member using username to a project",
 			args: []string{"kevin.mclean"},
 			flagsMap: map[string]string{
-				"out":          "yaml",
 				"from-project": "Group1/Project1",
+				"expires-at":   "2069-06-09",
 				"access-level": "10",
 			},
 			expect: pass,
 		},
 		{
-			name: "username from project print in json",
-			args: []string{"paul.lyman"},
-			flagsMap: map[string]string{
-				"out":          "json",
-				"from-project": "Group1/Project1",
-				"access-level": "20",
-			},
-			expect: pass,
-		},
-		{
-			name: "username from project print in table",
-			args: []string{"frank.watson"},
-			flagsMap: map[string]string{
-				"from-project": "Group1/Project2",
-			},
-			expect: pass,
-		},
-		{
-			name: "username from group print in yaml",
+			name: "add a member using username to a group",
 			args: []string{"amelia.walsh"},
 			flagsMap: map[string]string{
-				"out":          "yaml",
 				"from-group":   "Group1",
 				"expires-at":   "2069-06-09",
 				"access-level": "30",
@@ -74,35 +55,15 @@ func TestNewMember(t *testing.T) {
 			expect: pass,
 		},
 		{
-			name: "username from group print in json",
-			args: []string{"kevin.mclean"},
-			flagsMap: map[string]string{
-				"out":          "yaml",
-				"from-group":   "Group1",
-				"access-level": "40",
-			},
-			expect: pass,
-		},
-		{
-			name: "username from group print in table",
-			args: []string{"john.doe"},
-			flagsMap: map[string]string{
-				"out":        "yaml",
-				"from-group": "Group2",
-			},
-			expect: pass,
-		},
-		{
-			name:      "fails when from-group and from-project is not used",
+			name:      "missing required flag fails",
 			args:      []string{"amelia.walsh"},
 			expect:    fail,
 			expectOut: fmt.Sprint(setAtLeastOneFlagError),
 		},
 		{
-			name: "fails when access level provided is invalid",
+			name: "using invalid access level flag value fails",
 			args: []string{"john.doe"},
 			flagsMap: map[string]string{
-				"out":          "yaml",
 				"from-group":   "Group2",
 				"access-level": "21",
 			},
@@ -110,7 +71,7 @@ func TestNewMember(t *testing.T) {
 			expectOut: "not a recognized value of 'access-level' flag",
 		},
 		{
-			name: "fails when from-group and from-project are both used",
+			name: "using both from-group and from-project fails",
 			args: []string{"amelia.walsh"},
 			flagsMap: map[string]string{
 				"from-group":   "Group2",
@@ -123,6 +84,20 @@ func TestNewMember(t *testing.T) {
 	}
 
 	for _, tc := range tt {
+		// SETUP
+		// Ensure username is not a member of the group
+		if tc.expect == pass {
+			if g, ok := tc.flagsMap["from-group"]; ok {
+				if err := deleteGroupMember(g, tc.args[0]); err != nil {
+					tInfo(err)
+				}
+			}
+			if p, ok := tc.flagsMap["from-project"]; ok {
+				if err := deleteProjectMember(p, tc.args[0]); err != nil {
+					tInfo(err)
+				}
+			}
+		}
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{
 				t:        t,

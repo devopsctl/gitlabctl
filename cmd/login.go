@@ -76,7 +76,7 @@ func runLogin(cmd *cobra.Command) error {
 	}
 
 	var cfgMap map[string]interface{}
-	if err := json.Unmarshal(b, &cfgMap); err != nil {
+	if err = json.Unmarshal(b, &cfgMap); err != nil {
 		return err
 	}
 	if resp.StatusCode != http.StatusOK {

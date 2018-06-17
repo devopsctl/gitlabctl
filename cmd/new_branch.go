@@ -56,7 +56,7 @@ func runNewBranch(cmd *cobra.Command, branch string) error {
 	if err != nil {
 		return err
 	}
-	printBranchOut(cmd, createdBranch)
+	printBranchOut(getFlagString(cmd, "out"), createdBranch)
 	return nil
 }
 

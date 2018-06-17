@@ -53,7 +53,7 @@ func init() {
 }
 
 func runEditProjectHook(cmd *cobra.Command, hook string) error {
-	opts, err := assignEditProjectHookOptions(cmd)
+	opts, err := assignAddProjectHookOptions(cmd)
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func runEditProjectHook(cmd *cobra.Command, hook string) error {
 	if err != nil {
 		return err
 	}
-	printProjectHooksOut(cmd, editedProjectHook)
+	printProjectHooksOut(getFlagString(cmd, "out"), editedProjectHook)
 	return nil
 }
 

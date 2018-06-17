@@ -69,7 +69,7 @@ func runGetUsers(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	printUsersOut(cmd, users...)
+	printUsersOut(getFlagString(cmd, "out"), users...)
 	return nil
 }
 

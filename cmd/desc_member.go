@@ -59,63 +59,59 @@ func init() {
 }
 
 func runDescGroupMember(cmd *cobra.Command, username string) error {
-	group := getFlagString(cmd, "from-group")
-	member, err := descGroupMember(group, username)
+	member, err := descGroupMember(getFlagString(cmd, "from-group"), username)
 	if err != nil {
 		return err
 	}
-	printGroupMembersOut(cmd, member)
+	printGroupMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
 func runDescProjectMember(cmd *cobra.Command, username string) error {
-	group := getFlagString(cmd, "from-project")
-	member, err := descProjectMember(group, username)
+	member, err := descProjectMember(getFlagString(cmd, "from-project"), username)
 	if err != nil {
 		return err
 	}
-	printProjectMembersOut(cmd, member)
+	printProjectMembersOut(getFlagString(cmd, "out"), member)
 	return err
 }
 
-func descProjectMember(pid interface{}, user string) (
-	*gitlab.ProjectMember, error) {
+func descProjectMember(project string, user string) (*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
 	uid, err := strconv.Atoi(user)
 	if err != nil {
-		foundUser, err := getUserByUsername(user)
-		if err != nil {
-			return nil, err
+		foundUser, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return nil, err2
 		}
 		uid = foundUser.ID
 	}
 
-	member, _, err := git.ProjectMembers.GetProjectMember(pid, uid, nil)
+	member, _, err := git.ProjectMembers.GetProjectMember(project, uid, nil)
 	if err != nil {
 		return nil, err
 	}
 	return member, nil
 }
 
-func descGroupMember(gid interface{}, user string) (
-	*gitlab.GroupMember, error) {
+func descGroupMember(group string, user string) (*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
 	uid, err := strconv.Atoi(user)
 	if err != nil {
-		foundUser, err := getUserByUsername(user)
-		if err != nil {
-			return nil, err
+		foundUser, err2 := getUserByUsername(user)
+		if err2 != nil {
+			return nil, err2
 		}
 		uid = foundUser.ID
 	}
 
-	member, _, err := git.GroupMembers.GetGroupMember(gid, uid, nil)
+	member, _, err := git.GroupMembers.GetGroupMember(group, uid, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -70,4 +71,25 @@ func TestNewSSHKey(t *testing.T) {
 
 		})
 	}
+}
+
+// deleteAllSSHKeyForUser is currently used for test teardown
+func deleteAllSSHKeyForUser(user string) error {
+	uid, err := strconv.Atoi(user)
+	if err != nil {
+		uid, err = getUserIDbyUsername(user)
+		if err != nil {
+			return err
+		}
+	}
+	userKeys, err := getSSHKeysForUser(uid, nil)
+	if err != nil {
+		return err
+	}
+	for _, key := range userKeys {
+		if err := deleteSSHKeyForUser(uid, key.ID); err != nil {
+			return err
+		}
+	}
+	return nil
 }

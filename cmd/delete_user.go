@@ -41,11 +41,11 @@ func deleteUser(username string) error {
 	// if there is an error, the username is not a number
 	// therefore, search the username's user id, and then assign it to id
 	if err != nil {
-		users, _, err := git.Users.ListUsers(&gitlab.ListUsersOptions{
+		users, _, err2 := git.Users.ListUsers(&gitlab.ListUsersOptions{
 			Username: gitlab.String(username),
 		})
-		if err != nil {
-			return err
+		if err2 != nil {
+			return err2
 		}
 		if len(users) < 1 {
 			return fmt.Errorf("username %s not found", username)

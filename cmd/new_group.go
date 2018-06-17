@@ -63,7 +63,7 @@ func runNewGroup(cmd *cobra.Command, name string) error {
 	if err != nil {
 		return err
 	}
-	printGroupsOut(cmd, group)
+	printGroupsOut(getFlagString(cmd, "out"), group)
 	return nil
 }
 
