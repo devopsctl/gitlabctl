@@ -25,10 +25,11 @@ import (
 )
 
 var newBranchCmd = &cobra.Command{
-	Use:           "branch",
-	Aliases:       []string{"b"},
-	Short:         "Create a new branch for a specified project",
-	Example:       `gitlabctl new branch project23 --name=release-x --ref=master`,
+	Use:     "branch",
+	Aliases: []string{"b"},
+	Short:   "Create a new branch for a specified project",
+	Example: `# create a develop branch from master branch for project groupx/myapp
+gitlabctl new branch develop --project=groupx/myapp --ref=master`,
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Args:          cobra.ExactArgs(1),
@@ -39,16 +40,22 @@ var newBranchCmd = &cobra.Command{
 
 func init() {
 	newCmd.AddCommand(newBranchCmd)
-	addNewBranchFlags(newBranchCmd)
+	addProjectFlag(newBranchCmd)
+	verifyMarkFlagRequired(newBranchCmd, "project")
+	newBranchCmd.Flags().StringP("ref", "r", "",
+		"The branch name or commit SHA to create branch from")
+	verifyMarkFlagRequired(newBranchCmd, "ref")
 }
 
-func runNewBranch(cmd *cobra.Command, project string) error {
-	opts := assignCreateBranchOptions(cmd)
-	branch, err := newBranch(project, opts)
+func runNewBranch(cmd *cobra.Command, branch string) error {
+	opts := new(gitlab.CreateBranchOptions)
+	opts.Ref = gitlab.String(getFlagString(cmd, "ref"))
+	opts.Branch = gitlab.String(branch)
+	createdBranch, err := newBranch(getFlagString(cmd, "project"), opts)
 	if err != nil {
 		return err
 	}
-	printBranchOut(cmd, branch)
+	printBranchOut(cmd, createdBranch)
 	return nil
 }
 
