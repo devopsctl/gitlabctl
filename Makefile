@@ -38,11 +38,11 @@ windows: create_bin_dir
 
 test: getdep
 	echo Performing a go test
-	go test ./... -v -race
+	go test ./... -v -failfast
 
 coverage: getdep
 	echo Performing test with coverage
-	go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic
+	go test ./... -v -failfast -coverprofile=coverage.txt -covermode=atomic
 
 getdep:
 	go get -v ./...
