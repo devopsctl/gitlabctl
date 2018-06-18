@@ -58,7 +58,7 @@ func init() {
 	addFromProjectFlag(deleteMemberCmd)
 }
 
-func deleteProjectMember(project string, user string) error {
+func deleteProjectMember(project, user string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err
@@ -79,7 +79,7 @@ func deleteProjectMember(project string, user string) error {
 	return nil
 }
 
-func deleteGroupMember(group string, user string) error {
+func deleteGroupMember(group, user string) error {
 	git, err := newGitlabClient()
 	if err != nil {
 		return err

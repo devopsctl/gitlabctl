@@ -87,7 +87,7 @@ func runEditGroupMember(cmd *cobra.Command, user string) error {
 	return err
 }
 
-func editProjectMember(project string, user string, opts *gitlab.EditProjectMemberOptions) (*gitlab.ProjectMember, error) {
+func editProjectMember(project, user string, opts *gitlab.EditProjectMemberOptions) (*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func editProjectMember(project string, user string, opts *gitlab.EditProjectMemb
 	return member, nil
 }
 
-func editGroupMember(group string, user string, opts *gitlab.EditGroupMemberOptions) (*gitlab.GroupMember, error) {
+func editGroupMember(group, user string, opts *gitlab.EditGroupMemberOptions) (*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err

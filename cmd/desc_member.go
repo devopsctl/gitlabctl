@@ -76,7 +76,7 @@ func runDescProjectMember(cmd *cobra.Command, username string) error {
 	return err
 }
 
-func descProjectMember(project string, user string) (*gitlab.ProjectMember, error) {
+func descProjectMember(project, user string) (*gitlab.ProjectMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func descProjectMember(project string, user string) (*gitlab.ProjectMember, erro
 	return member, nil
 }
 
-func descGroupMember(group string, user string) (*gitlab.GroupMember, error) {
+func descGroupMember(group, user string) (*gitlab.GroupMember, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
