@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -37,7 +38,7 @@ func TestDeleteProjectHook(t *testing.T) {
 	}{
 		{
 			name: "successfully delete a project hook",
-			args: []string{"6"},
+			args: []string{""}, // to be filled in test setup
 			flagsMap: map[string]string{
 				"project": "23",
 			},
@@ -55,14 +56,17 @@ func TestDeleteProjectHook(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
+			// SETUP
+			// Create the project, get it's id for testing
 			if tc.expect == pass {
 				sampleHookURL := "http://example.com/"
-				_, err := newProjectHook("23", &gitlab.AddProjectHookOptions{
+				hook, err := newProjectHook("23", &gitlab.AddProjectHookOptions{
 					URL: &sampleHookURL,
 				})
 				if err != nil {
 					tInfo(fmt.Sprintf("failed to create project hook %s", tc.args[0]))
 				}
+				tc.args[0] = strconv.Itoa(hook.ID)
 			}
 
 			execT := execTestCmdFlags{
