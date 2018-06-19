@@ -200,7 +200,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 ### Project Repository Branch
 
 * [ ] `get branch [flags]`
-* [ ] `describe branch [branch name] [flags]`
+* [x] `describe branch [branch name] [flags]`
 * [x] `new branch [branch name] [flags]`
 * [x] `delete branch [branch name] [flags]`
 * [ ] `edit branch [branch name] [--protect] [flags]`
