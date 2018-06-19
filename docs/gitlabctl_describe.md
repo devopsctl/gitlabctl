@@ -22,6 +22,7 @@ All gitlab resources can be found here https://docs.gitlab.com/ce/api/#resources
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
+* [gitlabctl describe branch](gitlabctl_describe_branch.md)	 - Describe a branch of a specified project
 * [gitlabctl describe group](gitlabctl_describe_group.md)	 - Describe a group by specifying the id or group path
 * [gitlabctl describe member](gitlabctl_describe_member.md)	 - Describe a member by specifying the username and source
 * [gitlabctl describe project](gitlabctl_describe_project.md)	 - Describe a project by specifying the id or project path
