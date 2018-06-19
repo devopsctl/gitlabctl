@@ -67,14 +67,6 @@ func newGitlabClient() (*gitlab.Client, error) {
 		}
 		return gitlabClient, nil
 
-	case getCfg("PRIVATE_TOKEN") != "" && getCfg("API_HTTP_URL") != "":
-		gitlabClient, err :=
-			newClient(getCfg("PRIVATE_TOKEN"), getCfg("API_HTTP_URL"))
-		if err != nil {
-			return nil, err
-		}
-		return gitlabClient, nil
-
 	case getCfg("OAUTH_TOKEN") != "" && getCfg("API_HTTP_URL") != "":
 		gitlabClient, err :=
 			newOAuthClient(getCfg("OAUTH_TOKEN"), getCfg("API_HTTP_URL"))
