@@ -28,11 +28,12 @@ import (
 var {{.Name}} = &cobra.Command{
 	Use:           "{{.Use}}",
 	Short:         "{{.Short}}",
-	
+	Aliases: []string{""},
 	// NOTE(generator): Ensure to add some examples for this command
 	Example: "",
 	SilenceErrors: true,
 	SilenceUsage:  true,
+	DisableAutoGenTag: true,
 	Args:          cobra.ExactArgs({{.MaxArgs}}), 
 
 	// NOTE(generator): remove PreRunE if not required
