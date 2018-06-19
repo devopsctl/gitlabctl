@@ -15,18 +15,25 @@ Please see [Commands Manual](https://devopsctl.github.io/gitlabctl/) for a nice 
 
 ## Installing
 
-Get the download link of your preferred platform binary from [RELEASES](https://github.com/devopsctl/gitlabctl/releases) and ensure that it is downloaded in one of your `$PATH` directories.
+Get the download link of your preferred platform binary from [RELEASES](https://github.com/devopsctl/gitlabctl/releases).
+
+### OSX
 
 ```bash
-# This is an example manual installation
-wget https://github.com/devopsctl/gitlabctl/releases/download/v0.0.1/gitlabctl-darwin-amd64
-mv gitlabctl-darwin-amd64 /usr/local/bin/gitlabctl && chmod +x /usr/local/bin/gitlabctl
-
-# Test the command
-gitlabctl --version
+curl -Lo gitlabctl https://github.com/devopsctl/gitlabctl/releases/download/${VERSION}/gitlabctl-darwin-amd64 && chmod +x gitlabctl && sudo mv gitlabctl /usr/local/bin/
 ```
 
-For __Golang__ developers, you can get the latest binary using `go get github.com/devopsctl/gitlabctl`.
+### Linux
+
+```bash
+curl -Lo gitlabctl https://github.com/devopsctl/gitlabctl/releases/download/${VERSION}/gitlabctl-linux-amd64 && chmod +x gitlabctl && sudo mv gitlabctl /usr/local/bin/
+```
+
+### Windows
+
+Download the gitlabctl-windows-amd64.exe file, rename it to gitlabctl.exe and add it to your path.
+
+### Auto Complete
 
 Enable auto complete for __bash__ or __zsh__ shell. ❤️
 
