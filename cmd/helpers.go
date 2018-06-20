@@ -28,6 +28,7 @@ import (
 
 	"github.com/araddon/dateparse"
 	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cobra"
 	gitlab "github.com/xanzy/go-gitlab"
 
 	"github.com/ghodss/yaml"
@@ -53,6 +54,16 @@ func newUsedTooManyFlagError(flags ...string) error {
 func newSetAtLeastOneFlagError(flags ...string) error {
 	return fmt.Errorf("%s from (%s)",
 		setAtLeastOneFlagError, strings.Join(flags, ", "))
+}
+
+func validateFlagCombination(cmd *cobra.Command, mainFlag string, flags ...string) error {
+	for _, fName := range flags {
+		if cmd.Flag(fName).Changed && !cmd.Flag(mainFlag).Changed {
+			return fmt.Errorf("'--%s' flag can only be used with '--%s' flag",
+				fName, mainFlag)
+		}
+	}
+	return nil
 }
 
 func getUserIDbyUsername(username string) (int, error) {
