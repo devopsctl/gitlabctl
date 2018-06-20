@@ -60,7 +60,7 @@ func TestNewBranch(t *testing.T) {
 			fmt.Println(stdout)
 			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				assertStringContains(t, stdout, tc.args[0])
+				assertOutContains(t, stdout, tc.args[0])
 				if err := deleteBranch(tc.flagsMap["project"], tc.args[0]); err != nil {
 					tInfo(err)
 				}

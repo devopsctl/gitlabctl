@@ -29,6 +29,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/kyokomi/emoji"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
@@ -49,6 +50,10 @@ func setE(k, v string) {
 
 func tInfo(msg interface{}) {
 	fmt.Println("--- INFO:", msg)
+}
+
+func tOut(msg interface{}) {
+	fmt.Println("--- OUTPUT:", msg)
 }
 
 func unsetE(k ...string) {
@@ -202,13 +207,20 @@ func printFlagsTable(flagsMap map[string]string, c string) string {
 
 func assertEqualResult(t *testing.T, got, want testResult, msg string) {
 	if got != want {
-		t.Fatalf("got test result %s, want %s: \n%s",
-			got, want, msg)
+		t.Fatal(emoji.Sprintf(":x:got test result %s, want %s\n%s", got, want, msg))
+	} else {
+		tInfo(emoji.Sprint(":white_check_mark:test result assertion passed!"))
 	}
 }
 
-func assertStringContains(t *testing.T, s, contains string) {
-	if !strings.Contains(s, contains) {
-		t.Fatalf("expected to see %s in %s", contains, s)
+func assertOutContains(t *testing.T, s string, contains ...string) {
+	for _, c := range contains {
+		if !strings.Contains(s, c) {
+			t.Fatal(
+				emoji.Sprintf("\n:x:output is expected to contain '%s',"+
+					"\ngot output: %s", c, s))
+		} else {
+			tInfo(emoji.Sprintf(":white_check_mark:output assertion passed! it contains: %s", c))
+		}
 	}
 }

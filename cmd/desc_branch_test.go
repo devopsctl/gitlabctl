@@ -60,7 +60,7 @@ func TestDescBranchCmd(t *testing.T) {
 			stdout, execResult := execT.executeCommand()
 			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				assertStringContains(t, stdout, tc.args[0])
+				assertOutContains(t, stdout, tc.args[0])
 			}
 		})
 	}
