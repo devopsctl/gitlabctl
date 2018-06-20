@@ -33,9 +33,6 @@ var descBranchCmd = &cobra.Command{
 	SilenceUsage:      true,
 	DisableAutoGenTag: true,
 	Args:              cobra.ExactArgs(1),
-	PreRunE: func(cmd *cobra.Command, args []string) error {
-		return nil
-	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return descBranch(
 			getFlagString(cmd, "project"),
