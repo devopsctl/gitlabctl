@@ -204,8 +204,8 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `describe branch [branch name] [--project] [flags]`
 * [x] `new branch [branch name] [--project] [flags]`
 * [x] `delete branch [branch name] [--project]`
-* [ ] `protect-branch [branch name] [--project] [flags]`
-* [ ] `unprotect-branch [branch name] [--project]`
+* [x] `edit branch [branch name] [--project] [--protect] [flags]`
+* [x] `edit branch [branch name] [--project] [--unprotect] [flags]`
 
 ### Project/Repository Tags
 
