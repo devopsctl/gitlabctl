@@ -44,24 +44,25 @@ gitlabctl completion -h
 
 ## Quickstart
 
-### Using the help commands
+### Authenticating to Gitlab server
+
+Using `gitlabctl login` to fetch personal access token
 
 ```bash
-# get commands is used to list resources
-gitlabctl get [subcommand] -h
-
-# new commands is used to create a single resource
-gitlabctl new [subcommand] -h
-
-# edit commands is used to update a single resource
-gitlabctl edit [subcommand] -h
-
-# delete commands is used to delete a single resource
-gitlabctl delete [subcommand] -h
-
-# describe command is used to describe a single resource
-gitlabctl describe [subcommand]  -h
+>> gitlabctl login
+>> Enter gitlab host url: http://localhost:10080
+>> Enter gitlab username: root
+>> Enter gitlab password: *****
+/Users/jb/.gitlabctl.yaml file has been created by login command
 ```
+
+Using environment variables. See `gitlabctl -h`
+
+### Using the help commands
+
+Use __-h__ flag when possible. 
+
+`gitlabctl [command] -h` or `gitlabctl [command] [subcommand] -h`
 
 ### Usage Examples
 
@@ -197,21 +198,29 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `edit project [project id or project path] [flags]`
 * [x] `delete project [project id or project path]`
 
-### Project Repository Branch
+### Project/Repository Branch
 
-* [ ] `get branch [flags]`
-* [x] `describe branch [branch name] [flags]`
-* [x] `new branch [branch name] [flags]`
-* [x] `delete branch [branch name] [flags]`
-* [ ] `edit branch [branch name] [--protect] [flags]`
-* [ ] `edit branch [branch name] [--unprotect] [flags]`
+* [ ] `get branch [project id or project path] [flags]`
+* [x] `describe branch [branch name] [--project] [flags]`
+* [x] `new branch [branch name] [--project] [flags]`
+* [x] `delete branch [branch name] [--project]`
+* [ ] `protect-branch [branch name] [--project] [flags]`
+* [ ] `unprotect-branch [branch name] [--project]`
+
+### Project/Repository Tags
+
+* [ ] `get tags [project id or project path] [flags]`
+* [ ] `describe tag [tag name] [--project] [flags]`
+* [ ] `new tag [tag name] [--project] [flags]`
+* [ ] `edit tag [tag name] [--project] [flags]`
+* [ ] `delete tag [tag name] [--project]`
 
 ### Project Hooks
 
-* [x] `get project-hooks [project id or project path]`
+* [x] `get project-hooks [project id or project path] [flags]`
 * [x] `new project-hook [project id or project path] [flags]`
-* [x] `edit project-hook [project id or project path] [flags]`
-* [ ] `delete project-hook [hook id]`
+* [x] `edit project-hook [hook id] [--project] [flags]`
+* [x] `delete project-hook [hook id] [--project]`
 
 ### Users 
 
