@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"testing"
+	"time"
 )
 
 func TestNewUser(t *testing.T) {
@@ -65,6 +66,9 @@ func TestNewUser(t *testing.T) {
 			if tc.expect == pass {
 				if err := deleteUser(tc.args[0]); err != nil {
 					tInfo(err)
+				} else {
+					// sleep for at least 3 seconds to ensure that user is deleted
+					time.Sleep(3 * time.Second)
 				}
 			}
 
@@ -78,7 +82,7 @@ func TestNewUser(t *testing.T) {
 			stdout, execResult := execT.executeCommand()
 			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				assertStringContains(t, stdout, tc.args[0])
+				assertOutContains(t, stdout, tc.args[0])
 			}
 		})
 	}
