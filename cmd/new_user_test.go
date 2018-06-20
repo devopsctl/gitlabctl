@@ -22,8 +22,6 @@ package cmd
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestNewUser(t *testing.T) {
@@ -62,7 +60,7 @@ func TestNewUser(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-
+			// SETUP
 			// Ensure that the user to be created is deleted
 			if tc.expect == pass {
 				if err := deleteUser(tc.args[0]); err != nil {
@@ -78,8 +76,10 @@ func TestNewUser(t *testing.T) {
 			}
 
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, tc.expect, execResult,
-				printFlagsTable(tc.flagsMap, stdout))
+			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
+			if tc.expect == pass {
+				assertStringContains(t, stdout, tc.args[0])
+			}
 		})
 	}
 
