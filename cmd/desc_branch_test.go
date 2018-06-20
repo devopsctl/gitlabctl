@@ -22,8 +22,6 @@ package cmd
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestDescBranchCmd(t *testing.T) {
@@ -34,9 +32,9 @@ func TestDescBranchCmd(t *testing.T) {
 		expect   testResult
 	}{
 		{
-			name: "describe project with id 11 master branch",
+			name: "describe project master branch",
 			flagsMap: map[string]string{
-				"project": "11",
+				"project": "Group2/project12",
 			},
 			args:   []string{"master"},
 			expect: pass,
@@ -44,7 +42,7 @@ func TestDescBranchCmd(t *testing.T) {
 		{
 			name: "describing a non existent branch fails",
 			flagsMap: map[string]string{
-				"project": "11",
+				"project": "4",
 			},
 			args:   []string{"release-99"},
 			expect: fail,
@@ -60,10 +58,9 @@ func TestDescBranchCmd(t *testing.T) {
 				args:     tc.args,
 			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, tc.expect, execResult,
-				printFlagsTable(tc.flagsMap, stdout))
+			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				require.Contains(t, stdout, tc.args[0], stdout)
+				assertStringContains(t, stdout, tc.args[0])
 			}
 		})
 	}

@@ -23,8 +23,6 @@ package cmd
 import (
 	"fmt"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestNewBranch(t *testing.T) {
@@ -60,10 +58,9 @@ func TestNewBranch(t *testing.T) {
 			}
 			stdout, execResult := execT.executeCommand()
 			fmt.Println(stdout)
-			require.Equal(t, tc.expect, execResult,
-				printFlagsTable(tc.flagsMap, stdout))
+			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 			if tc.expect == pass {
-				require.Contains(t, stdout, tc.args[0], stdout)
+				assertStringContains(t, stdout, tc.args[0])
 				if err := deleteBranch(tc.flagsMap["project"], tc.args[0]); err != nil {
 					tInfo(err)
 				}

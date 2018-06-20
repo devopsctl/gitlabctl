@@ -37,12 +37,11 @@ windows: create_bin_dir
 	GOOS=windows GOARCH=${GOARCH} go build ${LDFLAGS} -o ${BINDIR}/${BINARY}-windows-${GOARCH}.exe . 
 
 test: getdep
-	echo Performing a go test
-	go test ./... -v -failfast
+	rm -f ~/.gitlabctl.yaml
+	go test -v ./... -failfast
 
 coverage: getdep
-	echo Performing test with coverage
-	go test ./... -v -failfast -coverprofile=coverage.txt -covermode=atomic
+	go test -v ./... -failfast -coverprofile=coverage.txt -covermode=atomic
 
 getdep:
 	go get -v ./...

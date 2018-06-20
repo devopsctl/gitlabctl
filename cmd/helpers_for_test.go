@@ -26,6 +26,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/olekukonko/tablewriter"
@@ -197,4 +198,17 @@ func printFlagsTable(flagsMap map[string]string, c string) string {
 	table.SetCaption(true, c)
 	table.Render()
 	return buff.String()
+}
+
+func assertEqualResult(t *testing.T, got, want testResult, msg string) {
+	if got != want {
+		t.Fatalf("got test result %s, want %s: \n%s",
+			got, want, msg)
+	}
+}
+
+func assertStringContains(t *testing.T, s, contains string) {
+	if !strings.Contains(s, contains) {
+		t.Fatalf("expected to see %s in %s", contains, s)
+	}
 }
