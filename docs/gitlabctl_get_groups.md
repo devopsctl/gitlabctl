@@ -38,8 +38,8 @@ gitlabctl get groups --from-group=GroupX
 ```
       --config string   config file (default is $HOME/.gitlabctl.yaml)
   -o, --out string      Print the command output to the desired format. (json, yaml, simple) (default "simple")
-      --page int        Page of results to retrieve (default 1)
-      --per-page int    The number of results to include per page (default 1)
+      --page int        Page of results to retrieve
+      --per-page int    The number of results to include per page
 ```
 
 ### SEE ALSO

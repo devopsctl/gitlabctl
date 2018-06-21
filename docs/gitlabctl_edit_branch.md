@@ -23,12 +23,12 @@ gitlabctl edit branch master -p devopsctl/gitlabctl --unprotect
 ### Options
 
 ```
-      --dev-can-merge    Flag if developers can merge to the branch (default true)
-      --dev-can-push     Flag if developers can push to the branch (default true)
+      --dev-can-merge    Used with '--protect'. Flag if developers can merge to the branch
+      --dev-can-push     Used with '--protect'. Flag if developers can push to the branch
   -h, --help             help for branch
   -p, --project string   The name or ID of the project
-      --protect          Protect a branch (default true)
-      --unprotect        Remove protection of a branch (default true)
+      --protect          Protect a branch
+      --unprotect        Remove protection of a branch
 ```
 
 ### Options inherited from parent commands
