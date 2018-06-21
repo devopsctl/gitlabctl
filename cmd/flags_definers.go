@@ -465,8 +465,8 @@ func validateFlagIntValue(intSlice []int,
 }
 
 func addPaginationFlags(cmd *cobra.Command) {
-	cmd.PersistentFlags().Int("page", 1, "Page of results to retrieve")
-	cmd.PersistentFlags().Int("per-page", 1, "The number of results to include per page")
+	cmd.PersistentFlags().Int("page", 0, "Page of results to retrieve")
+	cmd.PersistentFlags().Int("per-page", 0, "The number of results to include per page")
 }
 
 //
