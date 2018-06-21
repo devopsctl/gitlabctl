@@ -46,6 +46,7 @@ coverage: getdep
 getdep:
 	go get -v ./...
 	go get -u github.com/stretchr/testify
+	go get -u github.com/kyokomi/emoji
 	go get -u github.com/stretchr/testify/assert
 
 clean:
