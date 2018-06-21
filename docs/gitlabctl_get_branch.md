@@ -1,29 +1,25 @@
-## gitlabctl get project-hooks
+## gitlabctl get branch
 
-List all project hooks of a specified project
+List all branches of a repository
 
 ### Synopsis
 
-List all project hooks of a specified project
+List all branches of a repository
 
 ```
-gitlabctl get project-hooks [flags]
+gitlabctl get branch [flags]
 ```
 
 ### Examples
 
 ```
-# get project hooks of projectX
-gitlabctl get project-hooks projectX
-
-# get project hooks of project with id (23)
-gitlabctl get project-hooks 23
+gitlabctl get branch devopsctl/gitlabctl
 ```
 
 ### Options
 
 ```
-  -h, --help   help for project-hooks
+  -h, --help   help for branch
 ```
 
 ### Options inherited from parent commands

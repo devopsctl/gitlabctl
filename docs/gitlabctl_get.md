@@ -11,8 +11,8 @@ Get Gitlab resources
 ```
   -h, --help           help for get
   -o, --out string     Print the command output to the desired format. (json, yaml, simple) (default "simple")
-      --page int       Page of results to retrieve (default 1)
-      --per-page int   The number of results to include per page (default 1)
+      --page int       Page of results to retrieve
+      --per-page int   The number of results to include per page
 ```
 
 ### Options inherited from parent commands
@@ -24,6 +24,7 @@ Get Gitlab resources
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
+* [gitlabctl get branch](gitlabctl_get_branch.md)	 - List all branches of a repository
 * [gitlabctl get groups](gitlabctl_get_groups.md)	 - List groups and subgroups
 * [gitlabctl get members](gitlabctl_get_members.md)	 - List all members of a group or a project
 * [gitlabctl get project-hooks](gitlabctl_get_project-hooks.md)	 - List all project hooks of a specified project
