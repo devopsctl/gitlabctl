@@ -3,19 +3,20 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Development Setup](#development-setup)
-	* [Requirements](#requirements)
-	* [Environment Variables and Test Data](#environment-variables-and-test-data)
-	* [Refresh Test Data](#refresh-test-data)
-	* [Issue Tracker](#issue-tracker)
-	* [Branching](#branching)
-	* [Code Generator](#code-generator)
-	* [Good Commit Message Examples](#good-commit-message-examples)
-	* [Before Pushing your Commit](#before-pushing-your-commit)
-	* [Tips and Tricks](#tips-and-tricks)
+  * [Requirements](#requirements)
+  * [Environment Variables and Test Data](#environment-variables-and-test-data)
+  * [Refresh Test Data](#refresh-test-data)
+  * [Issue Tracker](#issue-tracker)
+  * [Branching](#branching)
+  * [Code Generator](#code-generator)
+  * [Good Commit Message Examples](#good-commit-message-examples)
+  * [Before Pushing your Commit](#before-pushing-your-commit)
+  * [Tips and Tricks](#tips-and-tricks)
 * [Custom Packages we are using](#custom-packages-we-are-using)
 * [Test Driven Development](#test-driven-development)
 * [How the Commands Authenticate](#how-the-commands-authenticate)
 * [Commands Pattern](#commands-pattern)
+* [Releasing to Github](#releasing-to-github)
 
 <!-- vim-markdown-toc -->
 
@@ -138,3 +139,17 @@ Authenticate using `gitlabctl login` command.
 
 The command chain format is inspired from `kubectl` or `oc` Verb -> Subject -> Flags.
 
+## Releasing to Github
+
+* Build and create the version tag
+
+```bash
+export VERSION=nextVersion
+make test
+make all # create biniaries in bin/
+git tag -a "v${VERSION}" -m "release description"
+git push origin v${VERSION}
+```
+
+* Create a github release page
+* Upload binaries to github release page
