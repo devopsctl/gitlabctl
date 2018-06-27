@@ -25,7 +25,6 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
@@ -76,12 +75,11 @@ func TestDeleteProjectHook(t *testing.T) {
 				flagsMap: tc.flagsMap,
 			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, tc.expect, execResult, stdout)
-
+			assertEqualResult(t, execResult, tc.expect, stdout)
 			// NOTE: assert positive test
 			// Validate the command output
 			if tc.expect == pass {
-				require.Contains(t, stdout, "has been deleted")
+				assertOutContains(t, stdout, "has been deleted")
 			}
 		})
 	}
