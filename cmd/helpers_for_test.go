@@ -136,7 +136,6 @@ func (execT *execTestCmdFlags) executeCommand() (string, testResult) {
 }
 
 // A helper to ignore os.Exit(1) errors when running a cobra Command
-// This was copied from https://github.com/spf13/cobra/blob/master/command_test.go
 func executeCommand(root *cobra.Command,
 	args ...string) (stdout string, err error) {
 	for i, arg := range args {
@@ -149,9 +148,7 @@ func executeCommand(root *cobra.Command,
 }
 
 // A helper to ignore os.Exit(1) errors when running a cobra Command
-// This was copied from https://github.com/spf13/cobra/blob/master/command_test.go
-func executeCommandC(root *cobra.Command,
-	args ...string) (stdout string, output string, err error) {
+func executeCommandC(root *cobra.Command, args ...string) (stdout string, output string, err error) {
 	buf := new(bytes.Buffer)
 	root.SetOutput(buf)
 	root.SetArgs(args)
@@ -168,7 +165,7 @@ func executeCommandC(root *cobra.Command,
 	go func() {
 		var buf bytes.Buffer
 		if _, err := io.Copy(&buf, r); err != nil {
-			tInfo(err)
+			panic(err)
 		}
 		outC <- buf.String()
 	}()

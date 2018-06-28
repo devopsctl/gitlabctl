@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	gitlab "github.com/xanzy/go-gitlab"
 )
 
 // Get the correct test data from the users environment variables
@@ -80,7 +81,7 @@ func TestGitlabNewClient(t *testing.T) {
 				assert.Nil(t, err)
 			}
 			if !tc.negativeTest {
-				_, _, err = gitlabClient.Users.ListUsers(nil)
+				_, _, err = gitlabClient.Users.ListUsers(&gitlab.ListUsersOptions{})
 				assert.Nil(t, err)
 			}
 		})
