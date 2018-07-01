@@ -7,7 +7,7 @@
 
 Be a rockstar and efficiently manage your team's gitlab.org or [self-hosted Gitlab](https://about.gitlab.com/installation/) projects, groups, users and other resources.
 
-Tested on __Gitlab 10.7.4__
+Tested on __Gitlab 11.0.1__
 
 ## Getting Started
 
