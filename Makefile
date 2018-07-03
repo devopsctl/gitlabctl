@@ -41,7 +41,7 @@ test: getdep
 	go test -v ./... -failfast
 
 coverage: getdep
-	go test -v ./... -failfast -coverprofile=coverage.txt -covermode=atomic
+	go test -v ./... -failfast -race -coverprofile=coverage.txt -covermode=atomic
 
 getdep:
 	go get -v ./...
