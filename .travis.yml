@@ -16,13 +16,12 @@ services:
 before_install:
   - docker-compose up -d
   - |
-    jq --version
 
-    source testdata/credentials.sh
+    jq --version
 
     ctr=0
     max_retries=30
-    while [ $(curl -I -u "${GITLAB_USERNAME}:${GITLAB_PASSWORD}" ${GITLAB_HTTP_URL}/users/sign_in | head -1 | grep 200 | wc -l | tr -d ' ') -ne 1 ]; do
+    while [ $(curl -I -u "root:123qwe123" http://localhost:10080/users/sign_in | head -1 | grep 200 | wc -l | tr -d ' ') -ne 1 ]; do
       ctr=`expr $ctr + 1`
       echo waiting for gitlab to come up
       sleep 10
@@ -31,17 +30,34 @@ before_install:
         exit 1
       fi
     done
-    echo "============ setting up test data ============="
+
+    ###################################################
+    # WARM UP TIME (don't mind me)
+    ###################################################
+    sleep_time=100
+    echo "sleeping for ${sleep_time} seconds"
+    sleep ${sleep_time}
+    source testdata/credentials.sh
     env | grep GITLAB
+    ###################################################
+
+    echo "============ setting up test data ============="
     GITLAB_USERNAME=$GITLAB_USERNAME GITLAB_PASSWORD=$GITLAB_PASSWORD GITLAB_HTTP_URL=$GITLAB_HTTP_URL ./testdata/seeder.sh
     echo "============ test data completed  ============="
+  - go get github.com/golang/lint/golint
+  - make getdep
 
 script:
-  - go get github.com/golang/lint/golint
   - golint -set_exit_status ./...
   - |
     source testdata/credentials.sh
-    make coverage
+    go run main.go get users
+    go run main.go get groups
+    go run main.go get projects
+    travis_wait 30 make coverage
+
+after_script:
+  - sleep 1
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) # Set CODECOV_TOKEN in your environment variables.

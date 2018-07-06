@@ -21,7 +21,7 @@ Delete a Gitlab resource
 ### SEE ALSO
 
 * [gitlabctl](gitlabctl.md)	 - Gitlab command-line interface
-* [gitlabctl delete all-members](gitlabctl_delete_all-members.md)	 - Delete all members(except creator) of a project
+* [gitlabctl delete all-members](gitlabctl_delete_all-members.md)	 - Delete all members of a project
 * [gitlabctl delete branch](gitlabctl_delete_branch.md)	 - Delete a project branch
 * [gitlabctl delete group](gitlabctl_delete_group.md)	 - Delete a Gitlab group by specifying the id or group path
 * [gitlabctl delete member](gitlabctl_delete_member.md)	 - Delete a member by specifying the member name as the first argument

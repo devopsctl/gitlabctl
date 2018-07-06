@@ -41,7 +41,8 @@ test: getdep
 	go test -v ./... -failfast
 
 coverage: getdep
-	go test -v ./... -failfast -race -coverprofile=coverage.txt -covermode=atomic
+	rm -f ~/.gitlabctl.yaml
+	go test -cpu=1 -v ./... -failfast -coverprofile=coverage.txt -covermode=count
 
 getdep:
 	go get -v ./...

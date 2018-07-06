@@ -1,3 +1,5 @@
+#!/bin/bash -e
+
 export GITLAB_USERNAME=root
 export GITLAB_PASSWORD=123qwe123
 export GITLAB_HTTP_URL=${GITLAB_HTTP_URL:-http://localhost:10080}

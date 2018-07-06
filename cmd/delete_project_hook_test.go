@@ -37,7 +37,6 @@ func TestDeleteProjectHook(t *testing.T) {
 	}{
 		{
 			name: "successfully delete a project hook",
-			args: []string{""}, // to be filled in test setup
 			flagsMap: map[string]string{
 				"project": "23",
 			},
@@ -65,7 +64,7 @@ func TestDeleteProjectHook(t *testing.T) {
 				if err != nil {
 					tInfo(fmt.Sprintf("failed to create project hook %s", tc.args[0]))
 				}
-				tc.args[0] = strconv.Itoa(hook.ID)
+				tc.args = append(tc.args, strconv.Itoa(hook.ID))
 			}
 
 			execT := execTestCmdFlags{

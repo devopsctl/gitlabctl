@@ -21,8 +21,6 @@ package cmd
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestEditProjectHook(t *testing.T) {
@@ -83,8 +81,7 @@ func TestEditProjectHook(t *testing.T) {
 				args:     tc.args,
 			}
 			stdout, execResult := execT.executeCommand()
-			require.Equal(t, tc.expect, execResult,
-				printFlagsTable(tc.flagsMap, stdout))
+			assertEqualResult(t, execResult, tc.expect, printFlagsTable(tc.flagsMap, stdout))
 		})
 	}
 }

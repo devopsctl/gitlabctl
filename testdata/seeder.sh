@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 echo "=============================================="
 echo "#              SEEDER SCRIPT                 #"
@@ -41,6 +41,9 @@ sgroup1_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${acces
 sgroup2_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup2&path=SubGroup2&parent_id=${pgroup1_id}" | jq '.id')
 sgroup3_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup3&path=SubGroup3&parent_id=${pgroup2_id}" | jq '.id')
 sgroup4_id=$(curl -X POST "${GITLAB_HTTP_URL}/api/v4/groups?access_token=${access_token}&name=SubGroup4&path=SubGroup4&parent_id=${pgroup2_id}" | jq '.id')
+
+echo sleeping for 5 seconds..
+sleep 5
 
 # create group project
 echo "Creating a project in group/subgroup"
