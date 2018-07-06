@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
@@ -74,15 +73,17 @@ func TestGitlabNewClient(t *testing.T) {
 		// Run the test
 		t.Run(tc.name, func(t *testing.T) {
 			gitlabClient, err := newGitlabClient()
-			if tc.negativeTest {
-				tInfo(err)
-				assert.NotNil(t, err)
-			} else {
-				assert.Nil(t, err)
+			if err != nil && !tc.negativeTest {
+				t.Fatalf("gitlab client test is expected to pass: %+v", err)
+			}
+			if err == nil && tc.negativeTest {
+				t.Fatalf("gitlab client test is expected to fail: %+v", err)
 			}
 			if !tc.negativeTest {
 				_, _, err = gitlabClient.Users.ListUsers(&gitlab.ListUsersOptions{})
-				assert.Nil(t, err)
+				if err != nil {
+					t.Fatalf("gitlab client test is expected to pass: %+v", err)
+				}
 			}
 		})
 	}

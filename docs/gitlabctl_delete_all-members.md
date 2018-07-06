@@ -1,10 +1,10 @@
 ## gitlabctl delete all-members
 
-Delete all members(except creator) of a project
+Delete all members of a project
 
 ### Synopsis
 
-Delete all members(except creator) of a project
+Delete all members of a project
 
 ```
 gitlabctl delete all-members [flags]
@@ -13,7 +13,6 @@ gitlabctl delete all-members [flags]
 ### Examples
 
 ```
-# remove all members(except creator) from a project
 gitlabctl delete all-members --from-project Group1/Project1
 ```
 
