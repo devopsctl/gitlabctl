@@ -3,7 +3,7 @@ language: go
 branches:
   only:
   - master
-  - stable
+  - /^v.*$/
 
 go:
   - "1.10.x"
