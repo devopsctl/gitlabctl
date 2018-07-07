@@ -55,11 +55,26 @@ script:
     go run main.go get groups
     go run main.go get projects
     travis_wait 30 make coverage
+  - bash <(curl -s https://codecov.io/bash) # Set CODECOV_TOKEN in your environment variables.
 
 after_script:
   - sleep 1
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) # Set CODECOV_TOKEN in your environment variables.
+before_deploy:
+  - VERSION=${TRAVIS_TAG} make all
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file:
+    - ./bin/gitlabctl-darwin-amd64
+    - ./bin/gitlabctl-linux-amd64
+    - ./bin/gitlabctl-windows-amd64.exe
+    - ./bin/shasum256.txt
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
+
 
 
