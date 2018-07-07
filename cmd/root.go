@@ -58,9 +58,8 @@ The login token will be saved in $HOME/.gitlabctl.yaml file.
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Version: "alpha",
-	Use:     "gitlabctl",
-	Short:   "Gitlab command-line interface",
+	Use:   "gitlabctl",
+	Short: "Gitlab command-line interface",
 	Long: `gitlabctl is a Gitlab client for the command-line.
 
 This client helps you view, update, create, and delete Gitlab resources from the 
