@@ -248,6 +248,5 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `delete member [username] --from-project`
 * [x] `edit member [username] --from-group [flags]`
 * [x] `edit member [username] --from-project [flags]`
-* [ ] `remove all-members --from-group`
-* [ ] `remove all-members --from-project`
+* [x] `delete all-members --from-project`
 

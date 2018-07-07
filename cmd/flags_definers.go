@@ -267,6 +267,13 @@ func validateFromGroupAndProjectFlags(cmd *cobra.Command) error {
 	return nil
 }
 
+func validateFromProjectFlag(cmd *cobra.Command) error {
+	if getFlagString(cmd, "from-project") == "" {
+		return newSetAtLeastOneFlagError("from-project")
+	}
+	return nil
+}
+
 func validateAccessLevelFlag(cmd *cobra.Command) error {
 	return validateFlagIntValue([]int{10, 20, 30, 40, 50},
 		cmd, "access-level")
