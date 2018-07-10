@@ -347,3 +347,26 @@ func printBranchOut(format string, branches ...*gitlab.Branch) {
 		printTable(header, rows)
 	}
 }
+
+func printTagsOut(format string, tags ...*gitlab.Tag) {
+	switch format {
+	case YAML:
+		printYAML(tags)
+	case JSON:
+		printJSON(tags)
+	default:
+		if len(tags) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
+		header := []string{"TAG NAME","COMMIT ID"}
+		var rows [][]string
+		for _, v := range tags {
+			rows = append(rows, []string{
+				v.Name,
+				v.Commit.ID,
+			})
+		}
+		printTable(header, rows)
+	}
+}
