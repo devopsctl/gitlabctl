@@ -370,3 +370,26 @@ func printTagsOut(format string, tags ...*gitlab.Tag) {
 		printTable(header, rows)
 	}
 }
+
+func printReleasesOut(format string, releases ...*gitlab.Release) {
+	switch format {
+	case YAML:
+		printYAML(releases)
+	case JSON:
+		printJSON(releases)
+	default:
+		if len(releases) == 0 {
+			fmt.Println(noResultMsg)
+			return
+		}
+		header := []string{"TAG NAME","DESCRIPTION"}
+		var rows [][]string
+		for _, v := range releases {
+			rows = append(rows, []string{
+				v.TagName,
+				v.Description,
+			})
+		}
+		printTable(header, rows)
+	}
+}

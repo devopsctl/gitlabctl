@@ -213,6 +213,8 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `describe tag [tag name] [--project] [flags]`
 * [x] `new tag [tag name] [--project] [flags]`
 * [x] `delete tag [tag name] [--project]`
+* [x] `new release [description] [--project] [flags]`
+* [ ] `edit release [description] [--project] [flags]`
 
 ### Project Hooks
 
