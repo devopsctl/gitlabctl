@@ -364,7 +364,7 @@ func printTagsOut(format string, tags ...*gitlab.Tag) {
 		for _, v := range tags {
 			rows = append(rows, []string{
 				v.Name,
-				v.Commit.ID,
+				v.Commit.ShortID,
 			})
 		}
 		printTable(header, rows)
