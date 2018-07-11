@@ -210,7 +210,7 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 ### Project/Repository Tags
 
 * [x] `get tags [project id or project path] [flags]`
-* [ ] `describe tag [tag name] [--project] [flags]`
+* [x] `describe tag [tag name] [--project] [flags]`
 * [ ] `new tag [tag name] [--project] [flags]`
 * [ ] `edit tag [tag name] [--project] [flags]`
 * [ ] `delete tag [tag name] [--project]`
