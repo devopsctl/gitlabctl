@@ -49,4 +49,5 @@ The login token will be saved in $HOME/.gitlabctl.yaml file.
 * [gitlabctl get](gitlabctl_get.md)	 - Get Gitlab resources
 * [gitlabctl login](gitlabctl_login.md)	 - Login to gitlab
 * [gitlabctl new](gitlabctl_new.md)	 - Create a Gitlab resource
+* [gitlabctl version](gitlabctl_version.md)	 - 
 

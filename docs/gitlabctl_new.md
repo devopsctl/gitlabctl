@@ -27,6 +27,8 @@ Create a Gitlab resource
 * [gitlabctl new member](gitlabctl_new_member.md)	 - Create a new member by specifying the member name as the first argument
 * [gitlabctl new project](gitlabctl_new_project.md)	 - Create a new project by specifying the project name as the first argument
 * [gitlabctl new project-hook](gitlabctl_new_project-hook.md)	 - Create a new project hook by specifying the project id or project path as the first argument
+* [gitlabctl new release](gitlabctl_new_release.md)	 - Create a new release for a specified project
 * [gitlabctl new ssh-key](gitlabctl_new_ssh-key.md)	 - Upload or create ssh key for a gitlab user
+* [gitlabctl new tag](gitlabctl_new_tag.md)	 - Create a new tag for a specified project
 * [gitlabctl new user](gitlabctl_new_user.md)	 - Create a new user by specifying the username as the first argument
 

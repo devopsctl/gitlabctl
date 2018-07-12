@@ -28,5 +28,6 @@ Delete a Gitlab resource
 * [gitlabctl delete project](gitlabctl_delete_project.md)	 - Delete a Gitlab project by specifying the full path
 * [gitlabctl delete project-hook](gitlabctl_delete_project-hook.md)	 - Delete a Gitlab project hook by specifying the project's full path or id
 * [gitlabctl delete ssh-key](gitlabctl_delete_ssh-key.md)	 - Delete registered ssh keys
+* [gitlabctl delete tag](gitlabctl_delete_tag.md)	 - Delete a project tag
 * [gitlabctl delete user](gitlabctl_delete_user.md)	 - Delete a Gitlab user by specifying the username
 

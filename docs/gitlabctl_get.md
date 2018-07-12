@@ -30,5 +30,6 @@ Get Gitlab resources
 * [gitlabctl get project-hooks](gitlabctl_get_project-hooks.md)	 - List all project hooks of a specified project
 * [gitlabctl get projects](gitlabctl_get_projects.md)	 - List projects of the authenticated user or of a group
 * [gitlabctl get ssh-keys](gitlabctl_get_ssh-keys.md)	 - List all ssh keys of a user
+* [gitlabctl get tags](gitlabctl_get_tags.md)	 - List all tags of a repository
 * [gitlabctl get users](gitlabctl_get_users.md)	 - List all Gitlab users
 
