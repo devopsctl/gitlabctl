@@ -1,6 +1,7 @@
 // Copyright © 2018 github.com/devopsctl authors
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
@@ -24,50 +25,45 @@ import (
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-var newReleaseCmd = &cobra.Command{
-	Use:     "release",
-	Aliases: []string{"r"},
-	Short:   "Create a new release for the specified project's tag",
-	Example: `# ensure to create the tag where the release will be created from
-gitlabctl new tag v1.0 --ref=master --project=groupx/myapp
-
-# create the release
-gitlabctl new release v1.0 --project=groupx/myapp --description="Sample Release Note"`,
+var editReleaseCmd = &cobra.Command{
+	Use:               "release",
+	Aliases:           []string{"r"},
+	Short:             "Update the release note of a project's release",
+	Example:           `gitlabctl edit release v1.0 --project=groupx/myapp --description="Updated Release Note"`,
 	SilenceErrors:     true,
 	SilenceUsage:      true,
 	DisableAutoGenTag: true,
 	Args:              cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runNewRelease(cmd, args[0])
+		return runEditRelease(cmd, args[0])
 	},
 }
 
 func init() {
-	newCmd.AddCommand(newReleaseCmd)
-	addProjectFlag(newReleaseCmd)
-	verifyMarkFlagRequired(newReleaseCmd, "project")
-	newReleaseCmd.Flags().StringP("description", "d", "",
-		"The release note or description")
-	verifyMarkFlagRequired(newReleaseCmd, "description")
+	editCmd.AddCommand(editReleaseCmd)
+	addProjectFlag(editReleaseCmd)
+	verifyMarkFlagRequired(editReleaseCmd, "project")
+	editReleaseCmd.Flags().StringP("description", "d", "", "Release note")
+	verifyMarkFlagRequired(editReleaseCmd, "description")
 }
 
-func runNewRelease(cmd *cobra.Command, tag string) error {
-	opts := new(gitlab.CreateReleaseOptions)
+func runEditRelease(cmd *cobra.Command, tag string) error {
+	opts := new(gitlab.UpdateReleaseOptions)
 	opts.Description = gitlab.String(getFlagString(cmd, "description"))
-	createdRelease, err := newRelease(getFlagString(cmd, "project"), tag, opts)
+	updatedRelease, err := editRelease(getFlagString(cmd, "project"), tag, opts)
 	if err != nil {
 		return err
 	}
-	printReleasesOut(getFlagString(cmd, "out"), createdRelease)
+	printReleasesOut(getFlagString(cmd, "out"), updatedRelease)
 	return nil
 }
 
-func newRelease(project string, tag string, opts *gitlab.CreateReleaseOptions) (*gitlab.Release, error) {
+func editRelease(project string, tag string, opts *gitlab.UpdateReleaseOptions) (*gitlab.Release, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
 	}
-	release, _, err := git.Tags.CreateRelease(project, tag, opts)
+	release, _, err := git.Tags.UpdateRelease(project, tag, opts)
 	if err != nil {
 		return nil, err
 	}

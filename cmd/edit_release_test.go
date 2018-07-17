@@ -22,13 +22,12 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 
 	gitlab "github.com/xanzy/go-gitlab"
 )
 
-func TestNewRelease(t *testing.T) {
+func TestEditRelease(t *testing.T) {
 	tt := []struct {
 		name     string
 		flagsMap map[string]string
@@ -41,46 +40,41 @@ func TestNewRelease(t *testing.T) {
 			expect: fail,
 		},
 		{
-			name: "create a new release successfully",
+			name: "edit a release successfully",
 			flagsMap: map[string]string{
 				"project":     "Group1/project1",
-				"description": "Sample",
+				"description": "Updated",
 			},
-			args:   []string{"v2.0-alpha"},
+			args:   []string{"sample_1.0"},
 			expect: pass,
 		},
 		{
 			name: "no arg should fail",
 			flagsMap: map[string]string{
 				"project":     "Group1/project1",
-				"description": "Sample",
+				"description": "Updated",
 			},
 			expect: fail,
 		},
 	}
 
 	for _, tc := range tt {
-		// SETUP
-		if tc.expect == pass {
-			// Ensure to delete the tag/release
-			err := deleteTag(tc.flagsMap["project"], tc.args[0])
-			tInfo(err)
-			// Ensure to create a tag for the release
-			_, err = newTag(tc.flagsMap["project"],
-				&gitlab.CreateTagOptions{
-					TagName: gitlab.String(tc.args[0]),
-					Ref:     gitlab.String("master"),
-				})
-			if err != nil {
-				if !strings.Contains(err.Error(), "message: Release already exists") {
-					t.Fatalf("Can't create test data: %v\n", err)
-				}
-			}
-		}
 		t.Run(tc.name, func(t *testing.T) {
+			// SETUP
+			// Create the release before editing
+			if tc.expect == pass {
+				_, err := newRelease(
+					tc.flagsMap["project"],
+					tc.args[0],
+					&gitlab.CreateReleaseOptions{
+						Description: gitlab.String("A release"),
+					},
+				)
+				tInfo(err)
+			}
 			execT := execTestCmdFlags{
 				t:        t,
-				cmd:      newReleaseCmd,
+				cmd:      editReleaseCmd,
 				flagsMap: tc.flagsMap,
 				args:     tc.args,
 			}

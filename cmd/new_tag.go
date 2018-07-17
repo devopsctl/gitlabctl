@@ -46,12 +46,18 @@ func init() {
 	newTagCmd.Flags().StringP("ref", "r", "",
 		"The branch name or commit SHA to create branch from")
 	verifyMarkFlagRequired(newTagCmd, "ref")
+	newTagCmd.Flags().StringP("message", "m", "",
+		"Creates annotated tag")
+	newTagCmd.Flags().StringP("description", "d", "",
+		"Add release notes to the git tag")
 }
 
 func runNewTag(cmd *cobra.Command, tag string) error {
 	opts := new(gitlab.CreateTagOptions)
 	opts.Ref = gitlab.String(getFlagString(cmd, "ref"))
 	opts.TagName = gitlab.String(tag)
+	opts.Message = gitlab.String(getFlagString(cmd, "message"))
+	opts.ReleaseDescription = gitlab.String(getFlagString(cmd, "description"))
 	createdTag, err := newTag(getFlagString(cmd, "project"), opts)
 	if err != nil {
 		return err

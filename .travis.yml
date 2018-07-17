@@ -20,7 +20,7 @@ before_install:
     jq --version
 
     ctr=0
-    max_retries=30
+    max_retries=50
     while [ $(curl -I -u "root:123qwe123" http://localhost:10080/users/sign_in | head -1 | grep 200 | wc -l | tr -d ' ') -ne 1 ]; do
       ctr=`expr $ctr + 1`
       echo waiting for gitlab to come up
