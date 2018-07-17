@@ -42,6 +42,17 @@ func TestNewTag(t *testing.T) {
 			expect: pass,
 		},
 		{
+			name: "create a new tag with release note",
+			flagsMap: map[string]string{
+				"project":     "Group1/project1",
+				"ref":         "master",
+				"message":     "v2.0",
+				"description": "Sample Release Note",
+			},
+			args:   []string{"v2.0"},
+			expect: pass,
+		},
+		{
 			name:   "flags must be required",
 			args:   []string{"v3.0"},
 			expect: fail,
