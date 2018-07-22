@@ -6,7 +6,6 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 //
@@ -26,7 +25,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "v0.2.0"
+const version = "v0.3.0"
 
 var versionCmd = &cobra.Command{
 	Use:  "version",
