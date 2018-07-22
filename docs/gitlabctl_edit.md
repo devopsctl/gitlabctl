@@ -27,5 +27,6 @@ Update or patch a Gitlab resource
 * [gitlabctl edit member](gitlabctl_edit_member.md)	 - Edit a member by specifying the member name as the first argument
 * [gitlabctl edit project](gitlabctl_edit_project.md)	 - Edit a project by specifying the project id or path and using flags for fields to modify
 * [gitlabctl edit project-hook](gitlabctl_edit_project-hook.md)	 - Edit a project hook by specifying the project id or path and using flags for fields to modify
+* [gitlabctl edit release](gitlabctl_edit_release.md)	 - Update the release note of a project's release
 * [gitlabctl edit user](gitlabctl_edit_user.md)	 - Modify a user by specifying the id or username and using flags for fields to modify
 
