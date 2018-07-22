@@ -29,7 +29,7 @@ GITLABCTL_BIN_DIR=$HOME/.gitlabctl/bin
 mkdir -p $GITLABCTL_BIN_DIR && curl -Lo gitlabctl \
  https://github.com/devopsctl/gitlabctl/releases/download/v0.3.0/gitlabctl-darwin-amd64 \
  && chmod +x gitlabctl \
- && sudo mv gitlabctl $GITLABCTL_BIN_DIR
+ && mv gitlabctl $GITLABCTL_BIN_DIR
 
 export PATH=$PATH:$GITLABCTL_BIN_DIR
 
@@ -46,7 +46,7 @@ GITLABCTL_BIN_DIR=$HOME/.gitlabctl/bin
 mkdir -p $GITLABCTL_BIN_DIR && curl -Lo gitlabctl \
  https://github.com/devopsctl/gitlabctl/releases/download/v0.3.0/gitlabctl-linux-amd64 \
  && chmod +x gitlabctl \
- && sudo mv gitlabctl $GITLABCTL_BIN_DIR
+ && mv gitlabctl $GITLABCTL_BIN_DIR
 
 export PATH=$PATH:$GITLABCTL_BIN_DIR
 
