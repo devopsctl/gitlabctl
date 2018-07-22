@@ -1,5 +1,5 @@
 gitlab:
-  image: 'gitlab/gitlab-ce:latest'
+  image: 'gitlab/gitlab-ce:11.1.0-ce.0'
   restart: always
   environment:
     GITLAB_ROOT_PASSWORD: '123qwe123'
@@ -8,6 +8,5 @@ gitlab:
   ports:
     - '10080:10080'
   volumes:
-    - '/srv/gitlab/config:/etc/gitlab'
-    - '/srv/gitlab/logs:/var/log/gitlab'
-    - '/srv/gitlab/data:/var/opt/gitlab'
+    - 'gitlab_config:/etc/gitlab'
+    - 'gitlab_data:/var/opt/gitlab'
