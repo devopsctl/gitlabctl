@@ -29,7 +29,12 @@ var newTagCmd = &cobra.Command{
 	Aliases: []string{"t"},
 	Short:   "Create a new tag for a specified project",
 	Example: `# create tag from master branch for project groupx/myapp
-gitlabctl new tag v2.0 --project=groupx/myapp --ref=master`,
+gitlabctl new tag v2.0 --project=groupx/myapp --ref=master
+
+# create a tag and create a release from it
+gitlabctl new tag v2.1 --project=groupx/myapp --ref=master --description="Released!"
+
+# NOTE: You can also use 'gitlabctl new release' to create a release separately.`,
 	SilenceErrors:     true,
 	SilenceUsage:      true,
 	DisableAutoGenTag: true,
@@ -49,7 +54,7 @@ func init() {
 	newTagCmd.Flags().StringP("message", "m", "",
 		"Creates annotated tag")
 	newTagCmd.Flags().StringP("description", "d", "",
-		"Add release notes to the git tag")
+		"Create a release from the git tag with the description as the release note")
 }
 
 func runNewTag(cmd *cobra.Command, tag string) error {
@@ -66,7 +71,7 @@ func runNewTag(cmd *cobra.Command, tag string) error {
 	return nil
 }
 
-func newTag(project string, opts *gitlab.CreateTagOptions ) (*gitlab.Tag, error) {
+func newTag(project string, opts *gitlab.CreateTagOptions) (*gitlab.Tag, error) {
 	git, err := newGitlabClient()
 	if err != nil {
 		return nil, err
