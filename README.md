@@ -7,13 +7,17 @@
 
 Be a rockstar and efficiently manage your team's gitlab.org or [self-hosted Gitlab](https://about.gitlab.com/installation/) projects, groups, users and other resources.
 
-Tested with [__Gitlab 11.0.3__](https://about.gitlab.com/2018/07/05/gitlab-11-0-3-released/)
+Tested with [__Gitlab 11.1__](https://about.gitlab.com/2018/07/22/gitlab-11-1-released/).
 
 ## Getting Started
 
-Please see [Commands Manual](https://devopsctl.github.io/gitlabctl/) for a nice documentation of this project.
+Complete the [installation](#installation) guide below and then follow the [quickstart](#quickstart) guide.
 
-## Installing
+If you are hooked, please visit the awesome [Project Github site](https://devopsctl.github.io/gitlabctl/) to read the full manual of each command.
+
+If you just want to quickly check what are the available commands, go to [Gitlab Commands Available](#gitlab-commands-available) in this page.
+
+## Installation
 
 Get the download link of your preferred platform binary from [RELEASES](https://github.com/devopsctl/gitlabctl/releases).
 
@@ -49,7 +53,7 @@ gitlabctl completion -h
 Using `gitlabctl login` to fetch personal access token
 
 ```bash
->> gitlabctl login
+gitlabctl login
 >> Enter gitlab host url: http://localhost:10080
 >> Enter gitlab username: root
 >> Enter gitlab password: *****
@@ -62,14 +66,23 @@ Using environment variables. See `gitlabctl -h`
 
 Use __-h__ flag when possible. 
 
-`gitlabctl [command] -h` or `gitlabctl [command] [subcommand] -h`
+```bash
+gitlabctl [command] -h
+```
+
+or
+
+```bash
+gitlabctl [command] [subcommand] -h
+```
 
 ### Usage Examples
 
 Fetching resources with using `--output, -o` formatter flag.
 
 ```bash
->> gitlabctl get groups
+gitlabctl get groups
+
 +----+------------------+------------------------------------------------+-----------+
 | ID |       PATH       |                      URL                       | PARENT ID |
 +----+------------------+------------------------------------------------+-----------+
@@ -82,8 +95,11 @@ Fetching resources with using `--output, -o` formatter flag.
 +----+------------------+------------------------------------------------+-----------+
 ```
 
+View command outout in __json__.
+
 ```bash
->> gitlabctl get groups -o json
+gitlabctl get groups -o json
+
 [
  {
   "id": 13,
@@ -120,8 +136,11 @@ Fetching resources with using `--output, -o` formatter flag.
  ]
 ```
 
+View the command output in __yaml__.
+
 ```bash
->> gitlabctl get groups -o yaml
+gitlabctl get groups -o yaml
+
 - avatar_url: ""
   description: Updated by go test by id
   full_name: Group1
@@ -152,22 +171,18 @@ Fetching resources with using `--output, -o` formatter flag.
   web_url: http://localhost:10080/groups/Group2
 ```
 
-Creating resources.
+Create gitlab resources.
 
 ```bash
 # create a group
->> gitlabctl new group devopsctl
+gitlabctl new group devopsctl
 
 # create a project under devopsctl group
->> gitlabctl new project gitlab-cli --namespace=devopsctl
+gitlabctl new project gitlab-cli --namespace=devopsctl
 
 # create a new user with username john
->> gitlabctl new user john --name="John Smith" --password="john123456" --email=john@example.com --reset-password 
+gitlabctl new user john --name="John Smith" --password="john123456" --email=john@example.com --reset-password 
 ```
-
-## Contributing
-
-Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the process for submitting pull requests to us.
 
 ## Gitlab Commands Available 
 ### Authentication 
@@ -207,14 +222,14 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `edit branch [branch name] [--project] [--protect] [flags]`
 * [x] `edit branch [branch name] [--project] [--unprotect] [flags]`
 
-### Project/Repository Tags
+### Project/Repository Tags and Releases
 
 * [x] `get tags [project id or project path] [flags]`
 * [x] `describe tag [tag name] [--project] [flags]`
 * [x] `new tag [tag name] [--project] [flags]`
 * [x] `delete tag [tag name] [--project]`
-* [x] `new release [description] [--project] [flags]`
-* [ ] `edit release [description] [--project] [flags]`
+* [x] `new release [tag name] [--project] [flags]`
+* [x] `edit release [tag name] [--project] [flags]`
 
 ### Project Hooks
 
@@ -250,4 +265,8 @@ Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTIN
 * [x] `edit member [username] --from-group [flags]`
 * [x] `edit member [username] --from-project [flags]`
 * [x] `delete all-members --from-project`
+
+## Contributing
+
+Contributors are welcomed with love! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the process for submitting pull requests to us.
 
