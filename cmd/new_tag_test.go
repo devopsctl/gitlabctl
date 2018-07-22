@@ -38,7 +38,7 @@ func TestNewTag(t *testing.T) {
 				"project": "Group1/project1",
 				"ref":     "master",
 			},
-			args:   []string{"v2.0"},
+			args:   []string{"v2.0-newtag"},
 			expect: pass,
 		},
 		{
@@ -46,10 +46,10 @@ func TestNewTag(t *testing.T) {
 			flagsMap: map[string]string{
 				"project":     "Group1/project1",
 				"ref":         "master",
-				"message":     "v2.0",
+				"message":     "v2.0-newtag",
 				"description": "Sample Release Note",
 			},
-			args:   []string{"v2.0"},
+			args:   []string{"v2.0-newtag"},
 			expect: pass,
 		},
 		{
@@ -60,6 +60,12 @@ func TestNewTag(t *testing.T) {
 	}
 
 	for _, tc := range tt {
+		// SETUP
+		// Ensure that the tag to create is deleted
+		if tc.expect == pass {
+			err := deleteTag(tc.flagsMap["project"], tc.args[0])
+			tInfo(err)
+		}
 		t.Run(tc.name, func(t *testing.T) {
 			execT := execTestCmdFlags{
 				t:        t,
