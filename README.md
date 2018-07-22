@@ -24,18 +24,40 @@ Get the download link of your preferred platform binary from [RELEASES](https://
 ### OSX
 
 ```bash
-curl -Lo gitlabctl https://github.com/devopsctl/gitlabctl/releases/download/${VERSION}/gitlabctl-darwin-amd64 && chmod +x gitlabctl && sudo mv gitlabctl /usr/local/bin/
+GITLABCTL_BIN_DIR=$HOME/.gitlabctl/bin
+
+mkdir -p $GITLABCTL_BIN_DIR && curl -Lo gitlabctl \
+ https://github.com/devopsctl/gitlabctl/releases/download/v0.3.0/gitlabctl-darwin-amd64 \
+ && chmod +x gitlabctl \
+ && sudo mv gitlabctl $GITLABCTL_BIN_DIR
+
+export PATH=$PATH:$GITLABCTL_BIN_DIR
+
+# You can also append this export command in $HOME/.profile or similar SHELL file
+# to make sure it is included in your `$PATH` variable 
+# automatically upon starting a new terminal session.
 ```
 
 ### Linux
 
 ```bash
-curl -Lo gitlabctl https://github.com/devopsctl/gitlabctl/releases/download/${VERSION}/gitlabctl-linux-amd64 && chmod +x gitlabctl && sudo mv gitlabctl /usr/local/bin/
+GITLABCTL_BIN_DIR=$HOME/.gitlabctl/bin
+
+mkdir -p $GITLABCTL_BIN_DIR && curl -Lo gitlabctl \
+ https://github.com/devopsctl/gitlabctl/releases/download/v0.3.0/gitlabctl-linux-amd64 \
+ && chmod +x gitlabctl \
+ && sudo mv gitlabctl $GITLABCTL_BIN_DIR
+
+export PATH=$PATH:$GITLABCTL_BIN_DIR
+
+# You can also append this export command in $HOME/.profile or similar SHELL file
+# to make sure it is included in your `$PATH` variable 
+# automatically upon starting a new terminal session.
 ```
 
 ### Windows
 
-Download the gitlabctl-windows-amd64.exe file, rename it to gitlabctl.exe and add it to your path.
+Download the gitlabctl-windows-amd64.exe file, rename it to gitlabctl.exe and add it to your Windows System Environment Variable `%PATH%`.
 
 ### Auto Complete
 
@@ -54,11 +76,14 @@ Using `gitlabctl login` to fetch personal access token
 
 ```bash
 gitlabctl login
+
 >> Enter gitlab host url: http://localhost:10080
 >> Enter gitlab username: root
 >> Enter gitlab password: *****
 /Users/jb/.gitlabctl.yaml file has been created by login command
 ```
+
+__Windows Users:__ password masking does not work in Git bash.
 
 Using environment variables. See `gitlabctl -h`
 
