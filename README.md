@@ -3,6 +3,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 [![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
 
+# Note from the Author
+
+This project is currently not actively maintained.
+
+
 # [`gitlabctl`](https://devopsctl.github.io/gitlabctl/)
 
 Be a rockstar and efficiently manage your team's gitlab.org or [self-hosted Gitlab](https://about.gitlab.com/installation/) projects, groups, users and other resources.
