@@ -3,9 +3,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/devopsctl/gitlabctl)](https://goreportcard.com/report/github.com/devopsctl/gitlabctl)
 [![Waffle board](https://badge.waffle.io/devopsctl/gitlabctl.png?columns=all)](https://waffle.io/devopsctl/gitlabctl)
 
-# Note from the Author
+# NO MAINTENANCE NOTICE 
 
-This project is currently not actively maintained.
+I don't maintain this repository anymore. Feel free to fork if needed.
 
 
 # [`gitlabctl`](https://devopsctl.github.io/gitlabctl/)
